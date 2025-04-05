@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TEAM HEX - Contact Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    :root {
+      --muzzle-flash: #ff6b00;
+      --bullet-trail: #ff1a1a;
+      --combat-cyan: #00fffc;
+      --warzone-bg: #0a0a14;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--warzone-bg);
+      font-family: 'Electrolize', sans-serif;
+      color: white;
+      overflow-x: hidden;
+    }
+    /* Navigation */
+    .war-menu {
+      position: fixed;
+      top: 30px;
+      right: 30px;
+      z-index: 1000;
+      cursor: pointer;
+      width: 40px;
+      height: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: 0.4s;
+    }
+    .menu-bar {
+      height: 3px;
+      background: var(--bullet-trail);
+      border-radius: 2px;
+      transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 0 8px var(--bullet-trail);
+    }
+    .war-menu.active .menu-bar:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+    .war-menu.active .menu-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .war-menu.active .menu-bar:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+    .war-menu-content {
+      position: fixed;
+      top: 90px;
+      right: -320px;
+      background: rgba(10, 10, 20, 0.98);
+      border-radius: 12px;
+      padding: 25px;
+      width: 280px;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255, 26, 26, 0.3);
+      box-shadow: 0 0 40px rgba(255, 26, 26, 0.2);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 999;
+    }
+    .war-menu-content.active {
+      transform: translateX(-360px);
+    }
+    .menu-item {
+      padding: 12px;
+      margin: 8px 0;
+      position: relative;
+      overflow: hidden;
+      border-left: 2px solid transparent;
+      transform: translateX(0);
+      opacity: 1;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      left: -100%;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 26, 26, 0.1);
+      transition: left 0.3s ease;
+    }
+    .menu-item:hover {
+      border-left-color: var(--bullet-trail);
+    }
+    .menu-item:hover::before {
+      left: 0;
+    }
+    .menu-item span {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1em;
+      letter-spacing: 1.5px;
+      color: var(--combat-cyan);
+      position: relative;
+      z-index: 1;
+    }
+    /* Hero Section */
+    .combat-hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .combat-title {
+      font-family: 'Russo One', sans-serif;
+      font-size: 4.5em;
+      text-transform: uppercase;
+      background: linear-gradient(45deg, var(--bullet-trail), var(--muzzle-flash));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px var(--bullet-trail);
+      margin-bottom: 20px;
+      z-index: 2;
+    }
+    .combat-tagline {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2em;
+      color: var(--combat-cyan);
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px var(--combat-cyan);
+      z-index: 2;
+    }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    /* Contact Section */
+    .contact-section {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .contact-heading {
+      text-align: center;
+      font-family: 'Russo One', sans-serif;
+      font-size: 3em;
+      margin-bottom: 30px;
+      background: linear-gradient(45deg, var(--muzzle-flash), var(--bullet-trail));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .contact-info {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: #ccc;
+    }
+    .contact-info a {
+      color: var(--combat-cyan);
+      text-decoration: none;
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-form input, 
+    .contact-form textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid rgba(255, 26, 26, 0.3);
+      border-radius: 5px;
+      background: rgba(20, 20, 30, 0.9);
+      color: #fff;
+      font-family: 'Electrolize', sans-serif;
+      font-size: 1em;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+    .contact-form input:focus, 
+    .contact-form textarea:focus {
+      border-color: var(--combat-cyan);
+    }
+    .contact-form button {
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      background: var(--bullet-trail);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .contact-form button:hover {
+      background: var(--muzzle-flash);
+    }
+    /* Mobile Optimization */
+    @media (max-width: 768px) {
+      .war-menu {
+        top: 20px;
+        right: 20px;
+      }
+      .war-menu-content {
+        width: 250px;
+        right: -280px;
+      }
+      .war-menu-content.active {
+        transform: translateX(-300px);
+      }
+      .combat-title {
+        font-size: 3em;
+        text-align: center;
+        padding: 0 20px;
+      }
+      .combat-tagline {
+        font-size: 1em;
+        text-align: center;
+        padding: 0 20px;
+      }
+      .contact-heading {
+        font-size: 2.5em;
+      }
+    }
+      .menu-item a {
+    text-decoration: none;
+    color: var(--combat-cyan);
+  }
+  </style>
+</head>
+<body>
+  <!-- Tactical Navigation -->
+  <div class="war-menu" onclick="toggleMenu()">
+    <div class="menu-bar"></div>
+    <div class="menu-bar"></div>
+    <div class="menu-bar"></div>
+  </div>
+  
+   <div class="war-menu-content">
+        <div class="menu-item"><span><a href="index.html">HOME</a></span></div>
+        <div class="menu-item"><span><a href="member.html">TEAM MEMBER</a></span></div>
+        <div class="menu-item"><span><a href="gallery.html">GALLERY</a></span></div>
+        <div class="menu-item"><span><a href="contact.html">CONTACT</a></span></div>
+        <div class="menu-item"><span><a href="about.html">ABOUT</a></span></div>
+        <div class="menu-item"><span><a href="join.html">JOIN</a></span></div>
+    </div>
+  
+  <!-- Hero Section -->
+  <section class="combat-hero">
+    <div id="particles-js"></div>
+    <h1 class="combat-title">TEAM HEX</h1>
+    <p class="combat-tagline">Elite Firepower Unit</p>
+  </section>
+  
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <h2 class="contact-heading">Contact Us</h2>
+    <div class="contact-info">
+      <p>WhatsApp Number: <a href="https://wa.me/8801870516299" target="_blank">+880 1870-516299</a></p>
+      <p>WhatsApp Group: <a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank">Join Group</a></p>
+      <p>Email: <a href="mailto:teamhex69x@gmail.com">teamhex69x@gmail.com</a></p>
+    </div>
+    <form class="contact-form" action="#" method="post">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+  
+  <script>
+    // Initialize GSAP and ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Particle Background Setup
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80 },
+        color: { value: '#ff1a1a' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.7 },
+        size: { value: 1.5 },
+        move: {
+          enable: true,
+          speed: 12,
+          direction: 'right',
+          straight: true,
+          out_mode: 'out',
+          trail: {
+            enable: true,
+            length: 10,
+            fillColor: '#000000'
+          }
+        }
+      }
+    });
+    
+    // Toggle Navigation Menu
+    let menuActive = false;
+    function toggleMenu() {
+      const menu = document.querySelector('.war-menu');
+      const content = document.querySelector('.war-menu-content');
+      menuActive = !menuActive;
+      
+      menu.classList.toggle('active');
+      content.classList.toggle('active');
+      
+      // Menu Item Animation
+      if(menuActive) {
+        gsap.fromTo('.menu-item',
+          { x: 100, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            stagger: 0.1,
+            duration: 0.4,
+            ease: 'power2.out'
+          }
+        );
+      } else {
+        gsap.to('.menu-item', {
+          x: 100,
+          opacity: 0,
+          stagger: 0.05,
+          duration: 0.3,
+          ease: 'power2.in'
+        });
+      }
+    }
+    
+    // Close Menu When Clicking Outside
+    document.addEventListener('click', (e) => {
+      const menu = document.querySelector('.war-menu');
+      const content = document.querySelector('.war-menu-content');
+      
+      if(!menu.contains(e.target) && !content.contains(e.target)) {
+        if(menuActive) {
+          toggleMenu();
+        }
+      }
+    });
+    
+    // Hero Section Animations
+    gsap.from('.combat-title', {
+      duration: 1.5,
+      y: 100,
+      opacity: 0,
+      ease: 'power4.out'
+    });
+    
+    gsap.from('.combat-tagline', {
+      duration: 1.2,
+      y: 50,
+      opacity: 0,
+      delay: 0.3,
+      ease: 'power3.out'
+    });
+    
+    // Continuous Combat Effects
+    setInterval(() => {
+      if(menuActive) createCombatEffect();
+    }, 500);
+    
+    function createCombatEffect() {
+      const effect = document.createElement('div');
+      effect.className = Math.random() > 0.5 ? 'bullet-trail' : 'muzzle-flash';
+      
+      if(effect.className === 'bullet-trail') {
+        effect.style.top = `${Math.random() * 100}vh`;
+        effect.style.left = `${Math.random() * 100}vw`;
+        gsap.to(effect, {
+          duration: 0.6,
+          scaleX: 2.5,
+          opacity: 0,
+          onComplete: () => effect.remove()
+        });
+      } else {
+        effect.style.left = `${Math.random() * 100}vw`;
+        effect.style.top = `${Math.random() * 100}vh`;
+        gsap.to(effect, {
+          duration: 0.2,
+          scale: 1.8,
+          opacity: 0,
+          onComplete: () => effect.remove()
+        });
+      }
+      document.body.appendChild(effect);
+    }
+  </script>
+</body>
+</html>
