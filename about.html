@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="google-site-verification" content="igC3pR8ccRLwRLY9-4862k3ZbfM0XPIZ0XTUONQhQ00" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
   <title>TEAM HEX - About Us</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -17,20 +15,18 @@
       --combat-cyan: #00fffc;
       --warzone-bg: #0a0a14;
     }
-    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
     body {
       background: var(--warzone-bg);
       font-family: 'Electrolize', sans-serif;
       color: white;
       overflow-x: hidden;
+      position: relative;
     }
-    
     /* Navigation */
     .war-menu {
       position: fixed;
@@ -45,7 +41,6 @@
       justify-content: space-between;
       transition: 0.4s;
     }
-    
     .menu-bar {
       height: 3px;
       background: var(--bullet-trail);
@@ -53,19 +48,15 @@
       transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       box-shadow: 0 0 8px var(--bullet-trail);
     }
-    
     .war-menu.active .menu-bar:nth-child(1) {
       transform: rotate(45deg) translate(8px, 8px);
     }
-    
     .war-menu.active .menu-bar:nth-child(2) {
       opacity: 0;
     }
-    
     .war-menu.active .menu-bar:nth-child(3) {
       transform: rotate(-45deg) translate(8px, -8px);
     }
-    
     .war-menu-content {
       position: fixed;
       top: 90px;
@@ -80,11 +71,9 @@
       transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 999;
     }
-    
     .war-menu-content.active {
       transform: translateX(-360px);
     }
-    
     .menu-item {
       padding: 12px;
       margin: 8px 0;
@@ -96,7 +85,6 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    
     .menu-item::before {
       content: '';
       position: absolute;
@@ -107,15 +95,12 @@
       background: rgba(255, 26, 26, 0.1);
       transition: left 0.3s ease;
     }
-    
     .menu-item:hover {
       border-left-color: var(--bullet-trail);
     }
-    
     .menu-item:hover::before {
       left: 0;
     }
-    
     .menu-item span {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.1em;
@@ -124,7 +109,10 @@
       position: relative;
       z-index: 1;
     }
-    
+    .menu-item a {
+      text-decoration: none;
+      color: var(--combat-cyan);
+    }
     /* Hero Section */
     .combat-hero {
       height: 100vh;
@@ -135,7 +123,6 @@
       position: relative;
       overflow: hidden;
     }
-    
     .combat-title {
       font-family: 'Russo One', sans-serif;
       font-size: 4.5em;
@@ -147,8 +134,8 @@
       text-shadow: 0 0 40px var(--bullet-trail);
       margin-bottom: 20px;
       z-index: 2;
+      filter: brightness(1);
     }
-    
     .combat-tagline {
       font-family: 'Orbitron', sans-serif;
       font-size: 1.2em;
@@ -157,21 +144,27 @@
       text-shadow: 0 0 20px var(--combat-cyan);
       z-index: 2;
     }
-    
+    .combat-taglines {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1em;
+      color: var(--combat-cyan);
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px var(--combat-cyan);
+      background-color: transparent;
+    }
     #particles-js {
       position: absolute;
       width: 100%;
       height: 100%;
       pointer-events: none;
     }
-    
     /* About Section */
     .about-section {
       padding: 60px 20px;
       max-width: 1000px;
       margin: 0 auto;
+      opacity: 0;
     }
-    
     .about-heading {
       text-align: center;
       font-family: 'Russo One', sans-serif;
@@ -182,86 +175,93 @@
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
     .about-content {
       font-size: 1.1em;
       line-height: 1.6;
       color: #ccc;
       text-align: justify;
     }
-    
+    /* Footer Link */
+    .footer-link {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      color: var(--combat-cyan);
+      text-decoration: none;
+      border: 1px solid var(--combat-cyan);
+      padding: 5px 10px;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .footer-link:hover {
+      background: var(--combat-cyan);
+      color: var(--warzone-bg);
+    }
     /* Mobile Optimization */
     @media (max-width: 768px) {
       .war-menu {
         top: 20px;
         right: 20px;
       }
-      
       .war-menu-content {
         width: 250px;
         right: -280px;
       }
-      
       .war-menu-content.active {
         transform: translateX(-300px);
       }
-      
       .combat-title {
         font-size: 3em;
         text-align: center;
         padding: 0 20px;
       }
-      
       .combat-tagline {
         font-size: 1em;
         text-align: center;
         padding: 0 20px;
       }
-      
       .about-heading {
         font-size: 2.5em;
       }
-      
       .about-content {
         font-size: 1em;
         padding: 0 10px;
       }
     }
-      .menu-item a {
-    text-decoration: none;
-    color: var(--combat-cyan);
-  }
   </style>
 </head>
 <body>
+    
   <!-- Tactical Navigation -->
   <div class="war-menu" onclick="toggleMenu()">
     <div class="menu-bar"></div>
     <div class="menu-bar"></div>
     <div class="menu-bar"></div>
   </div>
-  
- <div class="war-menu-content">
-   <div class="menu-item"><span><a href="index.html">HOME</a></span></div>
-   <div class="menu-item"><span><a href="member.html">TEAM MEMBER</a></span></div>
-   <div class="menu-item"><span><a href="gallery.html">GALLERY</a></span></div>
-   <div class="menu-item"><span><a href="contact.html">CONTACT</a></span></div>
-   <div class="menu-item"><span><a href="about.html">ABOUT</a></span></div>
-   <div class="menu-item"><span><a href="join.html">JOIN</a></span></div>
- </div>
+  <div class="war-menu-content">
+    <div class="menu-item"><span><a href="index.html">HOME</a></span></div>
+    <div class="menu-item"><span><a href="member.html">TEAM MEMBER</a></span></div>
+    <div class="menu-item"><span><a href="gallery.html">GALLERY</a></span></div>
+    <div class="menu-item"><span><a href="contact.html">CONTACT</a></span></div>
+    <div class="menu-item"><span><a href="about.html">ABOUT</a></span></div>
+    <div class="menu-item"><span><a href="join.html">JOIN</a></span></div>
+  </div>
+    
   <!-- Hero Section -->
   <section class="combat-hero">
     <div id="particles-js"></div>
     <h1 class="combat-title">TEAM HEX</h1>
     <p class="combat-tagline">Elite Firepower Unit</p>
   </section>
-  
+    
   <!-- About Section -->
   <section class="about-section">
     <h2 class="about-heading">About Us</h2>
     <div class="about-content">
       <p>
-        TEAM HEX is a dynamic and elite firepower unit dedicated to mastering the art of virtual combat.
+        <mark class="combat-taglines">TEAM HEX</mark> is a dynamic and elite firepower unit dedicated to mastering the art of virtual combat.
         Born out of a passion for precision and strategy, our team brings together experts in infiltration,
         demolition, sniping, tactical operations, and reconnaissance. United by a single mission – to push the
         limits of gaming excellence – we continually train, innovate, and adapt to the ever-evolving challenges
@@ -270,22 +270,25 @@
       <br>
       <p>
         Our journey began as a small group of enthusiasts who shared a love for high-intensity action and
-        cutting-edge gameplay. Today, TEAM HEX stands as a symbol of discipline, creativity, and relentless
+        cutting-edge gameplay. Today, <mark class="combat-taglines">TEAM HEX</mark> stands as a symbol of discipline, creativity, and relentless
         ambition. Whether it's strategizing before a match or executing flawlessly under pressure, every member
         is committed to excellence both in and out of the game.
       </p>
       <br>
       <p>
-        At TEAM HEX, we play a variety of eSports through which we strive to improve ourselves 
+        At <mark class="combat-taglines">TEAM HEX</mark>, we play a variety of eSports through which we strive to improve ourselves.
       </p>
     </div>
   </section>
-  
-  <script>
-    // Initialize GSAP and ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
     
-    // Particle Background Setup
+  <!-- Footer Link -->
+  <a href="https://nirob120.netlify.app/" class="footer-link">created by NIROB</a>
+    
+  <script>
+    // Register GSAP plugins
+    gsap.registerPlugin(ScrollTrigger);
+      
+    // Initialize Particle Background
     particlesJS('particles-js', {
       particles: {
         number: { value: 80 },
@@ -307,28 +310,28 @@
         }
       }
     });
-    
-    // Toggle Navigation Menu
+      
+    // Toggle Navigation Menu with advanced stagger animations
     let menuActive = false;
     function toggleMenu() {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
       menuActive = !menuActive;
-      
+        
       menu.classList.toggle('active');
       content.classList.toggle('active');
-      
-      if(menuActive) {
-        gsap.fromTo('.menu-item',
-          { x: 100, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            stagger: 0.1,
-            duration: 0.4,
-            ease: 'power2.out'
-          }
-        );
+        
+      if (menuActive) {
+        gsap.fromTo('.menu-item', {
+          x: 100,
+          opacity: 0
+        }, {
+          x: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
       } else {
         gsap.to('.menu-item', {
           x: 100,
@@ -339,65 +342,90 @@
         });
       }
     }
-    
+      
     // Close Menu on Outside Click
     document.addEventListener('click', (e) => {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
-      
-      if(!menu.contains(e.target) && !content.contains(e.target)) {
-        if(menuActive) {
+        
+      if (!menu.contains(e.target) && !content.contains(e.target)) {
+        if (menuActive) {
           toggleMenu();
         }
       }
     });
-    
-    // Hero Section Animations
-    gsap.from('.combat-title', {
+      
+    // Hero Section Timeline Animation (without rotation)
+    const heroTimeline = gsap.timeline();
+    heroTimeline.from('.combat-title', {
       duration: 1.5,
       y: 100,
       opacity: 0,
       ease: 'power4.out'
-    });
-    
-    gsap.from('.combat-tagline', {
+    }).from('.combat-tagline', {
       duration: 1.2,
       y: 50,
       opacity: 0,
-      delay: 0.3,
       ease: 'power3.out'
+    }, "-=0.8");
+      
+    // Glowing effect for "TEAM HEX" text (combat-title)
+    gsap.to('.combat-title', {
+      duration: 2,
+      filter: "brightness(2)",
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut"
     });
-    
-    // Optional: Continuous Combat Effects (if desired)
-    setInterval(() => {
-      if(menuActive) createCombatEffect();
-    }, 500);
-    
+      
+    // About Section Scroll Animation using ScrollTrigger
+    gsap.to(".about-section", {
+      scrollTrigger: {
+        trigger: ".about-section",
+        start: "top 80%",
+        toggleActions: "play none none reverse"
+      },
+      duration: 1.2,
+      opacity: 1,
+      y: 0,
+      ease: "power3.out"
+    });
+      
+    // Optional Advanced Continuous Combat Effects on the hero section background
     function createCombatEffect() {
       const effect = document.createElement('div');
       effect.className = Math.random() > 0.5 ? 'bullet-trail' : 'muzzle-flash';
-      
-      if(effect.className === 'bullet-trail') {
-        effect.style.top = `${Math.random() * 100}vh`;
-        effect.style.left = `${Math.random() * 100}vw`;
+        
+      effect.style.position = 'absolute';
+      effect.style.pointerEvents = 'none';
+      effect.style.width = effect.className === 'bullet-trail' ? '50px' : '30px';
+      effect.style.height = '4px';
+      effect.style.top = `${Math.random() * 100}vh`;
+      effect.style.left = `${Math.random() * 100}vw`;
+        
+      if (effect.className === 'bullet-trail') {
         gsap.to(effect, {
           duration: 0.6,
           scaleX: 2.5,
           opacity: 0,
+          ease: 'power2.out',
           onComplete: () => effect.remove()
         });
       } else {
-        effect.style.left = `${Math.random() * 100}vw`;
-        effect.style.top = `${Math.random() * 100}vh`;
         gsap.to(effect, {
           duration: 0.2,
           scale: 1.8,
           opacity: 0,
+          ease: 'power2.out',
           onComplete: () => effect.remove()
         });
       }
+        
       document.body.appendChild(effect);
     }
+      
+    // Create a continuous combat effect on the hero background every 700ms
+    setInterval(createCombatEffect, 700);
   </script>
 </body>
 </html>
