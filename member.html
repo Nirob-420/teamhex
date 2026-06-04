@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEAM HEX - Team Members</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TEAM HEX — Elite Firepower Unit | Blur Border Tactical Showcase</title>
   <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
@@ -16,6 +16,32 @@
       --combat-cyan: #00fffc;
       --warzone-bg: #0a0a14;
       --alt-bg: linear-gradient(135deg, #00fffc, #ff1a1a);
+      
+      /* extended for 6 items */
+      --item1-transform: translateX(-100%) translateY(-5%) scale(1.5);
+      --item1-filter: blur(30px);
+      --item1-zIndex: 11;
+      --item1-opacity: 0;
+      --item2-transform: translateX(0);
+      --item2-filter: blur(0px);
+      --item2-zIndex: 10;
+      --item2-opacity: 1;
+      --item3-transform: translate(50%,10%) scale(0.8);
+      --item3-filter: blur(10px);
+      --item3-zIndex: 9;
+      --item3-opacity: 1;
+      --item4-transform: translate(90%,20%) scale(0.5);
+      --item4-filter: blur(30px);
+      --item4-zIndex: 8;
+      --item4-opacity: 1;
+      --item5-transform: translate(120%,30%) scale(0.3);
+      --item5-filter: blur(40px);
+      --item5-zIndex: 7;
+      --item5-opacity: 0;
+      --item6-transform: translate(150%,40%) scale(0.2);
+      --item6-filter: blur(50px);
+      --item6-zIndex: 6;
+      --item6-opacity: 0;
     }
     * {
       margin: 0;
@@ -29,40 +55,14 @@
       overflow-x: hidden;
       position: relative;
     }
-    /* Rotating Background Element */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-body{
-    margin: 0;
-    background-color: #000000;
-    font-family: Poppins;
-}
-:root{
-    --item1-transform: translateX(-100%) translateY(-5%) scale(1.5);
-    --item1-filter: blur(30px);
-    --item1-zIndex: 11;
-    --item1-opacity: 0;
+    body{
+        margin: 0;
+        background-color: #000000;
+        font-family: Poppins;
+    }
 
-    --item2-transform: translateX(0);
-    --item2-filter: blur(0px);
-    --item2-zIndex: 10;
-    --item2-opacity: 1;
-
-    --item3-transform: translate(50%,10%) scale(0.8);
-    --item3-filter: blur(10px);
-    --item3-zIndex: 9;
-    --item3-opacity: 1;
-
-    --item4-transform: translate(90%,20%) scale(0.5);
-    --item4-filter: blur(30px);
-    --item4-zIndex: 8;
-    --item4-opacity: 1;
-    
-    --item5-transform: translate(120%,30%) scale(0.3);
-    --item5-filter: blur(40px);
-    --item5-zIndex: 7;
-    --item5-opacity: 0;
-}
-header{
+    header{
     width: 1140px;
     max-width: 90%;
     display: flex;
@@ -70,61 +70,83 @@ header{
     margin: auto;
     height: 50px;
     align-items: center;
-}
-header .logo{
+    }
+    header .logo{
     font-weight: bold;
-}
-header nav a{
+    }
+    header nav a{
     margin-left: 30px;
     text-decoration: none;
     color: #555;
     font-weight: 500;
-}
+    }
 
-/* carousel */
-.carousel{
+    /* carousel */
+    .carousel{
     position: relative;
     height: 800px;
     overflow: hidden;
     margin-top: -50px;
-}
-.carousel .list{
+    }
+    .carousel .list{
     position: absolute;
     width: 1140px;
     max-width: 90%;
     height: 80%;
     left: 50%;
     transform: translateX(-50%);
-}
-.carousel .list .item{
+    }
+    .carousel .list .item{
     position: absolute;
     left: 0%;
     width: 70%;
     height: 100%;
     font-size: 15px;
     transition: left 0.5s, opacity 0.5s, width 0.5s;
-}
-.carousel .list .item:nth-child(n + 6){
+    }
+    .carousel .list .item:nth-child(n + 7){
     opacity: 0;
-}
-.carousel .list .item:nth-child(2){
+    }
+    .carousel .list .item:nth-child(2){
     z-index: 10;
     transform: translateX(0);
-}
-.carousel .list .item img{
-    width: 50%;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: right 1.5s;
-}
+    }
+    /* ========== BORDER BLUR EFFECT FOR ALL PICTURES ========== */
+    .carousel .list .item img {
+      width: 50%;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 28px;
+      /* BORDER BLUR: creates a glowing, blurred edge halo effect */
+      box-shadow: 0 0 0 4px rgba(255, 60, 60, 0.6), 
+                  0 0 0 10px rgba(255, 30, 30, 0.3),
+                  0 0 32px 12px rgba(255, 0, 0, 0.5);
+      filter: drop-shadow(0 0 10px rgba(255, 40, 40, 0.7));
+      backdrop-filter: blur(0px);
+      border: 1px solid rgba(255, 100, 100, 0.4);
+      object-fit: cover;
+      background: rgba(0,0,0,0.2);
+    }
+    /* RIAN'S PIC SIZE - SMALLER AND CUSTOM OFFSET */
+    .carousel .list .item img.rn {
+      width: 32% !important;
+      right: 4%;
+      max-width: 260px;
+      border-radius: 32px;
+      box-shadow: 0 0 0 4px rgba(255, 80, 80, 0.8), 
+                  0 0 0 8px rgba(255, 40, 40, 0.4),
+                  0 0 40px 16px rgba(255, 30, 30, 0.6);
+      filter: drop-shadow(0 0 12px #ff4d4d);
+    }
 
-.carousel .list .item .introduce{
+    .carousel .list .item .introduce{
     opacity: 0;
     pointer-events: none;
-}
-.carousel .list .item:nth-child(2) .introduce{
+    }
+    .carousel .list .item:nth-child(2) .introduce{
     opacity: 1;
     pointer-events: auto;
     width: 400px;
@@ -132,21 +154,21 @@ header nav a{
     top: 50%;
     transform:  translateY(-50%);
     transition: opacity 0.5s;
-}
-.carousel .list .item .introduce .title{
+    }
+    .carousel .list .item .introduce .title{
     font-size: 2em;
     font-weight: 500;
     line-height: 1em;
-}
-.carousel .list .item .introduce .topic{
+    }
+    .carousel .list .item .introduce .topic{
     font-size: 4em;
     font-weight: 500;
-}
-.carousel .list .item .introduce .des{
+    }
+    .carousel .list .item .introduce .des{
     font-size: small;
     color: #5559;
-}
-.carousel .list .item .introduce .seeMore{
+    }
+    .carousel .list .item .introduce .seeMore{
     font-family: Poppins;
     margin-top: 1.2em;
     padding: 5px 0;
@@ -157,145 +179,176 @@ header nav a{
     font-weight: bold;
     letter-spacing: 3px;
     transition: background 0.5s;
-}
-.carousel .list .item .introduce .seeMore:hover{
+    }
+    .carousel .list .item .introduce .seeMore:hover{
     background: #eee;
-}
-.carousel .list .item:nth-child(1){
+    }
+    .carousel .list .item:nth-child(1){
     transform: var(--item1-transform);
     filter: var(--item1-filter);
     z-index: var(--item1-zIndex);
     opacity: var(--item1-opacity);
     pointer-events: none;
-}
-.carousel .list .item:nth-child(3){
+    }
+    .carousel .list .item:nth-child(3){
     transform: var(--item3-transform);
     filter: var(--item3-filter);
     z-index: var(--item3-zIndex);
-}
-.carousel .list .item:nth-child(4){
+    }
+    .carousel .list .item:nth-child(4){
     transform: var(--item4-transform);
     filter: var(--item4-filter);
     z-index: var(--item4-zIndex);
-}
-.carousel .list .item:nth-child(5){
+    }
+    .carousel .list .item:nth-child(5){
+    transform: var(--item5-transform);
+    filter: var(--item5-filter);
+    z-index: var(--item5-zIndex);
+    opacity: var(--item5-opacity);
+    pointer-events: none;
+    }
+    .carousel .list .item:nth-child(6){
+    transform: var(--item6-transform);
+    filter: var(--item6-filter);
+    z-index: var(--item6-zIndex);
+    opacity: var(--item6-opacity);
+    pointer-events: none;
+    }
+    /* animation text in item2 */
+    .carousel .list .item:nth-child(2) .introduce .title,
+    .carousel .list .item:nth-child(2) .introduce .topic,
+    .carousel .list .item:nth-child(2) .introduce .des,
+    .carousel .list .item:nth-child(2) .introduce .seeMore{
+    opacity: 0;
+    animation: showContent 0.5s 1s ease-in-out 1 forwards;
+    }
+    @keyframes showContent{
+    from{
+    transform: translateY(-30px);
+    filter: blur(10px);
+    }to{
+    transform: translateY(0);
+    opacity: 1;
+    filter: blur(0px);
+    }
+    }
+    .carousel .list .item:nth-child(2) .introduce .topic{
+    animation-delay: 1.2s;
+    }
+    .carousel .list .item:nth-child(2) .introduce .des{
+    animation-delay: 1.4s;
+    }
+    .carousel .list .item:nth-child(2) .introduce .seeMore{
+    animation-delay: 1.6s;
+    }
+    /* next click - extended for 6 items */
+    .carousel.next .item:nth-child(1){
+    animation: transformFromPosition2 0.5s ease-in-out 1 forwards;
+    }
+    @keyframes transformFromPosition2{
+    from{
+    transform: var(--item2-transform);
+    filter: var(--item2-filter);
+    opacity: var(--item2-opacity);
+    }
+    }
+    .carousel.next .item:nth-child(2){
+    animation: transformFromPosition3 0.7s ease-in-out 1 forwards;
+    }
+    @keyframes transformFromPosition3{
+    from{
+    transform: var(--item3-transform);
+    filter: var(--item3-filter);
+    opacity: var(--item3-opacity);
+    }
+    }
+    .carousel.next .item:nth-child(3){
+    animation: transformFromPosition4 0.9s ease-in-out 1 forwards;
+    }
+    @keyframes transformFromPosition4{
+    from{
+    transform: var(--item4-transform);
+    filter: var(--item4-filter);
+    opacity: var(--item4-opacity);
+    }
+    }
+    .carousel.next .item:nth-child(4){
+    animation: transformFromPosition5 1.1s ease-in-out 1 forwards;
+    }
+    @keyframes transformFromPosition5{
+    from{
     transform: var(--item5-transform);
     filter: var(--item5-filter);
     opacity: var(--item5-opacity);
-    pointer-events: none;
-}
-/* animation text in item2 */
-.carousel .list .item:nth-child(2) .introduce .title,
-.carousel .list .item:nth-child(2) .introduce .topic,
-.carousel .list .item:nth-child(2) .introduce .des,
-.carousel .list .item:nth-child(2) .introduce .seeMore{
-    opacity: 0;
-    animation: showContent 0.5s 1s ease-in-out 1 forwards;
-}
-@keyframes showContent{
-    from{
-        transform: translateY(-30px);
-        filter: blur(10px);
-    }to{
-        transform: translateY(0);
-        opacity: 1;
-        filter: blur(0px);
     }
-}
-.carousel .list .item:nth-child(2) .introduce .topic{
-    animation-delay: 1.2s;
-}
-.carousel .list .item:nth-child(2) .introduce .des{
-    animation-delay: 1.4s;
-}
-.carousel .list .item:nth-child(2) .introduce .seeMore{
-    animation-delay: 1.6s;
-}
-/* next click */
-.carousel.next .item:nth-child(1){
-    animation: transformFromPosition2 0.5s ease-in-out 1 forwards;
-}
-@keyframes transformFromPosition2{
-    from{
-        transform: var(--item2-transform);
-        filter: var(--item2-filter);
-        opacity: var(--item2-opacity);
     }
-}
-.carousel.next .item:nth-child(2){
-    animation: transformFromPosition3 0.7s ease-in-out 1 forwards;
-}
-@keyframes transformFromPosition3{
-    from{
-        transform: var(--item3-transform);
-        filter: var(--item3-filter);
-        opacity: var(--item3-opacity);
+    .carousel.next .item:nth-child(5){
+    animation: transformFromPosition6 1.3s ease-in-out 1 forwards;
     }
-}
-.carousel.next .item:nth-child(3){
-    animation: transformFromPosition4 0.9s ease-in-out 1 forwards;
-}
-@keyframes transformFromPosition4{
+    @keyframes transformFromPosition6{
     from{
-        transform: var(--item4-transform);
-        filter: var(--item4-filter);
-        opacity: var(--item4-opacity);
+    transform: var(--item6-transform);
+    filter: var(--item6-filter);
+    opacity: var(--item6-opacity);
     }
-}
-.carousel.next .item:nth-child(4){
-    animation: transformFromPosition5 1.1s ease-in-out 1 forwards;
-}
-@keyframes transformFromPosition5{
+    }
+    /* previous - extended */
+    .carousel.prev .list .item:nth-child(6){
+    animation: transformFromPosition5 0.5s ease-in-out 1 forwards;
+    }
+    .carousel.prev .list .item:nth-child(5){
+    animation: transformFromPosition4 0.7s ease-in-out 1 forwards;
+    }
+    .carousel.prev .list .item:nth-child(4){
+    animation: transformFromPosition3 0.9s ease-in-out 1 forwards;
+    }
+    .carousel.prev .list .item:nth-child(3){
+    animation: transformFromPosition2 1.1s ease-in-out 1 forwards;
+    }
+    .carousel.prev .list .item:nth-child(2){
+    animation: transformFromPosition1 1.3s ease-in-out 1 forwards;
+    }
+    @keyframes transformFromPosition1{
     from{
-        transform: var(--item5-transform);
-        filter: var(--item5-filter);
-        opacity: var(--item5-opacity);
+    transform: var(--item1-transform);
+    filter: var(--item1-filter);
+    opacity: var(--item1-opacity);
     }
-}
-/* previous */
-.carousel.prev .list .item:nth-child(5){
-    animation: transformFromPosition4 0.5s ease-in-out 1 forwards;
-}
-.carousel.prev .list .item:nth-child(4){
-    animation: transformFromPosition3 0.7s ease-in-out 1 forwards;
-}
-.carousel.prev .list .item:nth-child(3){
-    animation: transformFromPosition2 0.9s ease-in-out 1 forwards;
-}
-.carousel.prev .list .item:nth-child(2){
-    animation: transformFromPosition1 1.1s ease-in-out 1 forwards;
-}
-@keyframes transformFromPosition1{
-    from{
-        transform: var(--item1-transform);
-        filter: var(--item1-filter);
-        opacity: var(--item1-opacity);        
     }
-}
 
-/* detail  */
-.carousel .list .item .detail{
+    /* detail  */
+    .carousel .list .item .detail{
     opacity: 0;
     pointer-events: none;
-}
-/* showDetail */
-.carousel.showDetail .list .item:nth-child(3),
-.carousel.showDetail .list .item:nth-child(4){
+    }
+    /* showDetail */
+    .carousel.showDetail .list .item:nth-child(3),
+    .carousel.showDetail .list .item:nth-child(4),
+    .carousel.showDetail .list .item:nth-child(5),
+    .carousel.showDetail .list .item:nth-child(6){
     left: 100%;
     opacity: 0;
     pointer-events: none;
-}
-.carousel.showDetail .list .item:nth-child(2){
+    }
+    .carousel.showDetail .list .item:nth-child(2){
     width: 100%;
-}
-.carousel.showDetail .list .item:nth-child(2) .introduce{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .introduce{
     opacity: 0;
     pointer-events: none;
-}
-.carousel.showDetail .list .item:nth-child(2) img{
+    }
+    .carousel.showDetail .list .item:nth-child(2) img{
     right: 50%;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail{
+    transform: translate(50%, -50%);
+    }
+    /* ensure Rian's image in detail mode stays elegant and scaled */
+    .carousel.showDetail .list .item:nth-child(2) img.rn {
+      width: 38% !important;
+      right: 50%;
+      transform: translate(50%, -50%);
+      box-shadow: 0 0 0 6px rgba(255, 80, 80, 0.9), 0 0 45px 20px #ff3a3a;
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail{
     opacity: 1;
     width: 50%;
     position: absolute;
@@ -304,26 +357,26 @@ header nav a{
     transform: translateY(-50%);
     text-align: right;
     pointer-events: auto;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .title{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .title{
     font-size: 4em;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .specifications{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .specifications{
     display: flex;
     gap: 10px;
     width: 100%;
     border-top: 1px solid #5553;
     margin-top: 20px;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .specifications div{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .specifications div{
     width: 90px;
     text-align: center;
     flex-shrink: 0;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .specifications div p:nth-child(1){
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .specifications div p:nth-child(1){
     font-weight: bold;
-}
-.carousel.carousel.showDetail .list .item:nth-child(2) .checkout button{
+    }
+    .carousel.carousel.showDetail .list .item:nth-child(2) .checkout button{
     font-family: Poppins;
     background-color: transparent;
     border: 1px solid #5555;
@@ -332,28 +385,28 @@ header nav a{
     padding: 5px 10px;
     letter-spacing: 2px;
     font-weight: 500;
-}
-.carousel.carousel.showDetail .list .item:nth-child(2) .checkout button:nth-child(2){
+    }
+    .carousel.carousel.showDetail .list .item:nth-child(2) .checkout button:nth-child(2){
     background-color: #693EFF;
     color: #eee;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail  .title,
-.carousel.showDetail .list .item:nth-child(2) .detail  .des,
-.carousel.showDetail .list .item:nth-child(2) .detail .specifications,
-.carousel.showDetail .list .item:nth-child(2) .detail .checkout{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail  .title,
+    .carousel.showDetail .list .item:nth-child(2) .detail  .des,
+    .carousel.showDetail .list .item:nth-child(2) .detail .specifications,
+    .carousel.showDetail .list .item:nth-child(2) .detail .checkout{
     opacity: 0;
     animation: showContent 0.5s 1s ease-in-out 1 forwards;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail  .des{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail  .des{
     animation-delay: 1.2s;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .specifications{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .specifications{
     animation-delay: 1.4s;
-}
-.carousel.showDetail .list .item:nth-child(2) .detail .checkout{
+    }
+    .carousel.showDetail .list .item:nth-child(2) .detail .checkout{
     animation-delay: 1.6s;
-}
-.arrows{
+    }
+    .arrows{
     position: absolute;
     bottom: 10px;
     width: 1140px;
@@ -362,9 +415,9 @@ header nav a{
     justify-content: space-between;
     left: 50%;
     transform: translateX(-50%);
-}
-#prev,
-#next{
+    }
+    #prev,
+    #next{
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -373,12 +426,12 @@ header nav a{
     font-size: large;
     bottom: 20%;
     left: 10%;
-}
-#next{
+    }
+    #next{
     left: unset;
     right: 10%;
-}
-#back{
+    }
+    #back{
     position: absolute;
     z-index: 100;
     bottom: 0%;
@@ -392,18 +445,17 @@ header nav a{
     letter-spacing: 3px;
     background-color: transparent;
     padding: 10px;
-    /* opacity: 0; */
     transition: opacity 0.5s;
-}
-.carousel.showDetail #back{
+    }
+    .carousel.showDetail #back{
     opacity: 1;
-}
-.carousel.showDetail #prev,
-.carousel.showDetail #next{
+    }
+    .carousel.showDetail #prev,
+    .carousel.showDetail #next{
     opacity: 0;
     pointer-events: none;
-}
-.carousel::before{
+    }
+    .carousel::before{
     width: 500px;
     height: 300px;
     content: '';
@@ -416,42 +468,47 @@ header nav a{
     left: 50%;
     transform: translate(-10%, -50%);
     transition: 1s;
-}
-.carousel.showDetail::before{
+    }
+    .carousel.showDetail::before{
     transform: translate(-100%, -50%) rotate(90deg);
     filter: blur(130px);
-}
-@media screen and (max-width: 991px){
-    /* ipad, tablets */
+    }
+    @media screen and (max-width: 991px){
     .carousel .list .item{
-        width: 90%;
+    width: 90%;
     }
     .carousel.showDetail .list .item:nth-child(2) .detail .specifications{
-        overflow: auto;
+    overflow: auto;
     }
     .carousel.showDetail .list .item:nth-child(2) .detail .title{
-        font-size: 2em;
+    font-size: 2em;
     }
-}
-@media screen and (max-width: 767px){
-    /* mobile */
+    .carousel .list .item img.rn {
+      width: 38% !important;
+      right: 2%;
+    }
+    }
+    @media screen and (max-width: 767px){
     .carousel{
-        height: 600px;
+    height: 600px;
     }
     .carousel .list .item{
-        width: 100%;
-        font-size: 10px;
+    width: 100%;
+    font-size: 10px;
     }
-    
     .carousel .list{
         height: 100%;
     }
     .carousel .list .item:nth-child(2) .introduce{
         width: 50%;
     }
-    
     .carousel .list .item img{
-        width: 40%;
+        width: 60%;
+    }
+    .carousel .list .item img.rn {
+      width: 45% !important;
+      right: 0;
+      top: 50%;
     }
     .carousel.showDetail .list .item:nth-child(2) .detail{
         backdrop-filter: blur(10px);
@@ -467,264 +524,154 @@ header nav a{
         width: max-content;
         float: right;
     }
-}
+    .carousel.showDetail .list .item:nth-child(2) img.rn {
+      width: 55% !important;
+    }
+    }
     .rotating-bg {
-      position: fixed;
-      top: -150px;
-      left: -150px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--bullet-trail), transparent 70%);
-      z-index: 0;
-      border-radius: 50%;
-      opacity: 0.15;
+    position: fixed;
+    top: -150px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--bullet-trail), transparent 70%);
+    z-index: 0;
+    border-radius: 50%;
+    opacity: 0.15;
     }
     /* Navigation */
     .war-menu {
-      position: fixed;
-      top: 30px;
-      right: 30px;
-      z-index: 1000;
-      cursor: pointer;
-      width: 40px;
-      height: 30px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: 0.4s;
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 1000;
+    cursor: pointer;
+    width: 40px;
+    height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.4s;
     }
     .menu-bar {
-      height: 3px;
-      background: var(--bullet-trail);
-      border-radius: 2px;
-      transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 0 8px var(--bullet-trail);
+    height: 3px;
+    background: var(--bullet-trail);
+    border-radius: 2px;
+    transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 0 8px var(--bullet-trail);
     }
     .war-menu.active .menu-bar:nth-child(1) {
-      transform: rotate(45deg) translate(8px, 8px);
+    transform: rotate(45deg) translate(8px, 8px);
     }
     .war-menu.active .menu-bar:nth-child(2) {
-      opacity: 0;
+    opacity: 0;
     }
     .war-menu.active .menu-bar:nth-child(3) {
-      transform: rotate(-45deg) translate(8px, -8px);
+    transform: rotate(-45deg) translate(8px, -8px);
     }
     .war-menu-content {
-      position: fixed;
-      top: 90px;
-      right: -320px;
-      background: rgba(10, 10, 20, 0.98);
-      border-radius: 12px;
-      padding: 25px;
-      width: 280px;
-      backdrop-filter: blur(20px);
-      border: 2px solid rgba(255, 26, 26, 0.3);
-      box-shadow: 0 0 40px rgba(255, 26, 26, 0.2);
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 999;
+    position: fixed;
+    top: 90px;
+    right: -320px;
+    background: rgba(10, 10, 20, 0.98);
+    border-radius: 12px;
+    padding: 25px;
+    width: 280px;
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 26, 26, 0.3);
+    box-shadow: 0 0 40px rgba(255, 26, 26, 0.2);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
     }
     .war-menu-content.active {
-      transform: translateX(-360px);
+    transform: translateX(-360px);
     }
     .menu-item {
-      padding: 12px;
-      margin: 8px 0;
-      position: relative;
-      overflow: hidden;
-      border-left: 2px solid transparent;
-      opacity: 1;
-      cursor: pointer;
-      transition: all 0.3s ease;
+    padding: 12px;
+    margin: 8px 0;
+    position: relative;
+    overflow: hidden;
+    border-left: 2px solid transparent;
+    opacity: 1;
+    cursor: pointer;
+    transition: all 0.3s ease;
     }
     .menu-item::before {
-      content: '';
-      position: absolute;
-      left: -100%;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 26, 26, 0.1);
-      transition: left 0.3s ease;
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 26, 26, 0.1);
+    transition: left 0.3s ease;
     }
     .menu-item:hover {
-      border-left-color: var(--bullet-trail);
+    border-left-color: var(--bullet-trail);
     }
     .menu-item:hover::before {
-      left: 0;
+    left: 0;
     }
     .menu-item span {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.1em;
-      letter-spacing: 1.5px;
-      color: var(--combat-cyan);
-      position: relative;
-      z-index: 1;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1em;
+    letter-spacing: 1.5px;
+    color: var(--combat-cyan);
+    position: relative;
+    z-index: 1;
     }
     .menu-item a {
-      text-decoration: none;
-      color: var(--combat-cyan);
+    text-decoration: none;
+    color: var(--combat-cyan);
     }
     /* Hero Section */
     .combat-hero {
-      height: 50vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
+    height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
     }
     .combat-title {
-      font-family: 'Russo One', sans-serif;
-      font-size: 4.5em;
-      text-transform: uppercase;
-      background: linear-gradient(45deg, var(--bullet-trail), var(--muzzle-flash));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 40px var(--bullet-trail);
-      margin-bottom: 20px;
-      z-index: 2;
+    font-family: 'Russo One', sans-serif;
+    font-size: 4.5em;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, var(--bullet-trail), var(--muzzle-flash));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px var(--bullet-trail);
+    margin-bottom: 20px;
+    z-index: 2;
     }
     .combat-tagline {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2em;
-      color: var(--combat-cyan);
-      letter-spacing: 2px;
-      text-shadow: 0 0 20px var(--combat-cyan);
-      z-index: 2;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2em;
+    color: var(--combat-cyan);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px var(--combat-cyan);
+    z-index: 2;
     }
     #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      top: 0;
-      left: 0;
-    }
-    /* Team Members Section */
-    .team-section {
-      padding: 50px 20px;
-      background: var(--warzone-bg);
-      position: relative;
-      z-index: 2;
-    }
-    .team-heading {
-      text-align: center;
-      font-family: 'Russo One', sans-serif;
-      font-size: 3em;
-      margin-bottom: 40px;
-      background: linear-gradient(45deg, var(--muzzle-flash), var(--bullet-trail));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .team-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    /* Default Card Style */
-    .team-card {
-      background: rgba(20, 20, 30, 0.9);
-      border: 1px solid rgba(255, 26, 26, 0.3);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(255, 26, 26, 0.2);
-      transform: translateY(30px);
-      opacity: 0;
-      transition: transform 0.3s ease;
-    }
-    .team-card:hover {
-      transform: scale(1.05);
-    }
-    .team-img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-    .team-info {
-      padding: 20px;
-      text-align: center;
-    }
-    .team-name,
-    .team-names {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5em;
-      color: var(--combat-cyan);
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px var(--combat-cyan);
-    }
-    .team-role {
-      font-family: 'Russo One', sans-serif;
-      font-size: 1.2em;
-      background: linear-gradient(45deg, var(--bullet-trail), var(--muzzle-flash));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 15px;
-    }
-    .team-bio {
-      font-size: 0.9em;
-      color: #ccc;
-      line-height: 1.4;
-    }
-    /* Alternative NIROB Card Style */
-    .team-card.alt {
-      background: var(--alt-bg);
-      border: 2px solid var(--combat-cyan);
-      box-shadow: 0 0 25px var(--combat-cyan);
-      transform: translateY(30px);
-      opacity: 0;
-      transition: transform 0.3s ease, background 0.5s ease;
-    }
-    .team-card.alt:hover {
-      transform: scale(1.05) rotate(1deg);
-      background: linear-gradient(135deg, var(--combat-cyan), var(--muzzle-flash));
-    }
-    /* Mobile Optimization */
-    @media (max-width: 768px) {
-      .war-menu {
-        top: 20px;
-        right: 20px;
-      }
-      .war-menu-content {
-        width: 250px;
-        right: -280px;
-      }
-      .war-menu-content.active {
-        transform: translateX(-300px);
-      }
-      .combat-title {
-        font-size: 3em;
-        text-align: center;
-        padding: 0 20px;
-      }
-      .combat-tagline {
-        font-size: 1em;
-        text-align: center;
-        padding: 0 20px;
-      }
-      .team-heading {
-        font-size: 2.5em;
-      }
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    top: 0;
+    left: 0;
     }
   </style>
 </head>
 <body>
-  <!-- Rotating Background -->
   <div class="rotating-bg"></div>
-  
-  <!-- Navigation -->
   <div class="war-menu" onclick="toggleMenu()">
     <div class="menu-bar"></div>
     <div class="menu-bar"></div>
     <div class="menu-bar"></div>
   </div>
-  
   <div class="war-menu-content">
     <div class="menu-item"><span><a href="index.html">HOME</a></span></div>
     <div class="menu-item"><span><a href="member.html">TEAM MEMBER</a></span></div>
@@ -733,214 +680,168 @@ header nav a{
     <div class="menu-item"><span><a href="about.html">ABOUT</a></span></div>
     <div class="menu-item"><span><a href="join.html">JOIN</a></span></div>
   </div>
-  
-  <!-- Hero Section -->
   <section class="combat-hero">
     <div id="particles-js"></div>
     <h1 class="combat-title">TEAM HEX</h1>
     <p class="combat-tagline">Elite Firepower Unit</p>
   </section>
-    <div class="carousel">
-        <div class="list">
-            <div class="item">
-                <img src="niloy.png">
-                <div class="introduce">
-                    <div class="title">WORLD'S BEST RUSHER</div>
-                    <div class="topic">NILOY</div>
-                    <div class="des">
-                        <!-- 20 lorem -->
-                        NILOY – Second Rusher
-NILOY is the explosive second Rusher of TEAM HEX, known for his fearless entry plays and lightning-fast decision-making. He specializes in breaking enemy defenses, following up the main Rusher with precise coordination and calculated aggression.
-
-With sharp movement, accurate close-range aim, and the ability to adapt instantly in chaotic fights, NILOY ensures no enemy has time to recover once the first push begins. His role is critical in securing early kills, creating openings, and applying constant pressure to opponents.
-                    </div>
-                    <button class="seeMore">SEE MORE &#8599</button>
-                </div>
-                <div class="detail">
-                    <div class="title">TEAM HEX</div>
-                    <div class="des">
-                        <!-- lorem 50 -->
-                        NILOY – Second Rusher
-NILOY is the explosive second Rusher of TEAM HEX, known for his fearless entry plays and lightning-fast decision-making. He specializes in breaking enemy defenses, following up the main Rusher with precise coordination and calculated aggression.
-
-With sharp movement, accurate close-range aim, and the ability to adapt instantly in chaotic fights, NILOY ensures no enemy has time to recover once the first push begins. His role is critical in securing early kills, creating openings, and applying constant pressure to opponents.
-                    </div>
-                    <div class="specifications">
-                        <div>
-                            <p>KASSIE</p>
-                            <p>Active </p>
-                        </div>
-                        <div>
-                            <p>KAIROS</p>
-                            <p>Passive</p>
-                        </div>
-                        <div>
-                            <p>THIVA</p>
-                            <p>Passive</p>
-                        </div>
-                        <div>
-                            <p>NAIRI</p>
-                            <p>Passive</p>
-                        </div>
-                       
-                    </div>
-                    <div class="checkout">
-                        <button>⚠️ᎢʜㅤCHEETAH</button>
-                        <button>Second Rusher</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="nirob.png">
-                <div class="introduce">
-                    <div class="title">WORLD'S BEST SUPPORTER</div>
-                    <div class="topic">NIROB</div>
-                    <div class="des">
-                        <!-- 20 lorem -->
-                        NIROB, the team’s IGL and supporter, is the mastermind behind every move. With sharp strategies and calm leadership, he guides his squad through the toughest battles. Always ready to provide cover, resources, and direction, NIROB’s presence turns pressure into power, making him the backbone of victory.
-                    </div>
-                    <button class="seeMore">SEE MORE &#8599</button>
-                </div>
-                <div class="detail">
-                    <div class="title">TEAM HEX</div>
-                    <div class="des">
-                        <!-- lorem 50 -->
-                       NIROB – The Tactical Mastermind & Unshakable Supporter 🔥
-NIROB isn’t just a player – he’s the brain and backbone of the squad. As the In-Game Leader (IGL), he takes charge of every match with razor-sharp strategy, quick decision-making, and fearless leadership. Known for his calm mindset under pressure, NIROB keeps the team focused even in the most intense battles.
-
-As a support player, he ensures his teammates always have cover, resources, and the backup they need to dominate the battlefield. With his ability to read the map, predict enemy movements, and guide the team to victory, NIROB is the true definition of a team-first warrior.
-                    </div>
-                    <div class="specifications">
-                        <div>
-                            <p>CODA</p>
-                            <p>ACTIVE</p>
-                        </div>
-                        <div>
-                            <p>FORD</p>
-                            <p>PASSIVE</p>
-                        </div>
-                        <div>
-                            <p>THIVA</p>
-                            <p>PASSIVE</p>
-                        </div>
-                        <div>
-                            <p>LEON</p>
-                            <p>PASSIVE</p>
-                        </div>
-
-                    </div>
-                    <div class="checkout">
-                        <button>⚠️ᎢʜㅤNIROB</button>
-                        <button>IGL</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="alif.png">
-                <div class="introduce">
-                    <div class="title">WORLD'S BEST SNIPER</div>
-                    <div class="topic">ALIF</div>
-                    <div class="des">
-                        <!-- 20 lorem -->
-                        "ALIF" – The Silent Hunter
-Alif is the team’s deadliest long-range specialist, known for his calm focus under pressure and unmatched precision. With lightning-fast reflexes and sharp decision-making, he dominates the battlefield from a distance, turning every scope shot into a game-changing moment. His discipline and tactical awareness make him not just a sniper, but a key strategist for the squad. Opponents fear his crosshair, while teammates rely on his cover fire to secure every push and retreat.
-                    </div>
-                    <button class="seeMore">SEE MORE &#8599</button>
-                </div>
-                <div class="detail">
-                    <div class="title">TEAM HEX</div>
-                    <div class="des">
-                        <!-- lorem 50 -->
-                        "ALIF" – The Silent Hunter
-Alif is the team’s deadliest long-range specialist, known for his calm focus under pressure and unmatched precision. With lightning-fast reflexes and sharp decision-making, he dominates the battlefield from a distance, turning every scope shot into a game-changing moment. His discipline and tactical awareness make him not just a sniper, but a key strategist for the squad. Opponents fear his crosshair, while teammates rely on his cover fire to secure every push and retreat.
-                    </div>
-                    <div class="specifications">
-                        <div>
-                            <p>SKYLER</p>
-                            <p>ACTIVE</p>
-                        </div>
-                        <div>
-                            <p>MOCO</p>
-                            <p>PASSIVE</p>
-                        </div>
-                        <div>
-                            <p>MARO</p>
-                            <p>PASSIVE</p>
-                        </div>
-                        <div>
-                            <p>RAFAEL</p>
-                            <p>PASSIVE</p>
-                        </div>
-
-                    </div>
-                    <div class="checkout">
-                        <button>ADD TO CART</button>
-                        <button>CHECKOUT</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <img src="rian.png">
-                <div class="introduce">
-                    <div class="title">DESIGN SLIDER</div>
-                    <div class="topic">Airpod</div>
-                    <div class="des">
-                        <!-- 20 lorem -->
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia, laborum cumque dignissimos quidem atque et eligendi aperiam voluptates beatae maxime.
-                    </div>
-                    <button class="seeMore">SEE MORE &#8599</button>
-                </div>
-                <div class="detail">
-                    <div class="title">Airpod GHTK</div>
-                    <div class="des">
-                        <!-- lorem 50 -->
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, reiciendis suscipit nobis nulla animi, modi explicabo quod corrupti impedit illo, accusantium in eaque nam quia adipisci aut distinctio porro eligendi. Reprehenderit nostrum consequuntur ea! Accusamus architecto dolores modi ducimus facilis quas voluptatibus! Tempora ratione accusantium magnam nulla tenetur autem beatae.
-                    </div>
-                    <div class="specifications">
-                        <div>
-                            <p>Used Time</p>
-                            <p>6 hours</p>
-                        </div>
-                        <div>
-                            <p>Charging port</p>
-                            <p>Type-C</p>
-                        </div>
-                        <div>
-                            <p>Compatible</p>
-                            <p>Android</p>
-                        </div>
-                        <div>
-                            <p>Bluetooth</p>
-                            <p>5.3</p>
-                        </div>
-                        <div>
-                            <p>Controlled</p>
-                            <p>Touch</p>
-                        </div>
-                    </div>
-                    <div class="checkout">
-                        <button>ADD TO CART</button>
-                        <button>CHECKOUT</button>
-                    </div>
-                </div>
-            </div>
-
-
+  
+  <div class="carousel">
+    <div class="list">
+      <!-- NILOY - SUPPORTER -->
+      <div class="item">
+        <img src="niloy.png" alt="Niloy">
+        <div class="introduce">
+          <div class="title">WORLD'S BEST SUPPORTER</div>
+          <div class="topic">NILOY</div>
+          <div class="des">
+            NILOY is TEAM HEX's iron‑willed Supporter, the guardian who enables every assault. He delivers flawless utility, covers teammates during high‑risk pushes, and absorbs pressure with unbreakable positioning.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
         </div>
-        <div class="arrows">
-            <button id="prev"><</button>
-            <button id="next">></button>
-            <button id="back">See All  &#8599</button>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            NILOY – The Unbreakable Shield & Tactical Anchor 🛡️<br><br>
+            As the squad's dedicated supporter, Niloy thrives in chaos by keeping his teammates alive and stocked. From perfectly timed smokes to life‑saving flashes, his utility usage is second to none. He baits, rotates, and absorbs damage so the rushers can execute.
+          </div>
+          <div class="checkout">
+            <button>HEX-SHROUD</button>
+            <button>SUPPORTER</button>
+          </div>
         </div>
+      </div>
+
+      <!-- NIROB - RIFLER -->
+      <div class="item">
+        <img src="nirobs.png" alt="Nirob">
+        <div class="introduce">
+          <div class="title">WORLD'S BEST RIFLER</div>
+          <div class="topic">NIROB</div>
+          <div class="des">
+            NIROB is a relentless Rifler with laser‑beam accuracy and explosive reaction time. He wins duels, anchors firefights, and delivers entry frags with surgical precision.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
+        </div>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            NIROB – The Mechanical Monster & Clutch Rifleman 🔫<br><br>
+            Nirob's aim is a weapon of mass precision. Whether tapping heads from distance or spraying down multiple targets, he controls the tempo of every skirmish. With an almost supernatural feel for crosshair placement, Nirob is the heartbeat of the team's direct engagements.
+          </div>
+          <div class="checkout">
+            <button>HEX-CL4W</button>
+            <button>RIFLER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALIF - BOMBER -->
+      <div class="item">
+        <img src="alifs.png" alt="Alif">
+        <div class="introduce">
+          <div class="title">WORLD'S BEST BOMBER</div>
+          <div class="topic">ALIF</div>
+          <div class="des">
+            ALIF is the team's Bomber — a walking explosion. He doesn't just throw grenades; he creates devastating kill zones. His mastery of explosives turns every chokepoint into a graveyard.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
+        </div>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            ALIF – The Explosive Juggernaut 💥<br><br>
+            Alif redefines area denial with surgical explosive delivery. From precise frag bounces to perfectly cooked mollies, he dismantles enemy holds before they form.
+          </div>
+          <div class="checkout">
+            <button>HEX-M4CE</button>
+            <button>BOMBER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIAN - RUSHER (smaller image via class "rn") -->
+      <div class="item">
+        <img src="rians.png" alt="Rian" class="rn">
+        <div class="introduce">
+          <div class="title">WORLD'S BEST RUSHER</div>
+          <div class="topic">RIAN</div>
+          <div class="des">
+            RIAN is the blazing Rusher — first through the door, first on the scoreboard. His hyper‑aggressive entries break defensive lines within seconds.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
+        </div>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            RIAN – The Human Wrecking Ball 🚀<br><br>
+            Rian's playstyle is pure velocity. He never hesitates, never checks corners twice — he trusts his aim and movement. As the primary entry rusher, he absorbs the first enemy shots and trades them into kills. Rian sets the explosive tempo that defines TEAM HEX's identity.
+          </div>
+          <div class="checkout">
+            <button>HEX-SPE4R</button>
+            <button>RUSHER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MUHIT - SNIPER (HEX-HUNTER) -->
+      <div class="item">
+        <img src="muhits.png" alt="Muhit">
+        <div class="introduce">
+          <div class="title">WORLD'S BEST SNIPER</div>
+          <div class="topic">MUHIT</div>
+          <div class="des">
+            MUHIT, codename HEX‑HUNTER, is the team's surgical sniper. He controls sightlines with frozen calm and devastating one‑shot accuracy.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
+        </div>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            MUHIT – HEX‑HUNTER, The Unseen Eye 🎯<br><br>
+            Muhit doesn't just play sniper — he owns the map's verticality and deep lanes. With a flick that rivals the fastest marksmen, he denies rotates, punishes over‑peeks, and opens rounds with first bloods.
+          </div>
+          <div class="checkout">
+            <button>HEX-HUNTER</button>
+            <button>SNIPER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TASIR - SHADOW SUPPORTER -->
+      <div class="item">
+        <img src="tasirs.png" alt="Tasir">
+        <div class="introduce">
+          <div class="title">SHADOW SUPPORTER</div>
+          <div class="topic">TASIR</div>
+          <div class="des">
+            TASIR, aka HEX‑BROK, is the silent guardian who never lets his squad fall. Whether it's dropping weapons, flashing corners, or sacrificing his own life for a trade, Tasir embodies pure support excellence.
+          </div>
+          <button class="seeMore">SEE MORE &#8599</button>
+        </div>
+        <div class="detail">
+          <div class="title">TEAM HEX</div>
+          <div class="des">
+            TASIR – HEX‑BROK, The Unseen Anchor 🛡️<br><br>
+            Tasir is the ultimate team player. He manages economy, rotates utility, and ensures the star players have everything they need. HEX‑BROK doesn't seek glory — he builds the foundation for victory.
+          </div>
+          <div class="checkout">
+            <button>HEX-BROK</button>
+            <button>SUPPORTER</button>
+          </div>
+        </div>
+      </div>
     </div>
-  <!-- Advanced GSAP Animations -->
+    <div class="arrows">
+      <button id="prev"><</button>
+      <button id="next">></button>
+      <button id="back">See All  &#8599</button>
+    </div>
+  </div>
+
   <script>
     gsap.registerPlugin(ScrollTrigger);
     
-    // Advanced Particle Background Setup
     particlesJS('particles-js', {
       particles: {
         number: { value: 80 },
@@ -963,7 +864,6 @@ Alif is the team’s deadliest long-range specialist, known for his calm focus u
       }
     });
     
-    // Rotating Background Animation
     gsap.to(".rotating-bg", {
       rotation: 360,
       duration: 60,
@@ -971,7 +871,6 @@ Alif is the team’s deadliest long-range specialist, known for his calm focus u
       ease: "linear"
     });
     
-    // Menu Toggle Animation with Timeline
     let menuActive = false;
     function toggleMenu() {
       const menu = document.querySelector('.war-menu');
@@ -995,7 +894,6 @@ Alif is the team’s deadliest long-range specialist, known for his calm focus u
       }
     }
     
-    // Close Menu on Outside Click
     document.addEventListener('click', (e) => {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
@@ -1004,71 +902,46 @@ Alif is the team’s deadliest long-range specialist, known for his calm focus u
       }
     });
     
-    // Hero Section Master Timeline Animation
     const heroTL = gsap.timeline();
     heroTL
       .from(".combat-title", { duration: 1.5, y: 100, opacity: 0, ease: "power4.out" })
       .from(".combat-tagline", { duration: 1.2, y: 50, opacity: 0, ease: "power3.out" }, "-=1");
-    
-    // Team Cards ScrollTrigger Animation (Staggered Entrance)
-    gsap.utils.toArray(".team-card").forEach(card => {
-      gsap.fromTo(card, 
-        { y: 30, opacity: 0 },
-        { 
-          y: 0, 
-          opacity: 1, 
-          duration: 1, 
-          ease: "power3.out", 
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    })
+      
     let nextButton = document.getElementById('next');
-let prevButton = document.getElementById('prev');
-let carousel = document.querySelector('.carousel');
-let listHTML = document.querySelector('.carousel .list');
-let seeMoreButtons = document.querySelectorAll('.seeMore');
-let backButton = document.getElementById('back');
-
-nextButton.onclick = function() {
-    showSlider('next');
-}
-prevButton.onclick = function() {
-    showSlider('prev');
-}
-let unAcceppClick;
-const showSlider = (type) => {
-    nextButton.style.pointerEvents = 'none';
-    prevButton.style.pointerEvents = 'none';
-    
-    carousel.classList.remove('next', 'prev');
-    let items = document.querySelectorAll('.carousel .list .item');
-    if (type === 'next') {
-        listHTML.appendChild(items[0]);
-        carousel.classList.add('next');
-    } else {
-        listHTML.prepend(items[items.length - 1]);
-        carousel.classList.add('prev');
-    }
-    clearTimeout(unAcceppClick);
-    unAcceppClick = setTimeout(() => {
-        nextButton.style.pointerEvents = 'auto';
-        prevButton.style.pointerEvents = 'auto';
-    }, 2000)
-}
-seeMoreButtons.forEach((button) => {
-    button.onclick = function() {
+    let prevButton = document.getElementById('prev');
+    let carousel = document.querySelector('.carousel');
+    let listHTML = document.querySelector('.carousel .list');
+    let seeMoreButtons = document.querySelectorAll('.seeMore');
+    let backButton = document.getElementById('back');
+  
+    nextButton.onclick = function() { showSlider('next'); }
+    prevButton.onclick = function() { showSlider('prev'); }
+    let unAcceppClick;
+    const showSlider = (type) => {
+        nextButton.style.pointerEvents = 'none';
+        prevButton.style.pointerEvents = 'none';
         carousel.classList.remove('next', 'prev');
-        carousel.classList.add('showDetail');
+        let items = document.querySelectorAll('.carousel .list .item');
+        if (type === 'next') {
+            listHTML.appendChild(items[0]);
+            carousel.classList.add('next');
+        } else {
+            listHTML.prepend(items[items.length - 1]);
+            carousel.classList.add('prev');
+        }
+        clearTimeout(unAcceppClick);
+        unAcceppClick = setTimeout(() => {
+            nextButton.style.pointerEvents = 'auto';
+            prevButton.style.pointerEvents = 'auto';
+        }, 2000)
     }
-});
-backButton.onclick = function() {
-    carousel.classList.remove('showDetail');
-};
+    seeMoreButtons.forEach((button) => {
+        button.onclick = function() {
+            carousel.classList.remove('next', 'prev');
+            carousel.classList.add('showDetail');
+        }
+    });
+    backButton.onclick = function() { carousel.classList.remove('showDetail'); };
   </script>
 </body>
-</html>
+  </html>
