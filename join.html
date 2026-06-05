@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEAM HEX - Join Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TEAM HEX - Recruitment Protocol</title>
   <meta name="google-site-verification" content="igC3pR8ccRLwRLY9-4862k3ZbfM0XPIZ0XTUONQhQ00" />
-   <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -153,18 +153,32 @@
     /* Join Section */
     .join-section {
       padding: 60px 20px;
-      max-width: 600px;
+      max-width: 680px;
       margin: 0 auto;
     }
     .join-heading {
       text-align: center;
       font-family: 'Russo One', sans-serif;
       font-size: 3em;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       background: linear-gradient(45deg, var(--muzzle-flash), var(--bullet-trail));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    .recruit-badge {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--combat-cyan);
+      background: rgba(0,255,252,0.1);
+      padding: 8px 12px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      display: inline-block;
+      width: auto;
+      margin: 0 auto 25px;
+      letter-spacing: 1px;
+      border: 1px solid rgba(0,255,252,0.3);
     }
     .join-form {
       display: flex;
@@ -196,9 +210,33 @@
       font-size: 1.1em;
       cursor: pointer;
       transition: background 0.3s ease;
+      font-weight: bold;
     }
     .join-form button:hover {
       background: var(--muzzle-flash);
+    }
+    .status-message {
+      margin-top: 25px;
+      padding: 14px 18px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.7);
+      border-left: 4px solid var(--combat-cyan);
+      font-family: 'Electrolize', sans-serif;
+      font-size: 1rem;
+      text-align: center;
+      color: #ddd;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.5px;
+    }
+    .status-message.info {
+      border-left-color: var(--combat-cyan);
+      color: var(--combat-cyan);
+      background: rgba(0, 255, 252, 0.08);
+    }
+    .status-message.error {
+      border-left-color: var(--bullet-trail);
+      color: #ff8888;
+      background: rgba(255, 26, 26, 0.1);
     }
     /* Mobile Optimization */
     @media (max-width: 768px) {
@@ -225,6 +263,9 @@
       }
       .join-heading {
         font-size: 2.5em;
+      }
+      .recruit-badge {
+        font-size: 0.75rem;
       }
     }
   </style>
@@ -253,22 +294,32 @@
     <p class="combat-tagline">Elite Firepower Unit</p>
   </section>
 
-  <!-- Join Section -->
+  <!-- Recruitment Sector: Role replaced with Years section + Player Level detector -->
   <section class="join-section">
-    <h2 class="join-heading">Join Us</h2>
-    <form class="join-form" id="joinForm">
-      <input type="number" name="uid" placeholder="User UID" required>
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="text" name="role" placeholder="Your Role" required>
-      <button type="submit">Submit</button>
+    <h2 class="join-heading">JOIN PORTAL</h2>
+    <div style="text-align: center;">
+
+    </div>
+    <form class="join-form" id="joinForm" novalidate>
+      <input type="number" name="uid" id="uid" placeholder="Combatant UID" required>
+      <input type="text" name="name" id="name" placeholder="Call Sign / Full Name" required>
+      <input type="number" name="playerLevel" id="playerLevel" placeholder="Player Level (numeric)" required>
+      <input type="number" name="yearsExp" id="yearsExp" placeholder="Years of Experience (numeric)" required>
+      <button type="submit">VERIFY & COMMIT</button>
     </form>
+    <div id="applicationStatus" class="status-message" style="display: none;"></div>
   </section>
 
   <script>
-    // Initialize GSAP and ScrollTrigger
+    // ========================
+    // TARGET CLAN LINK (DIRECT LINK FROM BRIEF)
+    // ========================
+    const DIRECT_RECRUIT_LINK = "https://ffshare.garena.com/?region=BD&lang=en&action=locate_clan&clan_id=3062659192&version=OB53";
+    
+    // Register GSAP plugins
     gsap.registerPlugin(ScrollTrigger);
-
-    // Particle Background Setup
+    
+    // Particles Background (combat atmosphere)
     particlesJS('particles-js', {
       particles: {
         number: { value: 80 },
@@ -290,8 +341,8 @@
         }
       }
     });
-
-    // Toggle Navigation Menu
+    
+    // Navigation Menu Logic
     let menuActive = false;
     function toggleMenu() {
       const menu = document.querySelector('.war-menu');
@@ -301,7 +352,6 @@
       menu.classList.toggle('active');
       content.classList.toggle('active');
       
-      // Menu Item Animation
       if (menuActive) {
         gsap.fromTo('.menu-item', 
           { x: 100, opacity: 0 },
@@ -328,7 +378,6 @@
     document.addEventListener('click', (e) => {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
-      
       if (!menu.contains(e.target) && !content.contains(e.target)) {
         if (menuActive) {
           toggleMenu();
@@ -336,14 +385,13 @@
       }
     });
     
-    // Hero Section Animations
+    // Hero animations
     gsap.from('.combat-title', {
       duration: 1.5,
       y: 100,
       opacity: 0,
       ease: 'power4.out'
     });
-    
     gsap.from('.combat-tagline', {
       duration: 1.2,
       y: 50,
@@ -352,18 +400,24 @@
       ease: 'power3.out'
     });
     
-    // Continuous Combat Effects
+    // Optional combat muzzle flash effect (keeps theme)
     setInterval(() => {
       if (menuActive) createCombatEffect();
-    }, 500);
+    }, 700);
     
     function createCombatEffect() {
       const effect = document.createElement('div');
       effect.className = Math.random() > 0.5 ? 'bullet-trail' : 'muzzle-flash';
-      
       if (effect.className === 'bullet-trail') {
+        effect.style.position = 'fixed';
         effect.style.top = `${Math.random() * 100}vh`;
         effect.style.left = `${Math.random() * 100}vw`;
+        effect.style.width = '8px';
+        effect.style.height = '2px';
+        effect.style.background = '#ffaa33';
+        effect.style.boxShadow = '0 0 8px red';
+        effect.style.pointerEvents = 'none';
+        effect.style.zIndex = '9999';
         gsap.to(effect, {
           duration: 0.6,
           scaleX: 2.5,
@@ -371,8 +425,15 @@
           onComplete: () => effect.remove()
         });
       } else {
+        effect.style.position = 'fixed';
         effect.style.left = `${Math.random() * 100}vw`;
         effect.style.top = `${Math.random() * 100}vh`;
+        effect.style.width = '12px';
+        effect.style.height = '12px';
+        effect.style.background = 'radial-gradient(circle, #ff6b00, #ff1a1a)';
+        effect.style.borderRadius = '50%';
+        effect.style.pointerEvents = 'none';
+        effect.style.zIndex = '9999';
         gsap.to(effect, {
           duration: 0.2,
           scale: 1.8,
@@ -383,20 +444,111 @@
       document.body.appendChild(effect);
     }
     
-    // Join Form Submission - Redirect to WhatsApp with details
-    document.getElementById('joinForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const uid = e.target.uid.value.trim();
-      const name = e.target.name.value.trim();
-      const role = e.target.role.value.trim();
+    // ===================================================
+    // CORE SYSTEM: DETECT LEVEL > 45 AND YEARS > 2
+    // Role section fully replaced by Years + Level assessment
+    // ===================================================
+    const form = document.getElementById('joinForm');
+    const statusDiv = document.getElementById('applicationStatus');
+    
+    // Helper to show status messages (NO EMOJI)
+    function showStatus(message, type = 'info') {
+      statusDiv.style.display = 'block';
+      statusDiv.textContent = message;
+      statusDiv.className = `status-message ${type}`;
+      // auto fade after 6 seconds? keep readable but not intrusive
+      setTimeout(() => {
+        if (statusDiv.style.display === 'block') {
+          // optional: but we don't remove to keep user informed, just keep visible.
+        }
+      }, 5000);
+    }
+    
+    function hideStatus() {
+      statusDiv.style.display = 'none';
+      statusDiv.textContent = '';
+    }
+    
+    // Form submit handler - complete recruitment verification
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
       
-      // Construct message text
-      const message = `Join Request:%0AUID: ${uid}%0AName: ${name}%0ARole: ${role}`;
-      // WhatsApp URL with your number (+8801870516299)
-      const whatsappURL = `https://wa.me/8801870516299?text=${message}`;
+      // Get form fields
+      const uidInput = document.getElementById('uid');
+      const nameInput = document.getElementById('name');
+      const levelInput = document.getElementById('playerLevel');
+      const yearsInput = document.getElementById('yearsExp');
       
-      window.open(whatsappURL, '_blank');
+      const uid = uidInput.value.trim();
+      const name = nameInput.value.trim();
+      const playerLevelRaw = levelInput.value.trim();
+      const yearsRaw = yearsInput.value.trim();
+      
+      // Basic empty validation
+      if (!uid || !name) {
+        showStatus('Error: UID and Name are required. Complete all fields.', 'error');
+        return;
+      }
+      
+      if (playerLevelRaw === '' || yearsRaw === '') {
+        showStatus('Error: Player Level and Years of Experience must be provided.', 'error');
+        return;
+      }
+      
+      const playerLevel = Number(playerLevelRaw);
+      const yearsExp = Number(yearsRaw);
+      
+      // Validate numeric and positive values
+      if (isNaN(playerLevel) || isNaN(yearsExp)) {
+        showStatus('Invalid input: Player Level and Years must be valid numbers.', 'error');
+        return;
+      }
+      
+      if (playerLevel < 0 || yearsExp < 0) {
+        showStatus('Invalid input: Please enter positive numeric values only.', 'error');
+        return;
+      }
+      
+      // SYSTEM DETECTION CORE:
+      // Condition: player level GREATER THAN 45 AND years GREATER THAN 2
+      const isEliteRecruit = (playerLevel > 45 && yearsExp > 2);
+      
+      if (isEliteRecruit) {
+        // Recruitment complete -> direct redirect to my link (clan official page)
+        // No emoji, instant navigation
+        window.location.href = DIRECT_RECRUIT_LINK;
+      } else {
+        // Condition incomplete: level <=45 OR years <=2 (or both)
+        // According to spec: "any condition incomplete you show your application complete / your from is approval"
+        // Display approval message, no redirect.
+        let failureReason = "";
+        if (playerLevel <= 45 && yearsExp <= 2) {
+          failureReason = "";
+        } else if (playerLevel <= 45) {
+          failureReason = "";
+        } else if (yearsExp <= 2) {
+          failureReason = "";
+        }
+        
+        // Final message: show that application is complete and is pending approval (matches spec)
+        const pendingMessage = `Application complete  ${failureReason ? 'Requirement: ' + failureReason : ''} `;
+        showStatus(pendingMessage, 'info');
+        // Optional: you may also clear the status after some time but we keep visible as feedback
+        // Do NOT redirect, stay on page - "your form is approval"
+      }
     });
+    
+    // Additional style to remove any possible emoji from dynamic text
+    // ensures dynamic messages completely clear of any unicode emoticons
+    const observer = new MutationObserver(() => {
+      const statusMsg = document.querySelector('.status-message');
+      if (statusMsg && statusMsg.innerText) {
+        // sanitize any emoji remnants (though we don't add any)
+        let clean = statusMsg.innerText.replace(/[\u{1F600}-\u{1F64F}]/gu, '').replace(/[\u{2700}-\u{27BF}]/gu, '');
+        if (clean !== statusMsg.innerText) statusMsg.innerText = clean;
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
   </script>
 </body>
-</html>
+                                   </html>
