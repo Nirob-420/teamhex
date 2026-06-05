@@ -261,7 +261,7 @@
       color: #ff8aae;
       box-shadow: 0 0 8px rgba(255,51,102,0.3);
     }
-    .status-loading {
+    .status-info {
       border-left: 5px solid var(--combat-cyan);
       color: var(--combat-cyan);
     }
@@ -328,21 +328,21 @@
     <p class="combat-tagline">Elite Firepower Unit</p>
   </section>
   
-  <!-- Contact Section with PROPER EMAIL SYSTEM -->
+  <!-- Contact Section with PROPER EMAIL SYSTEM (mailto based) -->
   <section class="contact-section">
     <h2 class="contact-heading">Contact Us</h2>
     <div class="contact-info">
-      <p> WhatsApp: <a href="https://wa.me/8801870516299" target="_blank">+880 1870-516299</a></p>
-      <p> Group: <a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank">Join Hex Unit</a></p>
-      <p>Direct: <a href="mailto:teamhex69x@gmail.com">teamhex69x@gmail.com</a></p>
+      <p>WhatsApp: <a href="https://wa.me/8801870516299" target="_blank">+880 1870-516299</a></p>
+      <p>WhatsApp Group: <a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank">Join Hex Unit</a></p>
+      <p>Direct Email: <a href="mailto:teamhex69x@gmail.com">teamhex69x@gmail.com</a></p>
     </div>
     
     <form id="contactForm" class="contact-form">
       <input type="text" name="name" id="name" placeholder="FULL NAME *" required autocomplete="name">
-      <input type="email" name="email" id="email" placeholder="EMAIL ADDRESS *" required autocomplete="email">
+      <input type="email" name="email" id="email" placeholder="YOUR EMAIL ADDRESS *" required autocomplete="email">
       <input type="text" name="subject" id="subject" placeholder="MISSION SUBJECT *" required>
-      <textarea name="message" id="message" rows="6" placeholder="ENCRYPTED MESSAGE *" required></textarea>
-      <button type="submit" id="sendBtn"> SEND MESSAGE </button>
+      <textarea name="message" id="message" rows="6" placeholder="YOUR MESSAGE *" required></textarea>
+      <button type="submit" id="sendBtn">SEND SECURE MESSAGE</button>
       <div id="formStatus" class="status-message" style="display: none;"></div>
     </form>
   </section>
@@ -433,21 +433,21 @@
       ease: "power2.out"
     });
     
-    // === PROPER EMAIL SYSTEM (BACKEND INTEGRATION) ===
-    // This frontend sends data to /send-email endpoint.
-    // The backend (Node.js + Express + Nodemailer) is provided in server.js
-    // It handles validation, sanitization, and real SMTP delivery.
+    // PROPER EMAIL SYSTEM: Direct mailto with all details
+    // This opens the user's default email client with pre-filled recipient, subject, and body.
+    // All form data is included, and the user can review before sending.
     
     const contactForm = document.getElementById('contactForm');
     const statusDiv = document.getElementById('formStatus');
     const sendButton = document.getElementById('sendBtn');
+    const TARGET_EMAIL = 'teamhex69x@gmail.com';
     
     function showStatus(message, type) {
       statusDiv.style.display = 'block';
       statusDiv.textContent = message;
       statusDiv.className = `status-message status-${type}`;
-      // Auto-hide success/error after 5 seconds, but not loading
-      if (type !== 'loading') {
+      // Auto-hide after 6 seconds for non-info messages
+      if (type !== 'info') {
         setTimeout(() => {
           if (statusDiv.style.display === 'block') {
             statusDiv.style.opacity = '0';
@@ -456,97 +456,106 @@
               statusDiv.style.opacity = '1';
             }, 400);
           }
-        }, 5000);
+        }, 6000);
       }
     }
     
     function hideStatus() {
-      if (statusDiv.style.display === 'block' && !statusDiv.classList.contains('status-loading')) {
+      if (statusDiv.style.display === 'block') {
         statusDiv.style.display = 'none';
       }
     }
     
-    contactForm.addEventListener('submit', async (e) => {
+    contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
-      // Collect form data with trimming
+      // Get field values and trim
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
-      const subject = document.getElementById('subject').value.trim();
-      const message = document.getElementById('message').value.trim();
+      const subjectRaw = document.getElementById('subject').value.trim();
+      const messageBody = document.getElementById('message').value.trim();
       
-      // Client-side validation
-      if (!name || !email || !subject || !message) {
-        showStatus('⚠️ All fields are required, soldier. Complete the mission parameters.', 'error');
-        return;
-      }
-      if (!/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/i.test(email)) {
-        showStatus('❌ Invalid email address. Use valid tactical comms format.', 'error');
-        return;
-      }
-      if (message.length < 10) {
-        showStatus('✉️ Message too short. Provide meaningful intel (min 10 characters).', 'error');
+      // Validation
+      if (!name || !email || !subjectRaw || !messageBody) {
+        showStatus('ERROR: All fields are required. Complete the mission parameters.', 'error');
         return;
       }
       
-      // Disable button & show loading state
-      sendButton.disabled = true;
-      sendButton.textContent = '🔐 TRANSMITTING...';
-      showStatus('Sending encrypted transmission to TEAM HEX command...', 'loading');
+      // Email format validation
+      const emailRegex = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/i;
+      if (!emailRegex.test(email)) {
+        showStatus('ERROR: Invalid email address. Use valid tactical comms format.', 'error');
+        return;
+      }
       
-      try {
-        const response = await fetch('/send-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, subject, message })
-        });
+      if (messageBody.length < 10) {
+        showStatus('ERROR: Message too short. Provide meaningful intel (minimum 10 characters).', 'error');
+        return;
+      }
+      
+      // Build the email subject with a prefix
+      const subject = `[TEAM HEX CONTACT] ${subjectRaw}`;
+      
+      // Construct the email body with all details in a clear format
+      const bodyLines = [
+        `Sender Name: ${name}`,
+        `Sender Email: ${email}`,
+        `Subject: ${subjectRaw}`,
+        ``,
+        `--- MESSAGE ---`,
+        messageBody,
+        ``,
+        `---`,
+        `This message was sent from TEAM HEX contact page.`
+      ];
+      const body = bodyLines.join('\n');
+      
+      // Create mailto URI
+      // Note: encodeURIComponent for subject and body to preserve line breaks and special characters
+      const mailtoLink = `mailto:${TARGET_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      // Show info message to user before redirect
+      showStatus('Opening your email client. Please review and send the message. Your default email application will appear shortly.', 'info');
+      
+      // Slight delay to ensure status appears, then trigger mailto
+      setTimeout(() => {
+        // Use window.location.href to open mail client
+        window.location.href = mailtoLink;
         
-        const result = await response.json();
-        
-        if (response.ok && result.success) {
-          showStatus('✅ MESSAGE DELIVERED! TEAM HEX will respond within 24 hours. Stay sharp.', 'success');
-          contactForm.reset();  // clear form
-        } else {
-          console.error('Server error:', result);
-          showStatus(`⚠️ Transmission failed: ${result.message || 'Server error. Contact via WhatsApp instead.'}`, 'error');
-        }
-      } catch (err) {
-        console.error('Network/API error:', err);
-        showStatus('🚨 Communication breakdown. Check your connection or try again later. Use WhatsApp for urgent contact.', 'error');
-      } finally {
-        sendButton.disabled = false;
-        sendButton.textContent = ' SEND SECURE MESSAGE';
-        // If status is still loading, remove loading class after final message
-        if (statusDiv.classList.contains('status-loading')) {
-          // loading already replaced by success/error
-        }
-      }
+        // Optional: reset form after short delay? Better to keep data in case email client fails.
+        // We'll also show a success hint after 1 second (doesn't interfere)
+        setTimeout(() => {
+          showStatus('Email draft opened. Verify recipient (teamhex69x@gmail.com) and click Send. Thank you for contacting TEAM HEX.', 'success');
+          // Optionally clear fields, but preserve for resend? We'll clear after user sends? Not safe.
+          // Instead we keep fields so user can copy if needed.
+        }, 1500);
+      }, 200);
     });
     
-    // Optional combat effect (just for flair, no console errors)
+    // Combat effect for menu (purely aesthetic)
     function createCombatEffect() {
       if (!menuActive) return;
       const effect = document.createElement('div');
       effect.style.position = 'fixed';
       effect.style.pointerEvents = 'none';
       effect.style.zIndex = '500';
-      effect.style.width = '8px';
-      effect.style.height = '8px';
+      effect.style.width = '6px';
+      effect.style.height = '6px';
       effect.style.borderRadius = '50%';
       effect.style.background = Math.random() > 0.5 ? '#ff6b00' : '#ff1a1a';
       effect.style.left = `${Math.random() * 100}vw`;
       effect.style.top = `${Math.random() * 100}vh`;
-      effect.style.boxShadow = '0 0 12px #ff3300';
+      effect.style.boxShadow = '0 0 10px #ff3300';
       document.body.appendChild(effect);
       gsap.to(effect, {
         duration: 0.5,
-        scale: 2.5,
+        scale: 2.2,
         opacity: 0,
         ease: "power2.out",
         onComplete: () => effect.remove()
       });
     }
-    setInterval(() => { if (menuActive) createCombatEffect(); }, 1200);
+    setInterval(() => { if (menuActive) createCombatEffect(); }, 1300);
   </script>
 </body>
   </html>
