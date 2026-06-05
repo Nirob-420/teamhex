@@ -8,7 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-  <link rel="shortcut icon" href=link.png type="image/x-icon" />
+  <link rel="shortcut icon" href="link.png" type="image/x-icon" />
   <style>
     :root {
       --muzzle-flash: #ff6b00;
@@ -262,22 +262,23 @@
     <h2 class="about-heading">About Us</h2>
     <div class="about-content">
       <p>
-        <mark class="combat-taglines">TEAM HEX</mark> is a dynamic and elite firepower unit dedicated to mastering the art of virtual combat.
-        Born out of a passion for precision and strategy, our team brings together experts in infiltration,
-        demolition, sniping, tactical operations, and reconnaissance. United by a single mission – to push the
-        limits of gaming excellence – we continually train, innovate, and adapt to the ever-evolving challenges
-        of the battlefield.
+        <mark class="combat-taglines">TEAM HEX</mark> is a competitive Free Fire esports organization driven by passion, discipline, and the pursuit of excellence. Founded by dedicated gamers, our goal is to compete at the highest level while building a strong and respected presence within the esports community.
       </p>
       <br>
       <p>
-        Our journey began as a small group of enthusiasts who shared a love for high-intensity action and
-        cutting-edge gameplay. Today, <mark class="combat-taglines">TEAM HEX</mark> stands as a symbol of discipline, creativity, and relentless
-        ambition. Whether it's strategizing before a match or executing flawlessly under pressure, every member
-        is committed to excellence both in and out of the game.
+        Our team is built on teamwork, strategic thinking, and continuous improvement. Every member of Team Hex shares a commitment to developing their skills, supporting one another, and performing under pressure. Through countless hours of practice and preparation, we strive to achieve success both individually and as a united squad.
       </p>
       <br>
       <p>
-        At <mark class="combat-taglines">TEAM HEX</mark>, we play a variety of eSports through which we strive to improve ourselves.
+        Beyond competition, Team Hex represents a community of players who share a passion for Free Fire and esports. We believe in sportsmanship, dedication, and creating opportunities for talented players to showcase their abilities on a larger stage.
+      </p>
+      <br>
+      <p>
+        As we continue to grow, <mark class="combat-taglines">TEAM HEX</mark> remains focused on pushing boundaries, embracing challenges, and representing our supporters with pride. Every game is a chance to prove ourselves, and every victory is a step closer to our ultimate goal of becoming one of the most recognized Free Fire teams in the region.
+      </p>
+      <br>
+      <p>
+        <mark class="combat-taglines">Our Motto:</mark> Fearless in Battle. United in Victory.
       </p>
     </div>
   </section>
@@ -356,7 +357,7 @@
       }
     });
       
-    // Hero Section Timeline Animation (without rotation)
+    // Hero Section Timeline Animation
     const heroTimeline = gsap.timeline();
     heroTimeline.from('.combat-title', {
       duration: 1.5,
@@ -370,7 +371,7 @@
       ease: 'power3.out'
     }, "-=0.8");
       
-    // Glowing effect for "TEAM HEX" text (combat-title)
+    // Glowing effect for title
     gsap.to('.combat-title', {
       duration: 2,
       filter: "brightness(2)",
@@ -429,4 +430,4 @@
     setInterval(createCombatEffect, 700);
   </script>
 </body>
-</html>
+                                   </html>
