@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEAM HEX - Gallery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TEAM HEX - Media Center | Tactical Zoom Gallery</title>
   <meta name="google-site-verification" content="igC3pR8ccRLwRLY9-4862k3ZbfM0XPIZ0XTUONQhQ00" />
-   <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -16,6 +16,7 @@
       --bullet-trail: #ff1a1a;
       --combat-cyan: #00fffc;
       --warzone-bg: #0a0a14;
+      --dark-card: rgba(15, 15, 25, 0.85);
     }
     * {
       margin: 0;
@@ -153,66 +154,257 @@
     /* Gallery Section */
     .gallery-section {
       padding: 60px 20px;
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 0 auto;
     }
     .gallery-heading {
       text-align: center;
       font-family: 'Russo One', sans-serif;
       font-size: 3em;
-      margin-bottom: 40px;
+      margin-bottom: 15px;
       background: linear-gradient(45deg, var(--muzzle-flash), var(--bullet-trail));
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .gallery-sub {
+      text-align: center;
+      color: var(--combat-cyan);
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      border-bottom: 1px dashed rgba(0,255,252,0.3);
+      display: inline-block;
+      width: auto;
+      margin-left: auto;
+      margin-right: auto;
+      padding-bottom: 8px;
+    }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 28px;
     }
     .gallery-item {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
       overflow: hidden;
-      border: 2px solid rgba(255, 26, 26, 0.3);
-      border-radius: 10px;
+      border: 2px solid rgba(255, 26, 26, 0.4);
+      border-radius: 14px;
       box-shadow: 0 0 20px rgba(255, 26, 26, 0.2);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
     }
     .gallery-item:hover {
-      transform: scale(1.05);
+      transform: scale(1.03);
+      box-shadow: 0 0 28px rgba(255, 26, 26, 0.6);
+      border-color: var(--combat-cyan);
     }
     .gallery-item img {
       width: 100%;
-      height: 100%;
+      height: 220px;
       object-fit: cover;
       display: block;
+      transition: 0.3s;
+      cursor: zoom-in;
     }
-    /* Mobile Optimization */
+    .gallery-item iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      display: block;
+      background: #000;
+      pointer-events: auto;
+    }
+    .bullet-trail {
+      position: fixed;
+      width: 12px;
+      height: 3px;
+      background: linear-gradient(90deg, #ff3300, #ffaa33);
+      filter: blur(1px);
+      box-shadow: 0 0 12px #ff5500;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+    .muzzle-flash {
+      position: fixed;
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle, #ffcc00, #ff3300);
+      border-radius: 50%;
+      filter: blur(3px);
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.9;
+    }
+    .vid-label {
+      position: absolute;
+      bottom: 8px;
+      left: 12px;
+      background: rgba(0,0,0,0.7);
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-family: 'Orbitron', monospace;
+      color: var(--combat-cyan);
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 3;
+    }
     @media (max-width: 768px) {
-      .war-menu {
-        top: 20px;
-        right: 20px;
-      }
-      .war-menu-content {
-        width: 250px;
-        right: -280px;
-      }
-      .war-menu-content.active {
-        transform: translateX(-300px);
-      }
-      .combat-title {
-        font-size: 3em;
-        text-align: center;
-        padding: 0 20px;
-      }
-      .combat-tagline {
-        font-size: 1em;
-        text-align: center;
-        padding: 0 20px;
-      }
-      .gallery-heading {
-        font-size: 2.5em;
-      }
+      .war-menu { top: 20px; right: 20px; }
+      .war-menu-content { width: 250px; right: -280px; }
+      .war-menu-content.active { transform: translateX(-300px); }
+      .combat-title { font-size: 3em; text-align: center; padding: 0 20px; }
+      .combat-tagline { font-size: 1em; text-align: center; padding: 0 20px; }
+      .gallery-heading { font-size: 2.5em; }
+      .gallery-grid { gap: 20px; }
+      .gallery-item iframe { aspect-ratio: 16 / 9; }
+      .gallery-item img { height: 180px; }
+    }
+
+    /* ========== LIGHTBOX ZOOM SYSTEM (TACTICAL OVERLAY) ========== */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(12px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-family: 'Orbitron', monospace;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    .lightbox-container {
+      width: 90vw;
+      height: 85vh;
+      background: rgba(5, 5, 10, 0.7);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 26, 26, 0.6);
+      box-shadow: 0 0 30px rgba(255, 26, 26, 0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .lightbox-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border-bottom: 1px solid rgba(255, 26, 26, 0.4);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .ctrl-btn {
+      background: none;
+      border: 1px solid var(--bullet-trail);
+      color: var(--combat-cyan);
+      font-size: 1.2rem;
+      font-family: 'Orbitron', monospace;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.2s;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+    }
+    .ctrl-btn:hover {
+      background: var(--bullet-trail);
+      color: black;
+      border-color: white;
+      box-shadow: 0 0 12px var(--bullet-trail);
+    }
+    .zoom-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .zoom-level {
+      background: #111;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: var(--combat-cyan);
+      border: 1px solid var(--combat-cyan);
+    }
+    .nav-group {
+      display: flex;
+      gap: 12px;
+    }
+    .lightbox-image-wrapper {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: #030308;
+      scroll-behavior: smooth;
+    }
+    .lightbox-img {
+      display: block;
+      transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      cursor: grab;
+      user-select: none;
+      transform-origin: center center;
+    }
+    .lightbox-img:active {
+      cursor: grabbing;
+    }
+    .close-lightbox {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      color: white;
+      font-size: 32px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 2100;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      transition: 0.2s;
+      border: 1px solid var(--bullet-trail);
+    }
+    .close-lightbox:hover {
+      background: var(--bullet-trail);
+      transform: scale(1.1);
+      color: black;
+    }
+    .lightbox-caption {
+      text-align: center;
+      padding: 8px;
+      font-size: 0.8rem;
+      color: var(--combat-cyan);
+      background: rgba(0,0,0,0.6);
+      border-top: 1px solid rgba(255, 26, 26, 0.4);
+    }
+    @media (max-width: 680px) {
+      .lightbox-controls { padding: 8px 12px; }
+      .ctrl-btn { padding: 4px 8px; font-size: 0.8rem; }
+      .zoom-level { font-size: 0.7rem; }
+      .close-lightbox { top: 8px; right: 12px; width: 36px; height: 36px; font-size: 26px; }
+      .lightbox-container { width: 95vw; height: 80vh; }
     }
   </style>
 </head>
@@ -223,7 +415,6 @@
     <div class="menu-bar"></div>
     <div class="menu-bar"></div>
   </div>
-
   <div class="war-menu-content">
     <div class="menu-item"><span><a href="index.html">HOME</a></span></div>
     <div class="menu-item"><span><a href="member.html">TEAM MEMBER</a></span></div>
@@ -233,160 +424,319 @@
     <div class="menu-item"><span><a href="join.html">JOIN</a></span></div>
   </div>
 
-  <!-- Main Combat Zone -->
+  <!-- Hero -->
   <section class="combat-hero">
     <div id="particles-js"></div>
     <h1 class="combat-title">TEAM HEX</h1>
-    <p class="combat-tagline">Elite Firepower Unit</p>
+    <p class="combat-tagline">Elite Firepower Unit | Tactical Archives</p>
   </section>
 
-  <!-- Gallery Section -->
+  <!-- Media Gallery: Images + Official YouTube Content -->
   <section class="gallery-section">
-    <h2 class="gallery-heading">Gallery</h2>
+    <h2 class="gallery-heading">COMBAT GALLERY</h2>
+    <div style="text-align: center;">
+      <div class="gallery-sub"> OPERATION RECORDS & BATTLE HIGHLIGHTS </div>
+    </div>
     <div class="gallery-grid">
-      <!-- Gallery Item 1: Free Fire Themed -->
-      <div class="gallery-item">
-        <img src="team.jpg" alt="Free Fire Image">
+      <!-- YouTube Videos (4) -->
+      <div class="gallery-item video-embed">
+        <iframe src="https://www.youtube-nocookie.com/embed/tmQrSzo28RU?rel=0&modestbranding=1&controls=1&showinfo=0&iv_load_policy=3" title="TEAM HEX - Combat Drop 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       </div>
-      <!-- Gallery Item 2 -->
-      <div class="gallery-item">
-        <img src="me.jpg" alt="Gallery Image 2">
+      <div class="gallery-item video-embed">
+        <iframe src="https://www.youtube-nocookie.com/embed/t4qYxypiWiQ?rel=0&modestbranding=1&controls=1&showinfo=0&iv_load_policy=3" title="TEAM HEX - Tactical Breach" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       </div>
-      <!-- Gallery Item 3 -->
-      <div class="gallery-item">
-        <img src="a.jpg" alt="Gallery Image 3">
+      <div class="gallery-item video-embed">
+        <iframe src="https://www.youtube-nocookie.com/embed/T4bSZyN__D4?rel=0&modestbranding=1&controls=1&showinfo=0&iv_load_policy=3" title="TEAM HEX - Zone Domination" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       </div>
-      <!-- Gallery Item 4 -->
-      <div class="gallery-item">
-        <img src="r.jpg" alt="Gallery Image 4">
+      <div class="gallery-item video-embed">
+        <iframe src="https://www.youtube-nocookie.com/embed/WSIrh732oR0?rel=0&modestbranding=1&controls=1&showinfo=0&iv_load_policy=3" title="TEAM HEX - Full Auto Highlights" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
       </div>
-      <!-- Gallery Item 5 -->
+      
+      <!-- PHOTOS (zoom enabled) -->
       <div class="gallery-item">
-        <img src="s.jpg" alt="Gallery Image 5">
+        <img src="claw.jpg" alt="Squad Formation - Team HEX">
       </div>
-      <!-- Gallery Item 6 -->
-     
+      <div class="gallery-item">
+        <img src="mace.jpg" alt="Operator Profile - HEX Lead">
+      </div>
+      <div class="gallery-item">
+        <img src="spear.jpg" alt="Assault Tactics - Breach">
+      </div>
+      <div class="gallery-item">
+        <img src="hunter.jpg" alt="Recon Unit - Stealth Ops">
+      </div>
+      <div class="gallery-item">
+        <img src="brok.jpg" alt="Strike Operation - Final Assault">
+      </div>
+            <div class="gallery-item">
+        <img src="sad.jpg" alt="Strike Operation - Final Assault">
+      </div>
     </div>
   </section>
 
-  <script>
-    // Initialize GSAP and ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
+  <!-- LIGHTBOX ZOOM SYSTEM -->
+  <div id="lightbox" class="lightbox">
+    <button class="close-lightbox" id="closeLightboxBtn">✕</button>
+    <div class="lightbox-container">
+      <div class="lightbox-controls">
+        <div class="nav-group">
+          <button class="ctrl-btn" id="prevImageBtn">◀ PREV</button>
+          <button class="ctrl-btn" id="nextImageBtn">NEXT ▶</button>
+        </div>
+        <div class="zoom-group">
+          <button class="ctrl-btn" id="zoomOutBtn">🔍− ZOOM OUT</button>
+          <span class="zoom-level" id="zoomLevel">100%</span>
+          <button class="ctrl-btn" id="zoomInBtn">ZOOM IN +🔍</button>
+          <button class="ctrl-btn" id="resetZoomBtn">⟳ RESET</button>
+        </div>
+      </div>
+      <div class="lightbox-image-wrapper" id="lightboxWrapper">
+        <img id="lightboxImg" class="lightbox-img" alt="Tactical Zoom View">
+      </div>
+      <div class="lightbox-caption" id="lightboxCaption">⚡ TEAM HEX ARCHIVE ⚡</div>
+    </div>
+  </div>
 
-    // Particle Background Setup
+  <script>
+    // ======================== PHOTO ZOOM SYSTEM (LIGHTBOX) ========================
+    (function() {
+      // Collect all photo images (exclude video items)
+      const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
+      const imageItems = galleryImages.map(img => ({
+        src: img.src,
+        alt: img.alt || 'Combat photo'
+      }));
+      
+      let currentIndex = 0;
+      let currentZoom = 1;
+      let lightboxActive = false;
+      
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const captionEl = document.getElementById('lightboxCaption');
+      const zoomLevelSpan = document.getElementById('zoomLevel');
+      const wrapperDiv = document.getElementById('lightboxWrapper');
+      
+      // Helper: update zoom display & transform
+      function applyZoom() {
+        if (!lightboxImg) return;
+        lightboxImg.style.transform = `scale(${currentZoom})`;
+        zoomLevelSpan.innerText = `${Math.round(currentZoom * 100)}%`;
+      }
+      
+      function resetZoom() {
+        currentZoom = 1;
+        applyZoom();
+        // optional: reset scroll position to center
+        if (wrapperDiv) {
+          wrapperDiv.scrollLeft = (wrapperDiv.scrollWidth - wrapperDiv.clientWidth) / 2;
+          wrapperDiv.scrollTop = (wrapperDiv.scrollHeight - wrapperDiv.clientHeight) / 2;
+        }
+      }
+      
+      function zoomIn() {
+        let newZoom = currentZoom + 0.25;
+        if (newZoom > 4) newZoom = 4;
+        currentZoom = newZoom;
+        applyZoom();
+      }
+      
+      function zoomOut() {
+        let newZoom = currentZoom - 0.25;
+        if (newZoom < 0.5) newZoom = 0.5;
+        currentZoom = newZoom;
+        applyZoom();
+      }
+      
+      function loadImage(index) {
+        if (!imageItems.length) return;
+        const item = imageItems[index];
+        lightboxImg.src = item.src;
+        lightboxImg.alt = item.alt;
+        captionEl.innerHTML = `📸 ${item.alt} | TEAM HEX ARCHIVE`;
+        // Reset zoom on new image
+        currentZoom = 1;
+        applyZoom();
+        // reset scroll position
+        if (wrapperDiv) {
+          wrapperDiv.scrollTop = 0;
+          wrapperDiv.scrollLeft = 0;
+        }
+      }
+      
+      function openLightbox(startIndex) {
+        if (!imageItems.length) return;
+        currentIndex = startIndex;
+        loadImage(currentIndex);
+        lightbox.classList.add('active');
+        lightboxActive = true;
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        lightboxActive = false;
+        document.body.style.overflow = '';
+        currentZoom = 1;
+        applyZoom(); // reset style for next open
+      }
+      
+      function nextImage() {
+        if (!imageItems.length) return;
+        currentIndex = (currentIndex + 1) % imageItems.length;
+        loadImage(currentIndex);
+      }
+      
+      function prevImage() {
+        if (!imageItems.length) return;
+        currentIndex = (currentIndex - 1 + imageItems.length) % imageItems.length;
+        loadImage(currentIndex);
+      }
+      
+      // Add click listeners to all gallery images
+      galleryImages.forEach((img, idx) => {
+        img.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openLightbox(idx);
+        });
+      });
+      
+      // Buttons events
+      const prevBtn = document.getElementById('prevImageBtn');
+      const nextBtn = document.getElementById('nextImageBtn');
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+      const resetZoomBtn = document.getElementById('resetZoomBtn');
+      const closeBtn = document.getElementById('closeLightboxBtn');
+      
+      if (prevBtn) prevBtn.addEventListener('click', prevImage);
+      if (nextBtn) nextBtn.addEventListener('click', nextImage);
+      if (zoomInBtn) zoomInBtn.addEventListener('click', zoomIn);
+      if (zoomOutBtn) zoomOutBtn.addEventListener('click', zoomOut);
+      if (resetZoomBtn) resetZoomBtn.addEventListener('click', resetZoom);
+      if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+      
+      // Click on background overlay (lightbox backdrop) closes
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightboxActive) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextImage();
+        if (e.key === '+' || e.key === '=') { zoomIn(); e.preventDefault(); }
+        if (e.key === '-' || e.key === '_') { zoomOut(); e.preventDefault(); }
+        if (e.key === '0') { resetZoom(); e.preventDefault(); }
+      });
+      
+      // Mouse wheel zoom on wrapper (while lightbox open)
+      wrapperDiv.addEventListener('wheel', (e) => {
+        if (!lightboxActive) return;
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        let newZoom = currentZoom + delta;
+        if (newZoom > 4) newZoom = 4;
+        if (newZoom < 0.5) newZoom = 0.5;
+        currentZoom = newZoom;
+        applyZoom();
+      }, { passive: false });
+      
+      // touch-friendly: optional double-click to reset zoom
+      lightboxImg.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        resetZoom();
+      });
+      
+      console.log("[TEAM HEX] Tactical Photo Zoom System armed. Images ready:", imageItems.length);
+    })();
+    
+    // Existing scripts: Particles, Menu, GSAP, Combat FX
+    gsap.registerPlugin(ScrollTrigger);
     particlesJS('particles-js', {
       particles: {
-        number: { value: 80 },
-        color: { value: '#ff1a1a' },
+        number: { value: 95 },
+        color: { value: '#ff3a3a' },
         shape: { type: 'circle' },
-        opacity: { value: 0.7 },
-        size: { value: 1.5 },
+        opacity: { value: 0.6, random: true },
+        size: { value: 1.8, random: true },
         move: {
           enable: true,
-          speed: 12,
+          speed: 14,
           direction: 'right',
           straight: true,
           out_mode: 'out',
-          trail: {
-            enable: true,
-            length: 10,
-            fillColor: '#000000'
-          }
-        }
+          trail: { enable: true, length: 8, fillColor: '#0a0a14' }
+        },
+        line_linked: { enable: false }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: { onhover: { enable: false }, onclick: { enable: false } }
       }
     });
-
-    // Toggle Navigation Menu
+    
     let menuActive = false;
     function toggleMenu() {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
       menuActive = !menuActive;
-      
       menu.classList.toggle('active');
       content.classList.toggle('active');
-      
-      // Menu Item Animation
       if(menuActive) {
         gsap.fromTo('.menu-item',
           { x: 100, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            stagger: 0.1,
-            duration: 0.4,
-            ease: 'power2.out'
-          }
+          { x: 0, opacity: 1, stagger: 0.08, duration: 0.4, ease: 'back.out(0.7)' }
         );
       } else {
-        gsap.to('.menu-item', {
-          x: 100,
-          opacity: 0,
-          stagger: 0.05,
-          duration: 0.3,
-          ease: 'power2.in'
-        });
+        gsap.to('.menu-item', { x: 100, opacity: 0, stagger: 0.05, duration: 0.25, ease: 'power2.in' });
       }
     }
-    
-    // Close Menu When Clicking Outside
     document.addEventListener('click', (e) => {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
-      
-      if(!menu.contains(e.target) && !content.contains(e.target)) {
-        if(menuActive) {
-          toggleMenu();
-        }
-      }
+      if(menu && content && !menu.contains(e.target) && !content.contains(e.target) && menuActive) toggleMenu();
     });
     
-    // Hero Section Animations
-    gsap.from('.combat-title', {
-      duration: 1.5,
-      y: 100,
-      opacity: 0,
-      ease: 'power4.out'
+    gsap.from('.combat-title', { duration: 1.4, y: 120, opacity: 0, scale: 0.9, ease: 'elastic.out(1, 0.5)' });
+    gsap.from('.combat-tagline', { duration: 1.2, y: 50, opacity: 0, delay: 0.3, ease: 'power3.out' });
+    gsap.from('.gallery-item', {
+      scrollTrigger: { trigger: '.gallery-section', start: 'top 80%', toggleActions: 'play none none reverse' },
+      opacity: 0, y: 60, duration: 0.8, stagger: 0.1, ease: 'power2.out'
     });
     
-    gsap.from('.combat-tagline', {
-      duration: 1.2,
-      y: 50,
-      opacity: 0,
-      delay: 0.3,
-      ease: 'power3.out'
-    });
-    
-    // Continuous Combat Effects
-    setInterval(() => {
-      if(menuActive) createCombatEffect();
-    }, 500);
-    
+    let fxInterval;
     function createCombatEffect() {
       const effect = document.createElement('div');
-      effect.className = Math.random() > 0.5 ? 'bullet-trail' : 'muzzle-flash';
-      
-      if(effect.className === 'bullet-trail') {
-        effect.style.top = `${Math.random() * 100}vh`;
-        effect.style.left = `${Math.random() * 100}vw`;
-        gsap.to(effect, {
-          duration: 0.6,
-          scaleX: 2.5,
-          opacity: 0,
-          onComplete: () => effect.remove()
-        });
+      const rand = Math.random();
+      if(rand > 0.55) {
+        effect.className = 'bullet-trail';
+        effect.style.top = `${Math.random() * window.innerHeight}px`;
+        effect.style.left = `${Math.random() * window.innerWidth}px`;
+        effect.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(effect);
+        gsap.to(effect, { duration: 0.5, x: (Math.random() - 0.5) * 200 + (Math.random() > 0.5 ? 150 : -150), opacity: 0, scaleX: 2.8, ease: 'power2.out', onComplete: () => effect.remove() });
       } else {
-        effect.style.left = `${Math.random() * 100}vw`;
-        effect.style.top = `${Math.random() * 100}vh`;
-        gsap.to(effect, {
-          duration: 0.2,
-          scale: 1.8,
-          opacity: 0,
-          onComplete: () => effect.remove()
-        });
+        effect.className = 'muzzle-flash';
+        effect.style.left = `${Math.random() * window.innerWidth}px`;
+        effect.style.top = `${Math.random() * window.innerHeight}px`;
+        document.body.appendChild(effect);
+        gsap.to(effect, { duration: 0.25, scale: 2.2, opacity: 0, ease: 'back.out(1.2)', onComplete: () => effect.remove() });
       }
-      document.body.appendChild(effect);
     }
+    function startCombatEffects() { if(fxInterval) clearInterval(fxInterval); fxInterval = setInterval(() => { if(menuActive) createCombatEffect(); }, 700); }
+    startCombatEffects();
+    
+    window.addEventListener('scroll', () => {
+      const hero = document.querySelector('.combat-hero');
+      if(hero) {
+        const scrollVal = window.scrollY;
+        gsap.to('.combat-title', { duration: 0.2, y: scrollVal * 0.15, overwrite: true, ease: 'none' });
+        gsap.to('.combat-tagline', { duration: 0.2, y: scrollVal * 0.08, overwrite: true });
+      }
+    });
   </script>
 </body>
-</html>
+  </html>
