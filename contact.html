@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TEAM HEX - Contact Us</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TEAM HEX - Contact | Elite Firepower Unit</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Russo+One&family=Electrolize&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -14,6 +14,8 @@
       --bullet-trail: #ff1a1a;
       --combat-cyan: #00fffc;
       --warzone-bg: #0a0a14;
+      --success-glow: #00ff9d;
+      --error-glow: #ff3366;
     }
     * {
       margin: 0;
@@ -27,7 +29,6 @@
       overflow-x: hidden;
       position: relative;
     }
-    /* Rotating Background Shape */
     .rotating-bg {
       position: fixed;
       top: -200px;
@@ -38,6 +39,7 @@
       z-index: 0;
       border-radius: 50%;
       opacity: 0.15;
+      pointer-events: none;
     }
     /* Navigation */
     .war-menu {
@@ -154,16 +156,16 @@
       text-shadow: 0 0 20px var(--combat-cyan);
       z-index: 2;
     }
-   #particles-js {
-   position: absolute;
-   width: 100%;
-   height: 100%;
-   pointer-events: none;
- }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
     /* Contact Section */
     .contact-section {
       padding: 60px 20px;
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       position: relative;
       z-index: 2;
@@ -188,6 +190,10 @@
     .contact-info a {
       color: var(--combat-cyan);
       text-decoration: none;
+      transition: text-shadow 0.2s;
+    }
+    .contact-info a:hover {
+      text-shadow: 0 0 6px var(--combat-cyan);
     }
     .contact-form {
       display: flex;
@@ -205,11 +211,12 @@
       font-family: 'Electrolize', sans-serif;
       font-size: 1em;
       outline: none;
-      transition: border 0.3s ease;
+      transition: border 0.3s ease, box-shadow 0.2s;
     }
     .contact-form input:focus,
     .contact-form textarea:focus {
       border-color: var(--combat-cyan);
+      box-shadow: 0 0 10px rgba(0, 255, 252, 0.3);
     }
     .contact-form button {
       padding: 15px;
@@ -220,13 +227,49 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 1.1em;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
     }
     .contact-form button:hover {
       background: var(--muzzle-flash);
-      transform: scale(1.05);
+      transform: scale(1.02);
+      box-shadow: 0 0 12px rgba(255, 26, 26, 0.6);
     }
-    /* Mobile Optimization */
+    .contact-form button:active {
+      transform: scale(0.98);
+    }
+    .status-message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      transition: all 0.3s;
+    }
+    .status-success {
+      border-left: 5px solid var(--success-glow);
+      color: var(--success-glow);
+      box-shadow: 0 0 8px rgba(0,255,157,0.3);
+    }
+    .status-error {
+      border-left: 5px solid var(--error-glow);
+      color: #ff8aae;
+      box-shadow: 0 0 8px rgba(255,51,102,0.3);
+    }
+    .status-loading {
+      border-left: 5px solid var(--combat-cyan);
+      color: var(--combat-cyan);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
     @media (max-width: 768px) {
       .war-menu {
         top: 20px;
@@ -252,11 +295,14 @@
       .contact-heading {
         font-size: 2.5em;
       }
+      .contact-info p {
+        font-size: 0.95rem;
+        word-break: break-word;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Rotating Background -->
   <div class="rotating-bg"></div>
   
   <!-- Tactical Navigation -->
@@ -282,27 +328,29 @@
     <p class="combat-tagline">Elite Firepower Unit</p>
   </section>
   
-  <!-- Contact Section -->
+  <!-- Contact Section with PROPER EMAIL SYSTEM -->
   <section class="contact-section">
     <h2 class="contact-heading">Contact Us</h2>
     <div class="contact-info">
-      <p>WhatsApp Number: <a href="https://wa.me/8801870516299" target="_blank">+880 1870-516299</a></p>
-      <p>WhatsApp Group: <a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank">Join Group</a></p>
-      <p>Email: <a href="mailto:teamhex69x@gmail.com">teamhex69x@gmail.com</a></p>
+      <p> WhatsApp: <a href="https://wa.me/8801870516299" target="_blank">+880 1870-516299</a></p>
+      <p> Group: <a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank">Join Hex Unit</a></p>
+      <p>Direct: <a href="mailto:teamhex69x@gmail.com">teamhex69x@gmail.com</a></p>
     </div>
-    <form class="contact-form" action="#" method="post">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <input type="text" name="subject" placeholder="Subject" required>
-      <textarea name="message" rows="6" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
+    
+    <form id="contactForm" class="contact-form">
+      <input type="text" name="name" id="name" placeholder="FULL NAME *" required autocomplete="name">
+      <input type="email" name="email" id="email" placeholder="EMAIL ADDRESS *" required autocomplete="email">
+      <input type="text" name="subject" id="subject" placeholder="MISSION SUBJECT *" required>
+      <textarea name="message" id="message" rows="6" placeholder="ENCRYPTED MESSAGE *" required></textarea>
+      <button type="submit" id="sendBtn"> SEND MESSAGE </button>
+      <div id="formStatus" class="status-message" style="display: none;"></div>
     </form>
   </section>
-  
+
   <script>
     gsap.registerPlugin(ScrollTrigger);
     
-    // Advanced Particle Background Setup with Enhanced Interaction
+    // Particle System - Combat Atmosphere
     particlesJS('particles-js', {
       particles: {
         number: { value: 80 },
@@ -316,16 +364,12 @@
           direction: 'right',
           straight: true,
           out_mode: 'out',
-          trail: {
-            enable: true,
-            length: 10,
-            fillColor: '#000000'
-          }
+          trail: { enable: true, length: 10, fillColor: '#000000' }
         }
       }
     });
 
-    // Rotating background shape continuous animation
+    // Rotating background animation
     gsap.to(".rotating-bg", {
       rotation: 360,
       duration: 60,
@@ -333,7 +377,7 @@
       ease: "linear"
     });
     
-    // Advanced Menu Toggle with Master Timeline
+    // Menu logic
     let menuActive = false;
     function toggleMenu() {
       const menu = document.querySelector('.war-menu');
@@ -357,39 +401,31 @@
       }
     }
     
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
       const menu = document.querySelector('.war-menu');
       const content = document.querySelector('.war-menu-content');
-      if (!menu.contains(e.target) && !content.contains(e.target)) {
-        if (menuActive) toggleMenu();
+      if (!menu.contains(e.target) && !content.contains(e.target) && menuActive) {
+        toggleMenu();
       }
     });
     
-    // Master Hero Timeline for Advanced Entrance Animations
+    // Hero entrance animations
     const heroTL = gsap.timeline();
     heroTL
       .from(".combat-title", { duration: 1.5, y: 100, opacity: 0, ease: "power4.out" })
       .from(".combat-tagline", { duration: 1.2, y: 50, opacity: 0, ease: "power3.out" }, "-=1")
       .to(".combat-title", { duration: 1, scale: 1.05, repeat: -1, yoyo: true, ease: "power1.inOut" });
     
-    // ScrollTrigger animations for Contact Section with advanced stagger and parallax effect
+    // Scroll animations for contact section
     gsap.from(".contact-heading", {
-      scrollTrigger: {
-        trigger: ".contact-heading",
-        start: "top 80%"
-      },
+      scrollTrigger: { trigger: ".contact-heading", start: "top 80%" },
       duration: 1,
       opacity: 0,
       y: 50,
       ease: "power2.out"
     });
-    
     gsap.from(".contact-info p, .contact-form input, .contact-form textarea, .contact-form button", {
-      scrollTrigger: {
-        trigger: ".contact-section",
-        start: "top 80%"
-      },
+      scrollTrigger: { trigger: ".contact-section", start: "top 80%" },
       duration: 0.8,
       opacity: 0,
       y: 30,
@@ -397,39 +433,120 @@
       ease: "power2.out"
     });
     
-    // Continuous Combat Effects with Advanced Randomized Parameters
-    setInterval(() => {
-      if (menuActive) createCombatEffect();
-    }, 800);
+    // === PROPER EMAIL SYSTEM (BACKEND INTEGRATION) ===
+    // This frontend sends data to /send-email endpoint.
+    // The backend (Node.js + Express + Nodemailer) is provided in server.js
+    // It handles validation, sanitization, and real SMTP delivery.
     
-    function createCombatEffect() {
-      const effect = document.createElement('div');
-      effect.className = Math.random() > 0.5 ? 'bullet-trail' : 'muzzle-flash';
-      effect.style.position = 'fixed';
-      effect.style.zIndex = 500;
-      if (effect.className === 'bullet-trail') {
-        effect.style.top = `${Math.random() * 100}vh`;
-        effect.style.left = `${Math.random() * 100}vw`;
-        gsap.to(effect, {
-          duration: 0.6,
-          scaleX: 2.5,
-          opacity: 0,
-          ease: "power2.out",
-          onComplete: () => effect.remove()
-        });
-      } else {
-        effect.style.left = `${Math.random() * 100}vw`;
-        effect.style.top = `${Math.random() * 100}vh`;
-        gsap.to(effect, {
-          duration: 0.2,
-          scale: 1.8,
-          opacity: 0,
-          ease: "power2.out",
-          onComplete: () => effect.remove()
-        });
+    const contactForm = document.getElementById('contactForm');
+    const statusDiv = document.getElementById('formStatus');
+    const sendButton = document.getElementById('sendBtn');
+    
+    function showStatus(message, type) {
+      statusDiv.style.display = 'block';
+      statusDiv.textContent = message;
+      statusDiv.className = `status-message status-${type}`;
+      // Auto-hide success/error after 5 seconds, but not loading
+      if (type !== 'loading') {
+        setTimeout(() => {
+          if (statusDiv.style.display === 'block') {
+            statusDiv.style.opacity = '0';
+            setTimeout(() => {
+              statusDiv.style.display = 'none';
+              statusDiv.style.opacity = '1';
+            }, 400);
+          }
+        }, 5000);
       }
-      document.body.appendChild(effect);
     }
+    
+    function hideStatus() {
+      if (statusDiv.style.display === 'block' && !statusDiv.classList.contains('status-loading')) {
+        statusDiv.style.display = 'none';
+      }
+    }
+    
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Collect form data with trimming
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      // Client-side validation
+      if (!name || !email || !subject || !message) {
+        showStatus('⚠️ All fields are required, soldier. Complete the mission parameters.', 'error');
+        return;
+      }
+      if (!/^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/i.test(email)) {
+        showStatus('❌ Invalid email address. Use valid tactical comms format.', 'error');
+        return;
+      }
+      if (message.length < 10) {
+        showStatus('✉️ Message too short. Provide meaningful intel (min 10 characters).', 'error');
+        return;
+      }
+      
+      // Disable button & show loading state
+      sendButton.disabled = true;
+      sendButton.textContent = '🔐 TRANSMITTING...';
+      showStatus('Sending encrypted transmission to TEAM HEX command...', 'loading');
+      
+      try {
+        const response = await fetch('/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok && result.success) {
+          showStatus('✅ MESSAGE DELIVERED! TEAM HEX will respond within 24 hours. Stay sharp.', 'success');
+          contactForm.reset();  // clear form
+        } else {
+          console.error('Server error:', result);
+          showStatus(`⚠️ Transmission failed: ${result.message || 'Server error. Contact via WhatsApp instead.'}`, 'error');
+        }
+      } catch (err) {
+        console.error('Network/API error:', err);
+        showStatus('🚨 Communication breakdown. Check your connection or try again later. Use WhatsApp for urgent contact.', 'error');
+      } finally {
+        sendButton.disabled = false;
+        sendButton.textContent = ' SEND SECURE MESSAGE';
+        // If status is still loading, remove loading class after final message
+        if (statusDiv.classList.contains('status-loading')) {
+          // loading already replaced by success/error
+        }
+      }
+    });
+    
+    // Optional combat effect (just for flair, no console errors)
+    function createCombatEffect() {
+      if (!menuActive) return;
+      const effect = document.createElement('div');
+      effect.style.position = 'fixed';
+      effect.style.pointerEvents = 'none';
+      effect.style.zIndex = '500';
+      effect.style.width = '8px';
+      effect.style.height = '8px';
+      effect.style.borderRadius = '50%';
+      effect.style.background = Math.random() > 0.5 ? '#ff6b00' : '#ff1a1a';
+      effect.style.left = `${Math.random() * 100}vw`;
+      effect.style.top = `${Math.random() * 100}vh`;
+      effect.style.boxShadow = '0 0 12px #ff3300';
+      document.body.appendChild(effect);
+      gsap.to(effect, {
+        duration: 0.5,
+        scale: 2.5,
+        opacity: 0,
+        ease: "power2.out",
+        onComplete: () => effect.remove()
+      });
+    }
+    setInterval(() => { if (menuActive) createCombatEffect(); }, 1200);
   </script>
 </body>
-</html>
+  </html>
