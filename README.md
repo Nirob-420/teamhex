@@ -2,6 +2,68 @@
 
 A cinematic Free Fire esports website built from the public content and original photography at https://teamhex.netlify.app.
 
+## What’s new in 6.1 — Search engine optimisation
+
+The site is a single page, so its ranking depends almost entirely on what a
+crawler can read *without* running JavaScript, and on how clearly the entity is
+described. Both were weak before: the roster, watchlist and gallery were empty
+containers filled at runtime, and there was no `robots.txt`, no sitemap, no
+canonical and a relative `og:image` (which produces no social preview at all).
+
+- **Prerendered content.** `build/seo-plugin.js` renders the squad rail, match-film
+  watchlist and archive gallery into `index.html` at build *and* dev time, using
+  the same templates in `src/templates.js` that `src/main.js` hydrates with. All
+  six operators, all four films and all eight archive images — names, in-game
+  names, roles, captions and alt text — are now in the raw HTML. The prerendered
+  and hydrated markup are byte-identical, so there is no flash of empty content
+  and no duplicated template strings to keep in sync.
+- **One rich JSON-LD graph** generated from `src/data.js`, so it cannot drift
+  from the page: a top-level `SportsTeam` node plus `Organization`, `WebSite`,
+  `WebPage`, six `Person`, four `VideoObject`, an `ImageGallery` and a `FAQPage`.
+  Operator biographies travel here rather than as hidden page text.
+- **Complete head metadata**: `rel="canonical"`, `meta robots` with
+  `max-image-preview:large`, `og:url` / `og:site_name` / `og:locale`, absolute
+  `og:image` with type/width/height/alt, and matching `twitter:` title,
+  description and image alt.
+- **`robots.txt` and `sitemap.xml`** generated from the same site config, plus a
+  branded `404.html` served with a real 404 status and `noindex, follow` so bad
+  URLs never become soft 404s.
+- **Keyword-led title and description** — 49 and 153 characters, both inside the
+  SERP display window, replacing the previous slogan-only title.
+- **Resource hints**: `dns-prefetch` for the YouTube hosts used on demand, and a
+  `fetchpriority="high"` preload for the largest-contentful-paint hero image.
+- **Crawler-safe caching** in `netlify.toml`, plus HSTS and a `Permissions-Policy`.
+  `/assets/*` stays immutable (content-hashed) while `/images/*` revalidates,
+  because those files are *not* hashed and a swapped social card must propagate.
+- **One origin, defined once.** `src/site.js` is the single source of truth;
+  `%SITE_URL%` in `index.html` is substituted at build time, so the canonical
+  origin, JSON-LD, sitemap and robots.txt can never disagree.
+
+### Changing the canonical domain
+
+Set `VITE_SITE_URL` at build time (Netlify: Site settings → Environment
+variables), or edit `siteUrl` in `src/site.js`. Nothing else needs updating —
+the canonical tag, Open Graph/Twitter URLs, JSON-LD, `sitemap.xml` and
+`robots.txt` all derive from it.
+
+### Known limits, stated honestly
+
+- **The sitemap has one URL**, and that is correct. Sections are hash anchors
+  (`#squad`, `#about`) which are not separately indexable, and the `?player=`
+  deep links are parameterized views of the same page. Listing them would create
+  duplicate-content URLs. Operator and film discovery is handled by the
+  prerendered HTML and the entity graph instead. Real multi-page URLs would be
+  the single largest remaining SEO gain, but that is a routing change.
+- **`VideoObject.uploadDate` is omitted.** Google requires it for video rich
+  results, and inventing a date would be worse than earning no rich result. Add
+  `published: 'YYYY-MM-DD'` to an entry in `src/data.js` and it is picked up
+  automatically.
+- The archive gallery lives inside a hidden tab panel, so its prerendered markup
+  may be weighted lower than visible text. The `ImageGallery` JSON-LD carries the
+  same image data for crawlers that do use it.
+- No `Content-Security-Policy` was added: the page relies on inline styles set by
+  the animation layer and on YouTube iframes, so a CSP needs its own testing pass.
+
 ## What’s new in Pro Edition 06
 
 - **Command menu (`Ctrl/⌘ + K` or `/`):** one searchable palette for every section, operator, match film, archive image, action, and official channel. Recent commands are remembered on your device, and the whole menu is keyboard- and screen-reader-friendly.
@@ -141,7 +203,12 @@ The implementation follows Netlify’s documented conditional-write API: https:/
 ## Edit the experience
 
 - `src/data.js`: players, biographies, videos, gallery, links
-- `index.html`: content, sections, SEO, protocol sequence, footer counter
+- `src/site.js`: canonical origin, brand copy, social profiles, recruitment thresholds — the single source of truth for every SEO value
+- `src/templates.js`: shared roster/film/gallery markup, used by both the prerender and runtime hydration
+- `src/structured-data.js`: the JSON-LD entity graph, generated from `src/data.js`
+- `build/seo-plugin.js`: Vite plugin that prerenders content, injects JSON-LD, substitutes `%SITE_URL%`, and emits `robots.txt` + `sitemap.xml`
+- `public/404.html`: self-contained branded 404 (`noindex, follow`)
+- `index.html`: content, sections, head SEO tags, `<!--@structured-data-->` and `<!--@prerender:*-->` markers, protocol sequence, footer counter
 - `src/style.css`: original responsive design system
 - `src/experience.css`: 3D/scroll experience styling and counter odometer
 - `src/studio.css`: Studio Edition art direction, typography, light/dark sections, and component polish
@@ -159,7 +226,10 @@ The implementation follows Netlify’s documented conditional-write API: https:/
 - `vite.config.js`: local-preview counter API and build configuration
 - `public/images/`: optimized original team assets
 
-Before publishing, set `og:image` and `twitter:image` in `index.html` to the absolute URL of `/images/social-card.jpg` on your final domain.
+Before publishing, set the canonical origin once — either the `VITE_SITE_URL`
+build variable or `siteUrl` in `src/site.js`. The absolute `og:image`,
+`twitter:image`, canonical tag, JSON-LD, `sitemap.xml` and `robots.txt` all
+derive from it, so there is no longer a per-tag URL to edit by hand.
 
 ## Verification
 
@@ -174,7 +244,7 @@ On minimal Linux installations:
 npx playwright install-deps chromium
 ```
 
-The 22 automated tests cover:
+The 34 automated tests cover:
 
 - Shared WebGL context and scene switching
 - Horizontal squad rail controls and filter reset
@@ -186,6 +256,14 @@ The 22 automated tests cover:
 - Archive slideshow and image downloads
 - Keyboard shortcuts panel and FX shortcut
 - Installable manifest, icons, and structured data
+- **Crawlable HTML with JavaScript disabled** — the raw HTTP response must contain every operator in-game name, all four match films and all eight archive images
+- **JSON-LD integrity** — exactly one block, `SportsTeam` on top, six `Person` and four `VideoObject` nodes with absolute thumbnail and playback URLs
+- **Head metadata** — canonical equals `og:url`, both absolute; `og:image` matches `twitter:image`; title ≤ 60 and description 120–160 characters; exactly one `h1`
+- **No build leakage** — no `%SITE_URL%` token or prerender marker survives into the output
+- **Alt text on every `<img>`** and a 200 response for every prerendered image path
+- **`robots.txt` and `sitemap.xml`** — correct content types, absolute sitemap URL, real ISO `lastmod`, `/api/` disallowed
+- **Social card integrity** — `/images/social-card.jpg` is genuinely 1200×630
+- **Manifest/meta description parity** — the two strings must not drift apart
 - Keyboard interaction with the 3D emblem
 - Pinned protocol stage progression
 - Session-deduplicated live counter and explicit device-only fallback

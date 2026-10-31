@@ -20,6 +20,10 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+    # Mirrors <meta name="referrer"> in index.html.
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    # The site uses none of these; declaring it narrows the attack surface.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), interest-cohort=()"
 
 [[headers]]
   for = "/assets/*"
@@ -42,3 +46,42 @@
   [headers.values]
     Content-Type = "application/manifest+json"
     Cache-Control = "public, max-age=3600"
+
+# ---- Crawler-facing files ----
+# Kept short-lived so a changed sitemap or robots.txt is picked up quickly.
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+# Unlike /assets/*, files under /images/ and /icons/ are NOT content-hashed,
+# so they must revalidate rather than cache forever — otherwise a swapped
+# social-card.jpg or player portrait would never reach returning visitors or
+# image crawlers.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/icons/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+# A 404 must never be cached by a CDN across deploys.
+[[headers]]
+  for = "/404.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/404"
+  [headers.values]
+    Cache-Control = "no-cache"

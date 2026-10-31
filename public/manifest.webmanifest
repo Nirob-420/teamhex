@@ -1,10 +1,13 @@
 {
-  "name": "TEAM HEX \u2014 Elite Firepower Unit",
+  "name": "TEAM HEX — Elite Firepower Unit",
   "short_name": "TEAM HEX",
-  "description": "Meet TEAM HEX, a competitive Free Fire esports team from Bangladesh. Roster, match films, archive, and recruitment.",
+  "description": "TEAM HEX is a competitive Free Fire esports team from Bangladesh. Meet the six-player roster, watch match films, and see if you qualify to join the unit.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "lang": "en",
+  "dir": "ltr",
   "background_color": "#05070c",
   "theme_color": "#05070c",
   "categories": [

@@ -3,24 +3,66 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#05070c" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="TEAM HEX" />
-    <meta name="application-name" content="TEAM HEX" />
-    <title>TEAM HEX — Fearless in Battle. United in Victory.</title>
-    <meta name="description" content="Meet TEAM HEX, a competitive Free Fire esports team from Bangladesh. Six players. Five combat roles. One elite firepower unit. Meet the squad, watch the highlights, and join the unit." />
-    <meta property="og:title" content="TEAM HEX — Elite Firepower Unit" />
-    <meta property="og:description" content="Fearless in battle. United in victory. Meet the six players of TEAM HEX and enter the world of Free Fire esports." />
+
+    <!-- ===== Primary metadata =====
+         Copy here must stay in sync with src/site.js, which generates the
+         JSON-LD, sitemap.xml and robots.txt from the same strings. -->
+    <title>TEAM HEX — Free Fire Esports Team from Bangladesh</title>
+    <meta name="description" content="TEAM HEX is a competitive Free Fire esports team from Bangladesh. Meet the six-player roster, watch match films, and see if you qualify to join the unit." />
+    <!-- %SITE_URL% is replaced at build time by build/seo-plugin.js. -->
+    <link rel="canonical" href="%SITE_URL%/" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="NIROB" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- ===== Open Graph =====
+         Absolute URLs are mandatory here: crawlers fetch og:image without
+         resolving it against the page, so a relative path yields no preview. -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/images/social-card.jpg" />
+    <meta property="og:site_name" content="TEAM HEX" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:title" content="TEAM HEX — Elite Free Fire Esports Unit from Bangladesh" />
+    <meta property="og:description" content="Fearless in battle. United in victory. Meet the six operators of TEAM HEX, watch the match films, and enter the world of Free Fire esports in Bangladesh." />
+    <meta property="og:image" content="%SITE_URL%/images/social-card.jpg" />
+    <meta property="og:image:secure_url" content="%SITE_URL%/images/social-card.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="TEAM HEX — Fearless in Battle. United in Victory." />
+
+    <!-- ===== Twitter / X ===== -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/images/social-card.jpg" />
+    <meta name="twitter:title" content="TEAM HEX — Elite Free Fire Esports Unit from Bangladesh" />
+    <meta name="twitter:description" content="Fearless in battle. United in victory. Meet the six operators of TEAM HEX, watch the match films, and enter the world of Free Fire esports in Bangladesh." />
+    <meta name="twitter:image" content="%SITE_URL%/images/social-card.jpg" />
+    <meta name="twitter:image:alt" content="TEAM HEX — Fearless in Battle. United in Victory." />
+
+    <!-- ===== App / install ===== -->
+    <meta name="theme-color" content="#05070c" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="application-name" content="TEAM HEX" />
+    <meta name="apple-mobile-web-app-title" content="TEAM HEX" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- ===== Icons ===== -->
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+
+    <!-- ===== Resource hints ===== -->
+    <!-- Match films play on demand; resolve DNS early so the click is instant
+         without paying for a preconnect nobody may use. -->
+    <link rel="dns-prefetch" href="//www.youtube-nocookie.com" />
+    <link rel="dns-prefetch" href="//www.youtube.com" />
+    <!-- Largest-contentful-paint candidate: the featured operator in the hero. -->
     <link rel="preload" as="image" href="/images/nirob.webp" fetchpriority="high" />
-    <script type="application/ld+json">
-      {"@context":"https://schema.org","@type":"SportsTeam","name":"TEAM HEX","alternateName":"Elite Firepower Unit","sport":"Free Fire esports","description":"A competitive Free Fire esports organization driven by passion, discipline, and the pursuit of excellence.","slogan":"Fearless in Battle. United in Victory.","email":"teamhexboys@gmail.com","memberOf":{"@type":"Organization","name":"Free Fire esports"},"athlete":[{"@type":"Person","name":"Niloy","alternateName":"HEX-N1L","jobTitle":"Supporter"},{"@type":"Person","name":"Nirob","alternateName":"HEX-CL4W","jobTitle":"Rifler"},{"@type":"Person","name":"Alif","alternateName":"HEX-M4CE","jobTitle":"Bomber"},{"@type":"Person","name":"Rian","alternateName":"HEX-SPE4R","jobTitle":"Rusher"},{"@type":"Person","name":"Muhit","alternateName":"HEX-HUNTER","jobTitle":"Sniper"},{"@type":"Person","name":"Tasir","alternateName":"HEX-BROK","jobTitle":"Supporter"}]}
-    </script>
+
+    <!-- ===== Structured data =====
+         Generated at build time from src/data.js and src/site.js by
+         build/seo-plugin.js. Do not hand-edit — it would drift from the
+         roster, match films and brand links actually rendered on the page. -->
+    <!--@structured-data-->
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
@@ -85,7 +127,7 @@
           <div class="section-heading" data-reveal><div><p class="eyebrow"><span class="section-number">01</span> THE PEOPLE BEHIND THE PLAYS</p><h2 id="squad-title">MEET THE<br /><span class="outline-text">FIREPOWER.</span></h2></div><div class="heading-aside"><p>Different roles. The same relentless mindset.<br />Get to know the six behind the hex.</p><span class="small-label"><span class="status-dot"></span> THE ACTIVE ROSTER</span></div></div>
           <div class="roster-toolbar" data-reveal><div class="filter-tabs" role="group" aria-label="Filter players by role"><button class="filter-tab is-active" data-filter="all" aria-pressed="true">ALL PLAYERS <span>06</span></button><button class="filter-tab" data-filter="assault" aria-pressed="false">ASSAULT <span>03</span></button><button class="filter-tab" data-filter="support" aria-pressed="false">SUPPORT <span>02</span></button><button class="filter-tab" data-filter="precision" aria-pressed="false">PRECISION <span>01</span></button><button class="filter-tab" data-filter="saved" aria-pressed="false">SAVED <span id="saved-count">00</span></button></div><span class="roster-hint"><i data-lucide="mouse-pointer-2"></i><span data-scramble>DRAG / SCROLL THE RAIL</span></span></div>
           <div class="squad-scroll-hud" aria-hidden="true"><span>SQUAD SCROLL SEQUENCE</span><strong id="squad-active">01 / 06 — HEX-CL4W</strong><span>SCROLL TO ADVANCE <i data-lucide="arrow-down"></i></span></div>
-          <div class="roster-shell"><div class="roster-grid" id="roster-grid" role="group" aria-label="TEAM HEX player roster"></div><div class="roster-rail-ui" data-reveal><button class="icon-button" id="roster-prev" aria-label="Scroll roster left"><i data-lucide="arrow-left"></i></button><div class="roster-progress" aria-hidden="true"><span id="roster-progress"></span></div><button class="icon-button" id="roster-next" aria-label="Scroll roster right"><i data-lucide="arrow-right"></i></button></div></div>
+          <div class="roster-shell"><div class="roster-grid" id="roster-grid" role="group" aria-label="TEAM HEX player roster"><!--@prerender:roster--></div><div class="roster-rail-ui" data-reveal><button class="icon-button" id="roster-prev" aria-label="Scroll roster left"><i data-lucide="arrow-left"></i></button><div class="roster-progress" aria-hidden="true"><span id="roster-progress"></span></div><button class="icon-button" id="roster-next" aria-label="Scroll roster right"><i data-lucide="arrow-right"></i></button></div></div>
           <p id="roster-status" class="sr-only" role="status"></p>
           <div class="roster-footer" data-reveal><span><i data-lucide="shield-check"></i> INDIVIDUAL SKILL. COLLECTIVE STRENGTH.</span><a href="#join" class="text-link">THINK YOU HAVE WHAT IT TAKES? <i data-lucide="arrow-up-right"></i></a></div>
         </div>
@@ -116,8 +158,8 @@
       <section class="section section-light highlights-section" id="highlights" aria-labelledby="highlights-title"><div class="container">
         <div class="section-heading" data-reveal><div><p class="eyebrow"><span class="section-number">03</span> THE COMBAT ARCHIVE</p><h2 id="highlights-title">LESS TALK.<br /><span class="outline-text">MORE GAMEPLAY.</span></h2></div><div class="heading-aside"><p>The rounds. The rivalries. The real moments.<br />Straight from the TEAM HEX archives.</p><a class="text-link" href="https://www.youtube.com/channel/UCRlWiSG-A6Y_pMNMLVYPLgQ" target="_blank" rel="noopener noreferrer">HEX-CL4W ON YOUTUBE <i data-lucide="arrow-up-right"></i></a></div></div>
         <div class="media-tabs" role="tablist" aria-label="Combat archive" data-reveal><button id="films-tab" class="media-tab is-active" role="tab" aria-selected="true" aria-controls="films-panel" data-media-tab="films"><i data-lucide="clapperboard"></i> MATCH FILMS <span>04</span></button><button id="gallery-tab" class="media-tab" role="tab" aria-selected="false" aria-controls="gallery-panel" tabindex="-1" data-media-tab="gallery"><i data-lucide="images"></i> GALLERY <span>08</span></button><span class="archive-label" data-scramble>FROM THE UNIT. FOR THE UNIT.</span></div>
-        <div id="films-panel" class="films-layout" role="tabpanel" aria-labelledby="films-tab"><div class="feature-video-wrap"><button class="feature-video" id="feature-video" data-cursor="PLAY" data-video="tmQrSzo28RU" aria-label="Play Zero Gravity ESP vs TEAM HEX"><img id="feature-thumbnail" src="/images/tmQrSzo28RU.webp" alt="ZERO GRAVITY ESP vs TEAM HEX match thumbnail" width="1280" height="720" loading="lazy" /><span class="video-shade"></span><span class="video-topline"><span class="video-label">MATCH ARCHIVE</span><span class="video-hd">HEX TV <i data-lucide="radio"></i></span></span><span class="big-play"><i data-lucide="play"></i></span><span class="feature-video-caption"><small>TEAM HEX / MATCH FILM 01</small><strong id="feature-title">ZERO GRAVITY ESP<br />VS TEAM HEX</strong><span class="video-watch">WATCH THE FILM <i data-lucide="arrow-up-right"></i></span></span></button></div><div class="playlist"><div class="playlist-heading"><span>THE WATCHLIST</span><span>04 FILMS</span></div><div id="video-playlist"></div><a class="playlist-channel" href="https://www.youtube.com/channel/UCRlWiSG-A6Y_pMNMLVYPLgQ" target="_blank" rel="noopener noreferrer"><i data-lucide="youtube"></i><span>MORE FROM THE UNIT<small>Visit the HEX-CL4W channel</small></span><i data-lucide="arrow-up-right"></i></a></div></div>
-        <div id="gallery-panel" role="tabpanel" aria-labelledby="gallery-tab" hidden><div class="gallery-shell"><div class="gallery-grid" id="gallery-grid"></div><div class="gallery-rail-ui"><button class="icon-button" id="gallery-rail-prev" aria-label="Scroll gallery left"><i data-lucide="arrow-left"></i></button><div class="gallery-progress" aria-hidden="true"><span id="gallery-progress"></span></div><button class="icon-button" id="gallery-rail-next" aria-label="Scroll gallery right"><i data-lucide="arrow-right"></i></button></div></div><p class="gallery-note"><i data-lucide="scan-search"></i> SELECT AN IMAGE TO EXPLORE. USE ARROW KEYS TO NAVIGATE.</p></div>
+        <div id="films-panel" class="films-layout" role="tabpanel" aria-labelledby="films-tab"><div class="feature-video-wrap"><button class="feature-video" id="feature-video" data-cursor="PLAY" data-video="tmQrSzo28RU" aria-label="Play Zero Gravity ESP vs TEAM HEX"><img id="feature-thumbnail" src="/images/tmQrSzo28RU.webp" alt="ZERO GRAVITY ESP vs TEAM HEX match thumbnail" width="1280" height="720" loading="lazy" /><span class="video-shade"></span><span class="video-topline"><span class="video-label">MATCH ARCHIVE</span><span class="video-hd">HEX TV <i data-lucide="radio"></i></span></span><span class="big-play"><i data-lucide="play"></i></span><span class="feature-video-caption"><small>TEAM HEX / MATCH FILM 01</small><strong id="feature-title">ZERO GRAVITY ESP<br />VS TEAM HEX</strong><span class="video-watch">WATCH THE FILM <i data-lucide="arrow-up-right"></i></span></span></button></div><div class="playlist"><div class="playlist-heading"><span>THE WATCHLIST</span><span>04 FILMS</span></div><div id="video-playlist"><!--@prerender:playlist--></div><a class="playlist-channel" href="https://www.youtube.com/channel/UCRlWiSG-A6Y_pMNMLVYPLgQ" target="_blank" rel="noopener noreferrer"><i data-lucide="youtube"></i><span>MORE FROM THE UNIT<small>Visit the HEX-CL4W channel</small></span><i data-lucide="arrow-up-right"></i></a></div></div>
+        <div id="gallery-panel" role="tabpanel" aria-labelledby="gallery-tab" hidden><div class="gallery-shell"><div class="gallery-grid" id="gallery-grid"><!--@prerender:gallery--></div><div class="gallery-rail-ui"><button class="icon-button" id="gallery-rail-prev" aria-label="Scroll gallery left"><i data-lucide="arrow-left"></i></button><div class="gallery-progress" aria-hidden="true"><span id="gallery-progress"></span></div><button class="icon-button" id="gallery-rail-next" aria-label="Scroll gallery right"><i data-lucide="arrow-right"></i></button></div></div><p class="gallery-note"><i data-lucide="scan-search"></i> SELECT AN IMAGE TO EXPLORE. USE ARROW KEYS TO NAVIGATE.</p></div>
       </div></section>
 
       <section class="join-section" id="join" aria-labelledby="join-title"><div class="join-lines" aria-hidden="true"></div><div class="join-floor" aria-hidden="true"></div><div class="join-orbit" aria-hidden="true"><span></span><span></span><span></span></div><div class="container join-layout">
