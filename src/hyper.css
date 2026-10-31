@@ -1,0 +1,131 @@
+/* ==========================================================================
+   TEAM HEX — Hyper pass
+   Glitch type, warp streaks, horizontal archive rail, reactive surfaces.
+   ========================================================================== */
+
+:root { --hex-velocity: 0; }
+
+/* Scroll warp streaks ------------------------------------------------------ */
+.warp-streaks {
+  position: fixed; inset: -10% 0; z-index: 40; pointer-events: none; opacity: 0;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 11%, #7dd3fc14 11.2% 11.5%, transparent 11.7% 23%),
+    repeating-linear-gradient(90deg, transparent 0 17%, #22d3ee10 17.2% 17.4%, transparent 17.6% 31%);
+  transform: translateY(calc(var(--hex-velocity) * -28px)) skewX(calc(var(--hex-velocity) * -4deg));
+  transition: opacity .25s ease;
+  mix-blend-mode: screen;
+}
+body.is-warping .warp-streaks { opacity: .85; }
+
+/* Glitch headline ---------------------------------------------------------- */
+[data-glitch] { position: relative; display: inline-block; }
+[data-glitch]::before, [data-glitch]::after {
+  content: attr(data-glitch); position: absolute; inset: 0; pointer-events: none;
+  opacity: 0; clip-path: inset(0 0 0 0);
+}
+html[data-motion='on'] [data-glitch]::before { color: #22d3ee; animation: glitch-a 5.5s infinite steps(1); }
+html[data-motion='on'] [data-glitch]::after { color: #f43f5e; animation: glitch-b 5.5s infinite steps(1); }
+@keyframes glitch-a {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 0 0); }
+  87% { opacity: .85; transform: translate(-6px, 2px); clip-path: inset(12% 0 58% 0); }
+  89% { opacity: .85; transform: translate(5px, -2px); clip-path: inset(52% 0 18% 0); }
+  91% { opacity: .7; transform: translate(-3px, 1px); clip-path: inset(28% 0 42% 0); }
+  93% { opacity: 0; transform: none; }
+}
+@keyframes glitch-b {
+  0%, 86%, 100% { opacity: 0; transform: none; clip-path: inset(0 0 0 0); }
+  87.5% { opacity: .8; transform: translate(6px, -2px); clip-path: inset(62% 0 8% 0); }
+  89.5% { opacity: .8; transform: translate(-5px, 2px); clip-path: inset(8% 0 72% 0); }
+  91.5% { opacity: .6; transform: translate(3px, -1px); clip-path: inset(40% 0 30% 0); }
+  93% { opacity: 0; transform: none; }
+}
+body.is-warping .hero-title { text-shadow: 3px 0 #22d3ee66, -3px 0 #f43f5e55; }
+body.is-warping .hero-player img { filter: saturate(1.1) contrast(1.06) drop-shadow(0 18px 28px #0007); }
+
+/* Hyper archive rail ------------------------------------------------------- */
+.gallery-shell { position: relative; }
+.gallery-grid {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(440px, 84vw);
+  grid-template-columns: none; gap: 20px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; padding: 4px 2px 18px; scrollbar-width: none; cursor: grab;
+  mask-image: linear-gradient(90deg, #000 93%, transparent);
+}
+.gallery-grid::-webkit-scrollbar { display: none; }
+.gallery-grid:active { cursor: grabbing; }
+.gallery-item {
+  scroll-snap-align: start; aspect-ratio: 1.55; border-radius: 4px; overflow: hidden;
+  border: 1px solid #164e63; background: #070c14; transform-style: preserve-3d;
+  transition: border-color .3s, box-shadow .35s;
+}
+.gallery-item:hover { border-color: #22d3ee99; box-shadow: 0 22px 54px #0ea5e92e; }
+.gallery-item > img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); transition: transform .7s var(--ease), filter .4s; }
+.gallery-item:hover > img { transform: scale(1.06); filter: saturate(1.08); }
+.gallery-item.is-brand > img { object-fit: contain; padding: 18px; background: radial-gradient(ellipse at 50% 40%, #0ea5e91f, transparent 70%), #05080f; }
+.gallery-item.is-brand:hover > img { transform: scale(1.04); }
+.gallery-index {
+  position: absolute; top: 12px; left: 14px; z-index: 3; font-size: 9px; letter-spacing: .2em;
+  color: #7dd3fc; background: #05070ccc; border: 1px solid #164e63; padding: 4px 7px; border-radius: 2px;
+}
+.gallery-caption { z-index: 3; }
+.gallery-rail-ui { display: flex; align-items: center; gap: 18px; margin-top: 4px; }
+.gallery-rail-ui .icon-button { border-color: #164e63; background: #082f4966; color: #bae6fd; }
+.gallery-rail-ui .icon-button:hover:not(:disabled) { background: #0c4a6e; border-color: #22d3ee; }
+.gallery-progress { flex: 1; height: 2px; background: #1e293b; overflow: hidden; }
+.gallery-progress span { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #0ea5e9, #22d3ee); transform: scaleX(.04); transform-origin: left; transition: transform .2s linear; }
+
+/* Reactive UI polish ------------------------------------------------------- */
+.player-card, .gallery-item, .feature-video, .join-form-card, .contact-form-wrap {
+  box-shadow: 0 0 0 1px #7dd3fc08, 0 18px 44px #00000055;
+}
+.player-card:hover, .gallery-item:hover { box-shadow: 0 0 0 1px #22d3ee44, 0 26px 60px #0ea5e933; }
+.button-blue { background: linear-gradient(120deg, #1d4ed8, #0ea5e9); }
+.button-blue:hover { background: linear-gradient(120deg, #1e40af, #22d3ee); }
+.hero-chip { box-shadow: 0 0 24px #22d3ee22; }
+.section-scan { box-shadow: 0 0 18px #22d3ee55; }
+html[data-motion='on'] .status-dot { animation: status-pulse 2.2s ease-in-out infinite; }
+html[data-motion='on'] .hero-broadcast-frame i { animation: corner-pulse 3.2s ease-in-out infinite; }
+@keyframes corner-pulse { 50% { border-color: #22d3ee; box-shadow: 0 0 14px #22d3ee44; } }
+
+/* Squad scroll sequence ---------------------------------------------------- */
+.squad-scroll-hud { display: none; }
+.squad-section.has-scroll-sequence {
+  min-height: 100svh; display: flex; align-items: center;
+  padding: 88px 0 56px;
+}
+.has-scroll-sequence .squad-scroll-hud {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 0 0 14px; padding: 10px 14px; border: 1px solid #164e63;
+  background: #082f4966; color: #7dd3fc; font-size: 8px; letter-spacing: .18em;
+}
+.has-scroll-sequence .squad-scroll-hud strong { color: #e0f2fe; font-size: 9px; letter-spacing: .16em; font-weight: 600; }
+.has-scroll-sequence .squad-scroll-hud > span:last-child { display: inline-flex; align-items: center; gap: 8px; }
+.has-scroll-sequence .squad-scroll-hud svg { width: 12px; height: 12px; }
+.has-scroll-sequence .section-heading { margin-bottom: 22px; }
+.has-scroll-sequence .section-heading h2 { font-size: clamp(40px, 4vw, 58px); }
+.has-scroll-sequence .roster-toolbar { margin-bottom: 16px; }
+.has-scroll-sequence .roster-grid { overflow-x: hidden; scroll-snap-type: none; }
+.has-scroll-sequence .player-card { height: clamp(320px, 46vh, 440px); }
+.has-scroll-sequence .player-card > img {
+  transform: translateZ(22px) translateY(var(--squad-lift, 0px)) scale(var(--squad-scale, 1));
+  filter: saturate(var(--squad-sat, .85)) contrast(1.04);
+}
+.has-scroll-sequence .player-card.is-squad-focus {
+  border-color: #22d3eeaa;
+  box-shadow: 0 0 0 1px #22d3ee44, 0 26px 60px #0ea5e933;
+}
+.has-scroll-sequence .player-card.is-squad-focus .card-number { color: #7dd3fc; }
+.has-scroll-sequence .roster-footer { margin-top: 20px; }
+
+/* Motion off / reduced motion --------------------------------------------- */
+html[data-motion='off'] .warp-streaks { display: none; }
+html[data-motion='off'] [data-glitch]::before, html[data-motion='off'] [data-glitch]::after { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .warp-streaks { display: none; }
+  [data-glitch]::before, [data-glitch]::after { display: none; }
+}
+@media (max-width: 680px) {
+  .gallery-grid { grid-auto-columns: min(320px, 86vw); gap: 14px; mask-image: none; }
+  .gallery-item { aspect-ratio: 1.35; }
+  .gallery-rail-ui { gap: 12px; }
+  .warp-streaks { display: none; }
+}

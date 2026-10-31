@@ -1,0 +1,143 @@
+/* ==========================================================================
+   TEAM HEX — Pro layer
+   Command menu, shortcuts, notifications, saved operators, drafts, offline.
+   ========================================================================== */
+
+/* Header command trigger --------------------------------------------------- */
+.command-trigger {
+  display: inline-flex; align-items: center; gap: 9px; height: 34px; padding: 0 10px;
+  border: 1px solid #1e3a5f; background: #0a1220; color: #bae6fd;
+  font-size: 8px; letter-spacing: .16em; cursor: pointer;
+  transition: border-color .25s, background .25s, color .25s;
+}
+.command-trigger:hover { border-color: #22d3ee; background: #0c4a6e; color: #e0f2fe; }
+.command-trigger svg { width: 14px; height: 14px; }
+.command-trigger kbd {
+  font-family: inherit; font-size: 8px; letter-spacing: .08em; color: #7dd3fc;
+  border: 1px solid #164e63; border-radius: 3px; padding: 2px 5px; background: #082f4966;
+}
+.menu-command { width: 100%; justify-content: center; margin-top: 18px; }
+
+/* Command menu ------------------------------------------------------------- */
+dialog.command-dialog, dialog.shortcuts-dialog {
+  width: min(680px, 94vw); max-height: min(640px, 86svh); padding: 0; margin: auto;
+  border: 1px solid #164e63; border-radius: 6px; background: #070c14; color: #eef4ff;
+  box-shadow: 0 40px 120px #000000aa; overflow: hidden;
+}
+dialog.command-dialog[open] { display: flex; flex-direction: column; }
+dialog.command-dialog::backdrop, dialog.shortcuts-dialog::backdrop { background: #02040ad9; backdrop-filter: blur(6px); }
+.command-head { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid #164e63; }
+.command-head svg { width: 17px; height: 17px; color: #22d3ee; flex-shrink: 0; }
+.command-head input {
+  flex: 1; min-width: 0; background: none; border: 0; outline: none; color: #eef4ff;
+  font-family: inherit; font-size: 14px; letter-spacing: .02em; padding: 4px 0;
+}
+.command-head input::placeholder { color: #8494ab; }
+.command-esc { font-size: 8px; letter-spacing: .16em; color: #8494ab; border: 1px solid #1e293b; padding: 4px 7px; }
+.command-list { list-style: none; margin: 0; padding: 8px; overflow-y: auto; flex: 1; scrollbar-width: thin; }
+.command-group { font-size: 7px; letter-spacing: .22em; color: #8494ab; padding: 12px 10px 6px; }
+.command-item {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer;
+  padding: 10px 12px; border: 1px solid transparent; border-radius: 4px; background: none; color: #e2e8f0;
+  transition: background .18s, border-color .18s;
+}
+.command-item:hover, .command-item:focus-visible { background: #082f49; border-color: #164e63; outline: none; }
+.command-icon { display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; flex-shrink: 0; border: 1px solid #164e63; background: #0a1220; color: #7dd3fc; }
+.command-icon svg { width: 15px; height: 15px; }
+.command-text { flex: 1; min-width: 0; }
+.command-text strong { display: block; font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.command-text small { display: block; font-size: 7px; letter-spacing: .18em; color: #8494ab; margin-top: 4px; }
+.command-key { font-size: 11px; color: #8494ab; }
+.command-empty { padding: 26px 14px; font-size: 11px; line-height: 1.8; color: #bae6fd; }
+.command-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 16px; border-top: 1px solid #164e63; background: #05080f; font-size: 7px; letter-spacing: .16em; color: #8494ab; }
+.command-foot span { color: #7dd3fc; }
+
+/* Shortcuts ---------------------------------------------------------------- */
+.shortcuts-body { padding: 22px; overflow-y: auto; }
+.shortcuts-body h2 { font-family: var(--display); font-size: 30px; font-weight: 400; letter-spacing: .4px; }
+.shortcuts-body > p { font-size: 11px; line-height: 1.8; color: #94a3b8; margin-top: 10px; }
+.shortcuts-grid { display: grid; gap: 10px; margin-top: 20px; }
+.shortcuts-grid > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 1px solid #1e293b; background: #0a101b; padding: 11px 14px; }
+.shortcuts-grid span { font-size: 10px; letter-spacing: .1em; color: #cbd5e1; }
+.shortcuts-grid kbd { font-family: inherit; font-size: 9px; letter-spacing: .1em; color: #7dd3fc; border: 1px solid #164e63; background: #082f49; padding: 4px 8px; border-radius: 3px; white-space: nowrap; }
+.shortcuts-close { margin-top: 20px; }
+
+/* Notifications ------------------------------------------------------------ */
+.toast-region { position: fixed; left: 22px; bottom: 22px; z-index: 220; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: 11px; max-width: min(380px, 88vw);
+  border: 1px solid #164e63; border-left: 3px solid #22d3ee; background: #070c14f2;
+  padding: 12px 15px; color: #e0f2fe; font-size: 11px; line-height: 1.6; letter-spacing: .02em;
+  box-shadow: 0 18px 46px #00000088; animation: toast-in .3s var(--ease, ease);
+}
+.toast.is-leaving { opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s; }
+.toast-icon { display: flex; color: #22d3ee; flex-shrink: 0; }
+.toast-icon svg { width: 16px; height: 16px; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(12px); } }
+
+/* Offline badge ------------------------------------------------------------ */
+.connection-badge {
+  position: fixed; right: 20px; bottom: 20px; z-index: 210; display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid #6a583d; background: #1a1408f2; color: #e4c797; padding: 9px 13px;
+  font-size: 8px; letter-spacing: .16em;
+}
+.connection-badge svg { width: 13px; height: 13px; }
+
+/* Saved operators ---------------------------------------------------------- */
+.card-saved {
+  position: absolute; left: 22px; top: 62px; z-index: 4; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid #164e63; background: #082f49e6; color: #7dd3fc; padding: 4px 7px;
+  font-size: 6px; letter-spacing: .18em;
+}
+.card-saved svg { width: 10px; height: 10px; }
+.roster-empty {
+  grid-column: 1 / -1; min-width: min(520px, 78vw); border: 1px dashed #1e3a5f; background: #082f4926;
+  padding: 30px; color: #bae6fd; font-size: 11px; line-height: 1.9; letter-spacing: .06em;
+}
+.player-detail-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.pro-button {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  border: 1px solid #164e63; background: #082f4966; color: #bae6fd;
+  padding: 10px 14px; font-family: inherit; font-size: 8px; letter-spacing: .16em;
+  transition: background .25s, border-color .25s, color .25s;
+}
+.pro-button:hover { background: #0c4a6e; border-color: #22d3ee; color: #e0f2fe; }
+.pro-button[aria-pressed='true'] { background: #22d3ee; border-color: #22d3ee; color: #04121a; }
+.pro-button svg { width: 13px; height: 13px; }
+
+/* Drafts ------------------------------------------------------------------- */
+.draft-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  border: 1px dashed #164e63; background: #082f4933; color: #bae6fd;
+  padding: 10px 13px; margin-bottom: 16px; font-size: 8px; letter-spacing: .12em; line-height: 1.7;
+}
+.draft-banner button {
+  cursor: pointer; background: none; border: 1px solid #164e63; color: #7dd3fc;
+  padding: 6px 9px; font-family: inherit; font-size: 7px; letter-spacing: .16em;
+}
+.draft-banner button:hover { border-color: #22d3ee; color: #e0f2fe; }
+
+/* Archive extras ----------------------------------------------------------- */
+a.icon-button { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+#slideshow-toggle[aria-pressed='true'] { background: #22d3ee; border-color: #22d3ee; color: #04121a; }
+
+@media (max-width: 950px) {
+  .header-actions .command-trigger { display: none; }
+  .menu-command { display: inline-flex; }
+}
+@media (max-width: 680px) {
+  dialog.command-dialog, dialog.shortcuts-dialog { width: 94vw; max-height: 82svh; }
+  .command-head { padding: 13px 14px; }
+  .command-head input { font-size: 13px; }
+  .command-esc { display: none; }
+  .command-text strong { font-size: 11px; }
+  .toast-region { left: 14px; right: 14px; bottom: 14px; }
+  .connection-badge { right: 14px; bottom: 74px; }
+  .card-saved { left: 12px; top: 52px; }
+  .shortcuts-body { padding: 18px; }
+  .shortcuts-grid span { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+}
+html[data-motion='off'] .toast { animation: none; }
