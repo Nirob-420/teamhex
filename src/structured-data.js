@@ -236,5 +236,129 @@ export function structuredDataScript({ dateModified } = {}) {
   return `<script type="application/ld+json">${json}</script>`;
 }
 
+/**
+ * JSON-LD for one section route page.
+ *
+ * Each route is a real URL, so it gets its own `WebPage` node, a
+ * `BreadcrumbList` back to the homepage, and — where the section actually
+ * contains them — the same `Person` / `VideoObject` / `ImageGallery` entities
+ * the homepage declares. Reusing those builders is what keeps a player's
+ * description identical on `/` and `/squad`.
+ *
+ * @param {object} route  Entry from `src/routes.js`.
+ * @param {object} [options]
+ * @param {string} [options.dateModified]
+ */
+export function buildRouteStructuredData(route, { dateModified } = {}) {
+  const pageUrl = `${site.url}${route.path}`;
+  const pageId = `${pageUrl}#webpage`;
+  const breadcrumbId = `${pageUrl}#breadcrumb`;
+
+  const logo = {
+    '@type': 'ImageObject',
+    url: assets.logo,
+    contentUrl: assets.logo,
+    caption: `${site.name} blue wolf emblem`,
+  };
+
+  const trail = [
+    { name: 'Home', url: `${site.url}/` },
+    { name: route.crumb, url: pageUrl },
+  ];
+
+  const graph = [
+    {
+      '@type': 'Organization',
+      '@id': organizationId,
+      name: site.name,
+      alternateName: site.alternateName,
+      url: site.url,
+      logo,
+      email: `mailto:${site.email}`,
+      description: site.description,
+      sameAs,
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      url: site.url,
+      name: site.legalName,
+      inLanguage: site.language,
+      publisher: { '@id': organizationId },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': breadcrumbId,
+      itemListElement: trail.map((crumb, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: crumb.name,
+        item: crumb.url,
+      })),
+    },
+    // A compact definition of the team entity. A bare `{ '@id': teamId }`
+    // reference would leave the `about` pointer above resolving to nothing
+    // self-describing on this page.
+    {
+      '@type': 'SportsTeam',
+      '@id': teamId,
+      name: site.name,
+      alternateName: site.alternateName,
+      url: site.url,
+      sport: site.sport,
+      slogan: site.slogan,
+      logo,
+      sameAs,
+    },
+  ];
+
+  if (route.id === 'squad') graph.push(...personNodes());
+
+  if (route.id === 'highlights') {
+    graph.push(...videoNodes());
+    graph.push({
+      '@type': 'ImageGallery',
+      '@id': `${pageUrl}#gallery`,
+      name: 'TEAM HEX tactical archive',
+      description:
+        'In-game archive photography and original TEAM HEX brand assets from the Free Fire BD region.',
+      url: pageUrl,
+      isPartOf: { '@id': pageId },
+      associatedMedia: gallery.map(image => ({
+        '@type': 'ImageObject',
+        name: image.title,
+        description: `${image.subtitle} — ${image.title}`,
+        contentUrl: imageUrl(image.src),
+        url: imageUrl(image.src),
+      })),
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': pageId,
+    url: pageUrl,
+    name: route.title,
+    description: route.description,
+    inLanguage: site.language,
+    isPartOf: { '@id': websiteId },
+    about: { '@id': teamId },
+    breadcrumb: { '@id': breadcrumbId },
+    primaryImageOfPage: { '@type': 'ImageObject', url: assets.socialCard },
+    ...(dateModified ? { dateModified } : {}),
+    '@graph': graph,
+  };
+}
+
+/** Serialized `<script>` wrapper for a route page's JSON-LD. */
+export function routeStructuredDataScript(route, { dateModified } = {}) {
+  const json = JSON.stringify(buildRouteStructuredData(route, { dateModified }))
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
+  return `<script type="application/ld+json">${json}</script>`;
+}
+
 /** Convenience re-export so the sitemap generator shares the same data. */
 export { players, videos, gallery, links, profiles };

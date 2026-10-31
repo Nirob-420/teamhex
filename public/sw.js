@@ -1,8 +1,13 @@
 /* TEAM HEX service worker: offline shell + cached media. Never caches the visit API. */
-const VERSION = 'hex-v6-1';
+const VERSION = 'hex-v6-2';
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
-const PRECACHE = ['/', '/index.html', '/manifest.webmanifest', '/favicon.png', '/images/hex-wolf.webp'];
+// Route pages are precached too, so a section stays readable offline instead of
+// falling back to the homepage under a URL that does not describe it.
+const PRECACHE = [
+  '/', '/index.html', '/squad', '/about', '/protocol', '/highlights',
+  '/manifest.webmanifest', '/favicon.png', '/images/hex-wolf.webp',
+];
 
 async function precacheBuild() {
   const cache = await caches.open(SHELL);
@@ -47,14 +52,18 @@ self.addEventListener('fetch', event => {
   if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/.netlify/')) return;
 
   if (request.mode === 'navigate') {
+    // Cache per path. Caching every navigation as /index.html would serve the
+    // homepage when /squad is requested offline — right content, wrong URL.
+    const key = url.pathname === '/' ? '/index.html' : url.pathname.replace(/\.html$/, '');
     event.respondWith(
       fetch(request)
         .then(response => {
           const copy = response.clone();
-          caches.open(SHELL).then(cache => cache.put('/index.html', copy));
+          caches.open(SHELL).then(cache => cache.put(key, copy));
           return response;
         })
-        .catch(() => caches.match('/index.html').then(cached => cached || caches.match('/')))
+        .catch(() => caches.match(key).then(cached => cached
+          || caches.match('/index.html').then(home => home || caches.match('/'))))
     );
     return;
   }

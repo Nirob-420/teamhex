@@ -46,14 +46,56 @@ variables), or edit `siteUrl` in `src/site.js`. Nothing else needs updating —
 the canonical tag, Open Graph/Twitter URLs, JSON-LD, `sitemap.xml` and
 `robots.txt` all derive from it.
 
+### Real section URLs
+
+The homepage stays the full cinematic one-page experience. On top of it, four
+read-only sections now have real, independently indexable URLs:
+
+| URL | Page | Prerendered into the HTML |
+| --- | --- | --- |
+| `/` | Full one-page experience | all sections |
+| `/squad` | The roster | 6 operators + 6 `Person` entities |
+| `/about` | The story | the HEX DNA prose |
+| `/protocol` | Prepare, unite, dominate | the three-stage sequence |
+| `/highlights` | Combat archive | 4 films + 8 archive images, 4 `VideoObject` and an `ImageGallery` |
+
+Each route page gets its own `<title>`, meta description, self-referencing
+canonical, Open Graph/Twitter tags, and JSON-LD (`WebPage` + `BreadcrumbList` +
+a defined `SportsTeam`, plus the entities that section actually contains).
+
+**There is still only one copy of the markup.** `index.html` remains the single
+source of truth: the four `*.html` files in the project root are thin shells
+that `build/seo-plugin.js` expands at build *and* dev time by extracting the
+shared header, that route's `<section>`, and the shared footer out of the
+prepared homepage HTML. Editing a section on the homepage edits it everywhere.
+
+Route pages load `src/page.js` instead of `src/main.js`. They deliberately skip
+Three.js (567 kB) and the GSAP/Lenis animation chunk (153 kB), so a deep link
+into `/squad` is far lighter than the homepage. The design is identical because
+`src/page.js` imports the exact same stylesheets. Content needs no JavaScript at
+all — the reveal animations use `gsap.from()`, so every element's natural state
+is fully visible.
+
+**Why `/join` and `/contact` are redirects.** Those two sections contain working
+forms (client-side eligibility check, prefilled Gmail draft, device-local draft
+autosave). Rather than duplicate or refactor that logic onto separate pages —
+which risks silently breaking a working form — both URLs 302 to the homepage
+anchor where the forms already live. They are excluded from `sitemap.xml`,
+because a redirect must never be listed there. 302 rather than 301 so browsers
+do not cache it permanently: these are the most likely sections to become real
+pages later.
+
+On the homepage, nav links are now real URLs (`href="/squad"`) so crawlers can
+follow them, but a click still smooth-scrolls exactly as before — `src/main.js`
+intercepts the click only when the target section is present on the current
+page. If JavaScript is unavailable, the link simply navigates.
+
 ### Known limits, stated honestly
 
-- **The sitemap has one URL**, and that is correct. Sections are hash anchors
-  (`#squad`, `#about`) which are not separately indexable, and the `?player=`
-  deep links are parameterized views of the same page. Listing them would create
-  duplicate-content URLs. Operator and film discovery is handled by the
-  prerendered HTML and the entity graph instead. Real multi-page URLs would be
-  the single largest remaining SEO gain, but that is a routing change.
+- **The sitemap lists five URLs** — the homepage plus the four route pages.
+  Hash anchors are still absent because fragments are not separately indexable,
+  and `?player=` deep links stay out because they are parameterized views of a
+  page that is already indexed.
 - **`VideoObject.uploadDate` is omitted.** Google requires it for video rich
   results, and inventing a date would be worse than earning no rich result. Add
   `published: 'YYYY-MM-DD'` to an entry in `src/data.js` and it is picked up
@@ -206,7 +248,12 @@ The implementation follows Netlify’s documented conditional-write API: https:/
 - `src/site.js`: canonical origin, brand copy, social profiles, recruitment thresholds — the single source of truth for every SEO value
 - `src/templates.js`: shared roster/film/gallery markup, used by both the prerender and runtime hydration
 - `src/structured-data.js`: the JSON-LD entity graph, generated from `src/data.js`
-- `build/seo-plugin.js`: Vite plugin that prerenders content, injects JSON-LD, substitutes `%SITE_URL%`, and emits `robots.txt` + `sitemap.xml`
+- `src/routes.js`: the route table — paths, titles, descriptions, breadcrumb labels
+- `src/page.js`: lightweight entry for the route pages (no Three.js, no GSAP/Lenis)
+- `src/page.css`: breadcrumb and section-pager styling for the route pages
+- `src/icons.js`: the lucide icon set, shared by both entries
+- `squad.html`, `about.html`, `protocol.html`, `highlights.html`: thin route shells, expanded from `index.html` at build time — do not edit them directly
+- `build/seo-plugin.js`: Vite plugin that prerenders content, injects JSON-LD, substitutes `%SITE_URL%`, expands the route shells, serves pretty URLs, and emits `robots.txt` + `sitemap.xml`
 - `public/404.html`: self-contained branded 404 (`noindex, follow`)
 - `index.html`: content, sections, head SEO tags, `<!--@structured-data-->` and `<!--@prerender:*-->` markers, protocol sequence, footer counter
 - `src/style.css`: original responsive design system
@@ -244,7 +291,7 @@ On minimal Linux installations:
 npx playwright install-deps chromium
 ```
 
-The 34 automated tests cover:
+The 60 automated tests cover:
 
 - Shared WebGL context and scene switching
 - Horizontal squad rail controls and filter reset
@@ -264,6 +311,19 @@ The 34 automated tests cover:
 - **`robots.txt` and `sitemap.xml`** — correct content types, absolute sitemap URL, real ISO `lastmod`, `/api/` disallowed
 - **Social card integrity** — `/images/social-card.jpg` is genuinely 1200×630
 - **Manifest/meta description parity** — the two strings must not drift apart
+- **Every route page** — unique title within 60 characters, description within
+  120–160, self-referencing canonical and `og:url`, absolute `og:image`
+- **No duplicated content** — each route contains its own `<section>` and none of
+  the others, which is what makes them separately indexable rather than
+  near-identical copies of the homepage
+- **Route JSON-LD** — `WebPage` on top, a two-item `BreadcrumbList` from the
+  homepage to the page itself, and a *defined* `SportsTeam` rather than a bare
+  `@id` reference
+- **Route pages stay light** — they load `page.js` and must not load `main.js` or
+  the `three.js` chunk
+- **Redirects** — `/join` and `/contact` answer 302 with the homepage anchor
+- **Real internal links** — the homepage links to every route with a crawlable
+  URL and keeps no hash links to them, while the skip link stays an in-page anchor
 - Keyboard interaction with the 3D emblem
 - Pinned protocol stage progression
 - Session-deduplicated live counter and explicit device-only fallback
