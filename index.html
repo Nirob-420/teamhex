@@ -58,6 +58,13 @@
     <!-- Largest-contentful-paint candidate: the featured operator in the hero. -->
     <link rel="preload" as="image" href="/images/nirob.webp" fetchpriority="high" />
 
+    <!-- ===== Search Console =====
+         Paste the token from Search Console → Settings → Ownership
+         verification → HTML tag method into the content attribute below.
+         Leaving it empty is harmless; the property simply stays unverified.
+         The same tag is emitted on every route page by build/seo-plugin.js. -->
+    <meta name="google-site-verification" content="" />
+
     <!-- ===== Structured data =====
          Generated at build time from src/data.js and src/site.js by
          build/seo-plugin.js. Do not hand-edit — it would drift from the
@@ -74,15 +81,15 @@
 
     <header class="site-header" id="site-header">
       <div class="container header-inner">
-        <a href="#home" class="brand" aria-label="TEAM HEX home"><img src="/images/hex-wolf.webp" alt="" width="43" height="52" /><span>TEAM <b>HEX</b><small>ELITE FIREPOWER UNIT</small></span></a>
+        <a href="/" data-section="home" class="brand" aria-label="TEAM HEX home"><img src="/images/hex-wolf.webp" alt="" width="43" height="52" /><span>TEAM <b>HEX</b><small>ELITE FIREPOWER UNIT</small></span></a>
         <nav class="desktop-nav" aria-label="Main navigation">
-          <a class="nav-link is-active" href="#home">Home</a><a class="nav-link" href="#squad">The squad</a><a class="nav-link" href="#about">Our story</a><a class="nav-link" href="#highlights">Highlights</a><a class="nav-link" href="#contact">Contact</a>
+          <a class="nav-link is-active" href="/" data-section="home">Home</a><a class="nav-link" href="/squad" data-section="squad">The squad</a><a class="nav-link" href="/about" data-section="about">Our story</a><a class="nav-link" href="/highlights" data-section="highlights">Highlights</a><a class="nav-link" href="/contact" data-section="contact">Contact</a>
         </nav>
-        <div class="header-actions"><button class="command-trigger" id="command-trigger" aria-label="Open command menu" aria-keyshortcuts="Control+K Meta+K"><i data-lucide="search"></i><span>SEARCH</span><kbd>Ctrl K</kbd></button><button class="motion-toggle" data-motion-toggle aria-label="Turn animations off" aria-pressed="true" title="Toggle animations"><i data-lucide="activity"></i><span>FX ON</span></button><a class="button button-blue button-small header-join" href="#join">JOIN THE UNIT <i data-lucide="arrow-up-right"></i></a><button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button></div>
+        <div class="header-actions"><button class="command-trigger" id="command-trigger" aria-label="Open command menu" aria-keyshortcuts="Control+K Meta+K"><i data-lucide="search"></i><span>SEARCH</span><kbd>Ctrl K</kbd></button><button class="motion-toggle" data-motion-toggle aria-label="Turn animations off" aria-pressed="true" title="Toggle animations"><i data-lucide="activity"></i><span>FX ON</span></button><a class="button button-blue button-small header-join" href="/join" data-section="join">JOIN THE UNIT <i data-lucide="arrow-up-right"></i></a><button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button></div>
       </div>
     </header>
 
-<nav class="scroll-rail" aria-label="Explore sections"><span class="scroll-rail-label">THE JOURNEY</span><a href="#home" data-rail="home" aria-label="Home"><span>HOME</span><i></i></a><a href="#squad" data-rail="squad" aria-label="The squad"><span>SQUAD</span><i></i></a><a href="#about" data-rail="about" aria-label="Our story"><span>STORY</span><i></i></a><a href="#protocol" data-rail="protocol" aria-label="The HEX protocol"><span>PROTOCOL</span><i></i></a><a href="#highlights" data-rail="highlights" aria-label="Highlights"><span>FILMS</span><i></i></a><a href="#join" data-rail="join" aria-label="Join the unit"><span>JOIN</span><i></i></a><a href="#contact" data-rail="contact" aria-label="Contact"><span>COMMS</span><i></i></a><span id="scroll-percent" aria-hidden="true">000%</span></nav>
+<nav class="scroll-rail" aria-label="Explore sections"><span class="scroll-rail-label">THE JOURNEY</span><a href="/" data-section="home" data-rail="home" aria-label="Home"><span>HOME</span><i></i></a><a href="/squad" data-section="squad" data-rail="squad" aria-label="The squad"><span>SQUAD</span><i></i></a><a href="/about" data-section="about" data-rail="about" aria-label="Our story"><span>STORY</span><i></i></a><a href="/protocol" data-section="protocol" data-rail="protocol" aria-label="The HEX protocol"><span>PROTOCOL</span><i></i></a><a href="/highlights" data-section="highlights" data-rail="highlights" aria-label="Highlights"><span>FILMS</span><i></i></a><a href="/join" data-section="join" data-rail="join" aria-label="Join the unit"><span>JOIN</span><i></i></a><a href="/contact" data-section="contact" data-rail="contact" aria-label="Contact"><span>COMMS</span><i></i></a><span id="scroll-percent" aria-hidden="true">000%</span></nav>
     <main id="main">
       <section class="hero" id="home" aria-labelledby="hero-title">
         <canvas id="hero-particles" aria-hidden="true"></canvas>
@@ -94,7 +101,7 @@
             <h1 id="hero-title" class="hero-title"><span class="title-line"><span data-glitch="TEAM">TEAM</span></span><span class="title-line"><span class="blue-text" data-glitch="HEX">HEX<span class="title-period">.</span></span></span></h1>
             <p class="hero-subtitle hero-enter">FEARLESS IN BATTLE.<br /><span>UNITED IN VICTORY.</span></p>
             <p class="hero-description hero-enter">A competitive Free Fire unit from Bangladesh.<br />Built on discipline. Defined by the squad.</p>
-            <div class="hero-buttons hero-enter"><a class="button button-blue magnetic" href="#squad">MEET THE SQUAD <i data-lucide="arrow-up-right"></i></a><button class="watch-button" data-video="tmQrSzo28RU"><span class="play-circle"><i data-lucide="play"></i></span><span>WATCH US PLAY<small>INSIDE THE FIREPOWER</small></span></button></div>
+            <div class="hero-buttons hero-enter"><a class="button button-blue magnetic" href="/squad" data-section="squad">MEET THE SQUAD <i data-lucide="arrow-up-right"></i></a><button class="watch-button" data-video="tmQrSzo28RU"><span class="play-circle"><i data-lucide="play"></i></span><span>WATCH US PLAY<small>INSIDE THE FIREPOWER</small></span></button></div>
             <div class="hero-note hero-enter"><span class="tiny-hex"></span> NOT JUST A TEAM. A BROTHERHOOD.</div>
             <div class="hero-signature hero-enter"><span class="signature-line"></span><span>SIX OPERATORS. ONE STANDARD.<small>PREPARED TOGETHER. PROVEN TOGETHER.</small></span></div>
           </div>
@@ -116,7 +123,7 @@
           <div class="hero-stat"><strong>06<span> /</span></strong><span>PLAYERS.<br />ONE BROTHERHOOD.</span></div>
           <div class="hero-stat"><strong>05<span> /</span></strong><span>COMBAT ROLES.<br />ZERO HESITATION.</span></div>
           <div class="hero-stat"><strong>01<span> /</span></strong><span>SHARED PURPOSE.<br />ALL IN. ALWAYS.</span></div>
-          <a class="scroll-cue" href="#squad"><span>SCROLL TO EXPLORE</span><i data-lucide="arrow-down"></i></a>
+          <a class="scroll-cue" href="/squad" data-section="squad"><span>SCROLL TO EXPLORE</span><i data-lucide="arrow-down"></i></a>
         </div>
       </section>
 
@@ -129,7 +136,7 @@
           <div class="squad-scroll-hud" aria-hidden="true"><span>SQUAD SCROLL SEQUENCE</span><strong id="squad-active">01 / 06 — HEX-CL4W</strong><span>SCROLL TO ADVANCE <i data-lucide="arrow-down"></i></span></div>
           <div class="roster-shell"><div class="roster-grid" id="roster-grid" role="group" aria-label="TEAM HEX player roster"><!--@prerender:roster--></div><div class="roster-rail-ui" data-reveal><button class="icon-button" id="roster-prev" aria-label="Scroll roster left"><i data-lucide="arrow-left"></i></button><div class="roster-progress" aria-hidden="true"><span id="roster-progress"></span></div><button class="icon-button" id="roster-next" aria-label="Scroll roster right"><i data-lucide="arrow-right"></i></button></div></div>
           <p id="roster-status" class="sr-only" role="status"></p>
-          <div class="roster-footer" data-reveal><span><i data-lucide="shield-check"></i> INDIVIDUAL SKILL. COLLECTIVE STRENGTH.</span><a href="#join" class="text-link">THINK YOU HAVE WHAT IT TAKES? <i data-lucide="arrow-up-right"></i></a></div>
+          <div class="roster-footer" data-reveal><span><i data-lucide="shield-check"></i> INDIVIDUAL SKILL. COLLECTIVE STRENGTH.</span><a href="/join" data-section="join" class="text-link">THINK YOU HAVE WHAT IT TAKES? <i data-lucide="arrow-up-right"></i></a></div>
         </div>
       </section>
 
@@ -151,7 +158,7 @@
             <div class="protocol-step" data-protocol-step="1"><span class="protocol-index">02 / MOVE AS ONE</span><p class="protocol-display">SIX PLAYERS.<br /><span>ONE FREQUENCY.</span></p><p class="protocol-description">Trust the call. Cover your brother. Make every move together.</p></div>
             <div class="protocol-step" data-protocol-step="2"><span class="protocol-index">03 / LEAVE A MARK</span><p class="protocol-display">ALL IN.<br /><span>ALWAYS.</span></p><p class="protocol-description">Fearless in battle. United in victory. That’s TEAM HEX.</p></div>
           </div>
-          <div class="protocol-bottom container"><div class="protocol-progress"><span></span></div><div class="protocol-step-labels"><span>01 — PREPARE</span><span>02 — UNITE</span><span>03 — DOMINATE</span></div><a href="#highlights" class="text-link">KEEP EXPLORING <i data-lucide="arrow-down"></i></a></div>
+          <div class="protocol-bottom container"><div class="protocol-progress"><span></span></div><div class="protocol-step-labels"><span>01 — PREPARE</span><span>02 — UNITE</span><span>03 — DOMINATE</span></div><a href="/highlights" data-section="highlights" class="text-link">KEEP EXPLORING <i data-lucide="arrow-down"></i></a></div>
         </div>
       </section>
 
@@ -174,13 +181,13 @@
       </div></section>
     </main>
 
-    <footer class="site-footer"><div class="container"><div class="footer-top"><a class="brand footer-brand" href="#home" aria-label="TEAM HEX home"><img src="/images/hex-wolf.webp" alt="" width="52" height="63" loading="lazy" /><span>TEAM <b>HEX</b><small>ELITE FIREPOWER UNIT</small></span></a><p>FEARLESS IN BATTLE.<br /><span>UNITED IN VICTORY.</span></p><a class="back-to-top" href="#home" aria-label="Back to top"><i data-lucide="arrow-up"></i></a></div><div class="footer-wordmark" aria-hidden="true">TEAM HEX<span>BD</span></div><div class="visitor-counter" id="visitor-counter" data-mode="loading">
+    <footer class="site-footer"><div class="container"><div class="footer-top"><a class="brand footer-brand" href="/" data-section="home" aria-label="TEAM HEX home"><img src="/images/hex-wolf.webp" alt="" width="52" height="63" loading="lazy" /><span>TEAM <b>HEX</b><small>ELITE FIREPOWER UNIT</small></span></a><p>FEARLESS IN BATTLE.<br /><span>UNITED IN VICTORY.</span></p><a class="back-to-top" href="/" data-section="home" aria-label="Back to top"><i data-lucide="arrow-up"></i></a></div><div class="footer-wordmark" aria-hidden="true">TEAM HEX<span>BD</span></div><div class="visitor-counter" id="visitor-counter" data-mode="loading">
       <div class="visitor-counter-heading"><span class="visitor-icon"><i data-lucide="orbit"></i></span><div><span class="visitor-kicker" data-scramble>YOU’RE PART OF THE STORY</span><h3 id="visitor-label">THE HEX KEEPS GROWING.</h3></div><span class="visitor-status" id="visitor-status" role="status">CONNECTING</span></div>
       <div class="visitor-counter-body"><div class="odometer" id="visitor-digits" role="img" aria-label="Loading visit count"><span class="odometer-window"><span class="odometer-reel"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></span></span></div><div class="visitor-counter-copy"><span class="visitor-live-dot"></span><p>EVERY VISIT. EVERY SUPPORTER.<br /><strong>ONE GROWING BROTHERHOOD.</strong></p><button id="visitor-retry" class="text-link" hidden>RETRY CONNECTION <i data-lucide="rotate-ccw"></i></button></div></div>
       <p class="visitor-note" id="visitor-note">Connecting to the visitor counter. No personal information is collected.</p>
     </div><div class="footer-bottom"><span>© <span id="current-year">2026</span> TEAM HEX. ALL RIGHTS RESERVED.</span><div class="footer-socials"><a href="https://www.facebook.com/share/1BRqtJMLAs/" target="_blank" rel="noopener noreferrer" aria-label="TEAM HEX on Facebook"><i data-lucide="facebook"></i></a><a href="https://www.youtube.com/channel/UCRlWiSG-A6Y_pMNMLVYPLgQ" target="_blank" rel="noopener noreferrer" aria-label="HEX-CL4W on YouTube"><i data-lucide="youtube"></i></a><a href="https://chat.whatsapp.com/D52wjmfS7jS84aGA6bVN0v" target="_blank" rel="noopener noreferrer" aria-label="Join the WhatsApp community"><i data-lucide="message-circle"></i></a><a href="mailto:teamhexboys@gmail.com" aria-label="Email TEAM HEX"><i data-lucide="mail"></i></a></div><span class="footer-credit">ORIGINAL SITE CREATED BY <a href="https://nirob120.netlify.app/" target="_blank" rel="noopener noreferrer">NIROB <i data-lucide="arrow-up-right"></i></a></span></div></div></footer>
 
-    <dialog id="mobile-menu" class="mobile-menu" data-lenis-prevent><div class="mobile-menu-top"><span class="brand"><img src="/images/hex-wolf.webp" alt="" width="40" height="48" /><span>TEAM <b>HEX</b></span></span><button class="close-button" data-close aria-label="Close navigation"><i data-lucide="x"></i></button></div><nav aria-label="Mobile navigation"><a href="#home"><small>01</small> HOME <i data-lucide="arrow-up-right"></i></a><a href="#squad"><small>02</small> THE SQUAD <i data-lucide="arrow-up-right"></i></a><a href="#about"><small>03</small> OUR STORY <i data-lucide="arrow-up-right"></i></a><a href="#highlights"><small>04</small> HIGHLIGHTS <i data-lucide="arrow-up-right"></i></a><a href="#join"><small>05</small> JOIN THE UNIT <i data-lucide="arrow-up-right"></i></a><a href="#contact"><small>06</small> CONTACT <i data-lucide="arrow-up-right"></i></a></nav><p>FEARLESS IN BATTLE. UNITED IN VICTORY.</p><button class="command-trigger menu-command" data-open-command><i data-lucide="search"></i><span>SEARCH THE UNIT</span></button><button class="text-link" data-motion-toggle aria-pressed="true"><i data-lucide="activity"></i><span>FX ON</span></button></dialog>
+    <dialog id="mobile-menu" class="mobile-menu" data-lenis-prevent><div class="mobile-menu-top"><span class="brand"><img src="/images/hex-wolf.webp" alt="" width="40" height="48" /><span>TEAM <b>HEX</b></span></span><button class="close-button" data-close aria-label="Close navigation"><i data-lucide="x"></i></button></div><nav aria-label="Mobile navigation"><a href="/" data-section="home"><small>01</small> HOME <i data-lucide="arrow-up-right"></i></a><a href="/squad" data-section="squad"><small>02</small> THE SQUAD <i data-lucide="arrow-up-right"></i></a><a href="/about" data-section="about"><small>03</small> OUR STORY <i data-lucide="arrow-up-right"></i></a><a href="/highlights" data-section="highlights"><small>04</small> HIGHLIGHTS <i data-lucide="arrow-up-right"></i></a><a href="/join" data-section="join"><small>05</small> JOIN THE UNIT <i data-lucide="arrow-up-right"></i></a><a href="/contact" data-section="contact"><small>06</small> CONTACT <i data-lucide="arrow-up-right"></i></a></nav><p>FEARLESS IN BATTLE. UNITED IN VICTORY.</p><button class="command-trigger menu-command" data-open-command><i data-lucide="search"></i><span>SEARCH THE UNIT</span></button><button class="text-link" data-motion-toggle aria-pressed="true"><i data-lucide="activity"></i><span>FX ON</span></button></dialog>
 
     <dialog id="player-dialog" class="player-dialog" aria-labelledby="player-dialog-name" data-lenis-prevent><button class="close-button dialog-close" data-close aria-label="Close player profile"><i data-lucide="x"></i></button><div id="player-dialog-content"></div></dialog>
     <dialog id="video-dialog" class="video-dialog" aria-labelledby="video-dialog-title" data-lenis-prevent><div class="video-dialog-header"><div><span class="small-label">HEX TV / MATCH ARCHIVE</span><h2 id="video-dialog-title">TEAM HEX</h2></div><button class="close-button" data-close aria-label="Close video"><i data-lucide="x"></i></button></div><div class="video-frame" id="video-frame"></div><div class="video-dialog-footer"><span>Playback requires an internet connection.</span><a id="video-external" class="text-link" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">WATCH ON YOUTUBE <i data-lucide="arrow-up-right"></i></a></div></dialog>

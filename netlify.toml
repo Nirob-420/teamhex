@@ -15,6 +15,27 @@
   status = 200
   force = true
 
+# /join and /contact carry working forms (client-side eligibility check,
+# prefilled Gmail draft, device-local draft autosave). Rather than duplicate
+# that logic onto separate pages, these URLs point at the homepage anchors
+# where the forms already live. They are deliberately absent from sitemap.xml.
+#
+# 302, not 301: browsers cache 301s aggressively, and these two are the most
+# likely sections to become real pages later.
+[[redirects]]
+  from = "/join"
+  to = "/#join"
+  status = 302
+
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 302
+
+# The four content sections are real pages built into dist/ as squad.html etc.
+# Netlify's pretty URLs serve /squad from squad.html and redirect
+# /squad.html back to /squad, so no rewrite rules are needed here.
+
 [[headers]]
   for = "/*"
   [headers.values]

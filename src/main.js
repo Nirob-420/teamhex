@@ -10,14 +10,7 @@ import { SplitText } from 'gsap/SplitText';
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin';
 import { initVisitorCounter } from './visitors.js';
 import Lenis from 'lenis';
-import {
-  createIcons, Activity, ArrowUpRight, ArrowDown, ArrowUp, ArrowLeft, ArrowRight,
-  Play, Crosshair, MousePointer2, ShieldCheck, Shield, ShieldPlus, Users, Flame,
-  Clapperboard, Images, Radio, Youtube, ScanSearch, ChevronsUp, Gamepad2,
-  Fingerprint, LockKeyhole, MessageCircle, Facebook, Mail, ExternalLink,
-  Search, Bookmark, BookmarkCheck, Share2, Link2, Check, Keyboard, Pause, Download, WifiOff, Wifi, Trash2,
-  MailCheck, X, Minus, Plus, RotateCcw, ScanLine, Bomb, Zap, ScanEye, Orbit, Move3d, Layers3
-} from 'lucide';
+import { refreshIcons } from './icons.js';
 import { players, videos, gallery, links } from './data.js';
 import { savedOperators, drafts } from './store.js';
 import { initPro, toast, shareOrCopy } from './pro.js';
@@ -25,8 +18,6 @@ import { initPro, toast, shareOrCopy } from './pro.js';
 import { pad, renderRosterMarkup, renderPlaylistMarkup, renderGalleryMarkup } from './templates.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
-const icons = { Activity, ArrowUpRight, ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Play, Crosshair, MousePointer2, ShieldCheck, Shield, ShieldPlus, Users, Flame, Clapperboard, Images, Radio, Youtube, ScanSearch, ChevronsUp, Gamepad2, Fingerprint, LockKeyhole, MessageCircle, Facebook, Mail, ExternalLink, MailCheck, X, Minus, Plus, RotateCcw, ScanLine, Bomb, Zap, ScanEye, Orbit, Move3d, Layers3, Search, Bookmark, BookmarkCheck, Share2, Link2, Check, Keyboard, Pause, Download, WifiOff, Wifi, Trash2 };
-const refreshIcons = () => createIcons({ icons, attrs: { 'aria-hidden': 'true' } });
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const storage = {
@@ -429,6 +420,17 @@ document.addEventListener('click', event => {
   if (selected) { selectVideo(selected.dataset.selectVideo); return; }
   const galleryButton = event.target.closest('[data-gallery]');
   if (galleryButton) { openGallery(Number(galleryButton.dataset.gallery)); return; }
+  // Section links are real URLs now (/squad, /about, …) so crawlers can follow
+  // them. On the homepage the target section is present, so keep the original
+  // smooth-scroll feel; on a route page this handler is not even loaded.
+  const sectionLink = event.target.closest('a[data-section]');
+  if (sectionLink && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+    if (document.getElementById(sectionLink.dataset.section)) {
+      event.preventDefault();
+      goToSection(sectionLink.dataset.section);
+      return;
+    }
+  }
   const anchor = event.target.closest('a[href^="#"]');
   if (anchor && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
     const id = anchor.getAttribute('href').slice(1);
@@ -583,7 +585,7 @@ function updateScrollUI() {
   sectionIds.forEach(id => { if (document.getElementById(id).getBoundingClientRect().top <= 180) active = id; });
   $$('.scroll-rail a').forEach(link => { const selected = link.dataset.rail === active; link.classList.toggle('is-active', selected); if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
   $$('.desktop-nav .nav-link').forEach(link => {
-    const selected = link.getAttribute('href') === `#${active}`;
+    const selected = link.dataset.section === active;
     link.classList.toggle('is-active', selected);
     if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current');
   });

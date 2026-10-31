@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { teamHexSeo } from './build/seo-plugin.js';
+import { routes } from './src/routes.js';
 
 // Honest, persistent local-preview counter. The deployed site uses Netlify Blobs.
 function previewVisitorCounter() {
@@ -45,6 +46,13 @@ export default defineConfig({
   build: {
     target: 'es2020',
     rollupOptions: {
+      // Multi-page build: the homepage plus one real, indexable URL per
+      // read-only content section. Each shell is expanded from index.html by
+      // build/seo-plugin.js, so there is still only one copy of the markup.
+      input: Object.fromEntries([
+        ['index', resolve(process.cwd(), 'index.html')],
+        ...routes.map(route => [route.id, resolve(process.cwd(), route.file)]),
+      ]),
       output: {
         manualChunks(id) {
           if (id.includes('/three/')) return 'three';

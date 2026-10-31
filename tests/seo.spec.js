@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { players, videos, gallery } from '../src/data.js';
 import { site } from '../src/site.js';
+import { routes } from '../src/routes.js';
 
 /**
  * SEO regression suite.
@@ -222,6 +223,15 @@ test.describe('crawler infrastructure', () => {
     expect(locs).toContain(`${ORIGIN}/`);
     for (const loc of locs) expect(loc.startsWith('https://')).toBe(true);
 
+    // Homepage plus every section that has its own prerendered page.
+    expect(locs).toHaveLength(routes.length + 1);
+    for (const route of routes) expect(locs).toContain(`${ORIGIN}${route.path}`);
+
+    // /join and /contact are redirects to homepage anchors. A redirect must
+    // never appear in a sitemap.
+    expect(locs.some(loc => loc.endsWith('/join'))).toBe(false);
+    expect(locs.some(loc => loc.endsWith('/contact'))).toBe(false);
+
     // lastmod must be a real ISO timestamp, not a placeholder.
     const lastmod = body.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
     expect(lastmod).toBeTruthy();
@@ -236,5 +246,187 @@ test.describe('crawler infrastructure', () => {
     expect(body).toContain('TEAM HEX');
     // Must not leak the token that index.html relies on the plugin to replace.
     expect(body).not.toContain('%SITE_URL%');
+  });
+});
+
+/** Decodes the handful of entities the generator escapes in text nodes. */
+const decodeEntities = value =>
+  value
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+const metaContent = (html, pattern) => html.match(pattern)?.[1];
+const titleOf = html => decodeEntities(metaContent(html, /<title>([\s\S]*?)<\/title>/) ?? '');
+const jsonLdOf = html => JSON.parse(extractJsonLd(html)[0]);
+
+/** Sections expected to be prerendered on a given route. */
+const PRERENDER_COUNTS = {
+  squad: { cards: players.length, films: 0, gallery: 0 },
+  about: { cards: 0, films: 0, gallery: 0 },
+  protocol: { cards: 0, films: 0, gallery: 0 },
+  highlights: { cards: 0, films: videos.length, gallery: gallery.length },
+};
+
+test.describe('section route pages', () => {
+  for (const route of routes) {
+    test.describe(route.path, () => {
+      test('serves unique, self-referencing metadata', async ({ request }) => {
+        const res = await request.get(route.path);
+        expect(res.ok(), `${route.path} returned ${res.status()}`).toBe(true);
+        const html = await res.text();
+
+        expect(titleOf(html)).toBe(route.title);
+        // Titles must stay inside the ~60 character SERP window.
+        expect(route.title.length).toBeLessThanOrEqual(60);
+
+        const description = metaContent(html, /name="description" content="([^"]+)"/);
+        expect(decodeEntities(description)).toBe(route.description);
+        expect(route.description.length).toBeGreaterThanOrEqual(120);
+        expect(route.description.length).toBeLessThanOrEqual(160);
+
+        expect(metaContent(html, /rel="canonical" href="([^"]+)"/)).toBe(`${ORIGIN}${route.path}`);
+        expect(metaContent(html, /property="og:url" content="([^"]+)"/)).toBe(`${ORIGIN}${route.path}`);
+        expect(metaContent(html, /name="robots" content="([^"]+)"/)).toContain('index, follow');
+
+        // Social images must be absolute or no preview is generated.
+        expect(metaContent(html, /property="og:image" content="([^"]+)"/)).toBe(`${ORIGIN}/images/social-card.jpg`);
+        expect(html).toContain('name="twitter:card" content="summary_large_image"');
+        // og:title is read by scrapers that do not decode entities.
+        expect(metaContent(html, /property="og:title" content="([^"]+)"/)).not.toContain('&amp;');
+
+        expect(html).toContain(`data-route="${route.id}"`);
+      });
+
+      test('contains only its own section — no duplicated content', async ({ request }) => {
+        const html = await (await request.get(route.path)).text();
+
+        expect(html).toMatch(new RegExp(`<section\\b[^>]*\\bid="${route.id}"`));
+        for (const other of routes) {
+          if (other.id === route.id) continue;
+          expect(html, `${other.id} leaked into ${route.path}`).not.toMatch(
+            new RegExp(`<section\\b[^>]*\\bid="${other.id}"`)
+          );
+        }
+        // The homepage-only sections must not appear either.
+        expect(html).not.toMatch(/<section\b[^>]*\bid="home"/);
+        expect(html).not.toMatch(/<section\b[^>]*\bid="join"/);
+        expect(html).not.toMatch(/<section\b[^>]*\bid="contact"/);
+      });
+
+      test('keeps the shared header, footer, breadcrumb and pager', async ({ request }) => {
+        const html = await (await request.get(route.path)).text();
+
+        expect(html).toContain('<header');
+        expect(html).toContain('<footer');
+        expect(html).toContain('class="route-breadcrumb"');
+        expect(html).toContain('aria-label="Breadcrumb"');
+        expect(html).toContain('class="route-pager"');
+        // Chrome the header depends on.
+        expect(html).toContain('id="mobile-menu"');
+        expect(html).toContain('id="command-dialog"');
+        expect(html).toContain('id="toast-region"');
+        expect(html).toContain('id="main"');
+        expect(html).toContain('class="skip-link"');
+      });
+
+      test('declares WebPage + BreadcrumbList and defines the team entity', async ({ request }) => {
+        const html = await (await request.get(route.path)).text();
+        const blocks = extractJsonLd(html);
+        expect(blocks).toHaveLength(1);
+
+        const data = jsonLdOf(html);
+        expect(data['@type']).toBe('WebPage');
+        expect(data.url).toBe(`${ORIGIN}${route.path}`);
+        expect(data.inLanguage).toBe(site.language);
+
+        const graph = data['@graph'];
+        const types = graph.map(node => node['@type']);
+        expect(types).toContain('BreadcrumbList');
+        expect(types).toContain('Organization');
+        expect(types).toContain('WebSite');
+        // `about` points at the team, so the team must actually be defined here.
+        expect(types).toContain('SportsTeam');
+        expect(data.about['@id']).toBe(`${ORIGIN}/#team`);
+
+        const crumb = graph.find(node => node['@type'] === 'BreadcrumbList');
+        expect(crumb.itemListElement).toHaveLength(2);
+        expect(crumb.itemListElement[0].item).toBe(`${ORIGIN}/`);
+        expect(crumb.itemListElement[1].item).toBe(`${ORIGIN}${route.path}`);
+        expect(crumb.itemListElement.map(item => item.position)).toEqual([1, 2]);
+      });
+
+      test('prerenders its own content and stays off the heavy homepage bundle', async ({ request }) => {
+        const html = await (await request.get(route.path)).text();
+        const expected = PRERENDER_COUNTS[route.id];
+
+        expect(html.match(/class="player-card"/g) ?? []).toHaveLength(expected.cards);
+        expect(html.match(/class="playlist-item/g) ?? []).toHaveLength(expected.films);
+        expect(html.match(/class="gallery-item/g) ?? []).toHaveLength(expected.gallery);
+
+        // Route pages use the lightweight entry; loading main.js here would
+        // throw on the sections that are deliberately absent. Both the dev path
+        // (/src/page.js) and the built path (/assets/page-*.js) are accepted so
+        // the suite can run against either server.
+        const usesPageEntry =
+          html.includes('/src/page.js') || /\/assets\/page-[\w-]+\.js/.test(html);
+        expect(usesPageEntry, 'route page should load the lightweight page entry').toBe(true);
+
+        const loadsHomepageEntry =
+          html.includes('/src/main.js') || /\/assets\/index-[\w-]+\.js/.test(html);
+        expect(loadsHomepageEntry, 'route page must not load the homepage entry').toBe(false);
+
+        // three.js is by far the heaviest chunk and is homepage-only. Match the
+        // asset path, not the bare word — "three-stage" appears in real copy.
+        expect(/\/assets\/three-[\w-]+\.js/.test(html)).toBe(false);
+
+        if (route.id === 'squad') {
+          for (const player of players) expect(html).toContain(player.ign);
+          const types = jsonLdOf(html)['@graph'].map(node => node['@type']);
+          expect(types.filter(t => t === 'Person')).toHaveLength(players.length);
+        }
+        if (route.id === 'highlights') {
+          for (const video of videos) expect(html).toContain(video.id);
+          const types = jsonLdOf(html)['@graph'].map(node => node['@type']);
+          expect(types.filter(t => t === 'VideoObject')).toHaveLength(videos.length);
+          expect(types).toContain('ImageGallery');
+        }
+      });
+
+      test('has alt text on every image and no build artefacts', async ({ request }) => {
+        const html = await (await request.get(route.path)).text();
+
+        for (const tag of html.match(/<img\b[^>]*>/g) ?? []) {
+          expect(tag, `missing alt: ${tag.slice(0, 90)}`).toMatch(/\balt="/);
+        }
+        expect(html).not.toContain('%SITE_URL%');
+        expect(html).not.toContain('<!--@route');
+        expect(html).not.toContain('<!--@prerender');
+      });
+    });
+  }
+
+  test('form-bearing sections redirect to the homepage anchor', async ({ request }) => {
+    for (const path of ['/join', '/contact']) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      // 302, not 301: these are the most likely sections to become real pages.
+      expect(res.status(), `${path} should redirect`).toBe(302);
+      expect(res.headers().location).toBe(`/#${path.slice(1)}`);
+    }
+  });
+
+  test('homepage links to the route pages with real crawlable URLs', async ({ request }) => {
+    const html = await (await request.get('/')).text();
+    for (const route of routes) {
+      expect(html, `no internal link to ${route.path}`).toContain(`href="${route.path}"`);
+    }
+    // Hash links to sections would not be followed as separate URLs.
+    for (const route of routes) {
+      expect(html).not.toContain(`href="#${route.id}"`);
+    }
+    // The skip link is an in-page anchor and must stay one.
+    expect(html).toContain('href="#main"');
   });
 });

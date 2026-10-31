@@ -1,0 +1,184 @@
+/**
+ * Chrome that only exists on the section route pages: the breadcrumb above the
+ * section and the previous/next pager below it.
+ *
+ * Everything here reuses the existing design tokens from `src/style.css`
+ * (--bg, --panel, --blue, --line, --display) so the route pages read as the
+ * same site rather than a bolted-on template.
+ *
+ * The fixed 86px site header normally overlaps the top of the document. On the
+ * homepage the hero reserves that space with `padding-top: 86px`; here the
+ * breadcrumb reserves it instead, and the first section's own top padding is
+ * reduced so the two do not stack into a large gap.
+ */
+
+.route-breadcrumb {
+  padding-top: 104px;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(90% 140% at 12% 0%, #10284b40, transparent 58%),
+    var(--bg);
+}
+
+.route-breadcrumb .container {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+}
+
+.route-breadcrumb ol {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 9px;
+  letter-spacing: 1.6px;
+  color: var(--muted);
+}
+
+.route-breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.route-breadcrumb a {
+  color: #a7afbd;
+  transition: color .2s;
+}
+
+.route-breadcrumb a:hover,
+.route-breadcrumb a:focus-visible {
+  color: var(--blue-light);
+}
+
+.route-breadcrumb [aria-current="page"] {
+  color: #f3f5f9;
+}
+
+.route-breadcrumb .crumb-sep {
+  color: #4a5a72;
+  font-size: 8px;
+}
+
+.route-breadcrumb .crumb-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: auto;
+}
+
+/* Keep the pager visually continuous with the section above it. */
+.route-pager {
+  border-top: 1px solid var(--line);
+  background: #06080d;
+  padding: 34px 0 40px;
+}
+
+.route-pager .container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.route-pager a {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  transition: border-color .25s, background .25s, transform .3s var(--ease);
+  max-width: 46%;
+}
+
+.route-pager a:hover,
+.route-pager a:focus-visible {
+  border-color: var(--blue);
+  background: #12203a;
+  transform: translateY(-3px);
+}
+
+.route-pager .pager-direction {
+  font-size: 7px;
+  letter-spacing: 2px;
+  color: #7387a5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-pager .pager-label {
+  font-family: var(--display);
+  font-size: 21px;
+  line-height: 1.15;
+  letter-spacing: .3px;
+}
+
+.route-pager .pager-next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.route-pager .pager-next .pager-direction {
+  justify-content: flex-end;
+}
+
+.route-pager svg {
+  width: 14px;
+  height: 14px;
+  color: var(--blue);
+}
+
+/* A route page has no hero, so nothing else reserves the fixed header's space. */
+html[data-route] main > section:first-of-type {
+  padding-top: 46px;
+}
+
+/* The scroll rail is a fixed side element driven by homepage scroll-spy; it is
+   still useful here as a section index, but it must not overlap the breadcrumb. */
+html[data-route] .scroll-rail {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .route-breadcrumb {
+    padding-top: 96px;
+  }
+
+  .route-breadcrumb .container {
+    gap: 10px;
+  }
+
+  .route-breadcrumb .crumb-kicker {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .route-pager .container {
+    flex-direction: column;
+  }
+
+  .route-pager a {
+    max-width: none;
+  }
+
+  .route-pager .pager-next {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .route-pager .pager-next .pager-direction {
+    justify-content: flex-start;
+  }
+
+  html[data-route] main > section:first-of-type {
+    padding-top: 34px;
+  }
+}
