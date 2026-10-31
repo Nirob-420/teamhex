@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { teamHexSeo } from './build/seo-plugin.js';
 
 // Honest, persistent local-preview counter. The deployed site uses Netlify Blobs.
 function previewVisitorCounter() {
@@ -38,7 +39,7 @@ function previewVisitorCounter() {
 }
 
 export default defineConfig({
-  plugins: [previewVisitorCounter()],
+  plugins: [teamHexSeo(), previewVisitorCounter()],
   server: { host: '0.0.0.0', port: 3000, allowedHosts: true },
   preview: { host: '0.0.0.0', port: 3000, allowedHosts: true },
   build: {

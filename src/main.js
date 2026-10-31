@@ -21,13 +21,14 @@ import {
 import { players, videos, gallery, links } from './data.js';
 import { savedOperators, drafts } from './store.js';
 import { initPro, toast, shareOrCopy } from './pro.js';
+// Shared with build/seo-plugin.js so prerendered HTML and hydrated HTML match exactly.
+import { pad, renderRosterMarkup, renderPlaylistMarkup, renderGalleryMarkup } from './templates.js';
 
 gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 const icons = { Activity, ArrowUpRight, ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Play, Crosshair, MousePointer2, ShieldCheck, Shield, ShieldPlus, Users, Flame, Clapperboard, Images, Radio, Youtube, ScanSearch, ChevronsUp, Gamepad2, Fingerprint, LockKeyhole, MessageCircle, Facebook, Mail, ExternalLink, MailCheck, X, Minus, Plus, RotateCcw, ScanLine, Bomb, Zap, ScanEye, Orbit, Move3d, Layers3, Search, Bookmark, BookmarkCheck, Share2, Link2, Check, Keyboard, Pause, Download, WifiOff, Wifi, Trash2 };
 const refreshIcons = () => createIcons({ icons, attrs: { 'aria-hidden': 'true' } });
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const pad = n => String(n).padStart(2, '0');
 const storage = {
   get(key) { try { return localStorage.getItem(key); } catch { return null; } },
   set(key, value) { try { localStorage.setItem(key, value); } catch { /* Private browsing is supported. */ } }
@@ -77,13 +78,7 @@ function renderRoster(filter = 'all', animate = false) {
   const grid = $('#roster-grid');
   grid.setAttribute('aria-busy', 'true');
   gsap.killTweensOf('.player-card');
-  grid.innerHTML = visible.length ? visible.map(player => `
-    <button class="player-card" data-cursor="VIEW" data-player="${player.id}" aria-label="View ${player.name}, ${player.ign}, ${player.role}">
-      <span class="player-card-top"><span class="role-badge"><i data-lucide="${player.icon}"></i>${player.role}</span><span class="card-number">/${player.number}</span></span>
-      <img src="/images/${player.id}.webp" alt="${player.name} in the TEAM HEX jersey" width="725" height="1150" loading="lazy" decoding="async" />
-      <span class="card-holo" aria-hidden="true"></span><span class="player-card-shade"></span><span class="card-view">VIEW OPERATOR PROFILE</span>${savedOperators.has(player.id) ? '<span class="card-saved"><i data-lucide="bookmark-check"></i>SAVED</span>' : ''}
-      <span class="player-card-content"><span><span class="player-card-ign">${player.ign}</span><span class="player-card-name">${player.name}</span></span><span class="card-arrow"><i data-lucide="arrow-up-right"></i></span></span>
-    </button>`).join('') : '<p class="roster-empty">NO SAVED OPERATORS YET.<br />Open any player profile and choose SAVE OPERATOR. Saved players stay on this device only — nothing is uploaded.</p>';
+  grid.innerHTML = renderRosterMarkup(visible, id => savedOperators.has(id));
   grid.setAttribute('aria-busy', 'false');
   $('#roster-status').textContent = `${visible.length} ${visible.length === 1 ? 'player' : 'players'} shown.`;
   refreshIcons();
@@ -181,20 +176,11 @@ $('#roster-grid').addEventListener('focusin', event => {
 });
 
 function renderPlaylist() {
-  $('#video-playlist').innerHTML = videos.map((video, i) => `
-    <button class="playlist-item ${i === 0 ? 'is-active' : ''}" data-select-video="${video.id}" aria-pressed="${i === 0}" aria-label="Select ${video.title}">
-      <span class="playlist-number">${pad(i + 1)}</span><img src="/images/${video.id}.webp" alt="" width="160" height="90" loading="lazy" />
-      <span><span class="playlist-category">${video.category}</span><span class="playlist-title">${video.title}</span></span>
-    </button>`).join('');
+  $('#video-playlist').innerHTML = renderPlaylistMarkup(videos);
 }
 
 function renderGallery() {
-  $('#gallery-grid').innerHTML = gallery.map((image, i) => `
-    <button class="gallery-item ${image.fit === 'contain' ? 'is-brand' : ''}" data-cursor="OPEN" data-gallery="${i}" aria-label="Open ${image.title}">
-      <img src="/images/${image.src}.webp" alt="${image.title} — TEAM HEX Free Fire archive" width="1440" height="648" loading="lazy" />
-      <span class="gallery-index" aria-hidden="true">${pad(i + 1)}</span>
-      <span class="gallery-caption"><small>${image.subtitle}</small><strong>${image.title}</strong><i data-lucide="scan-search"></i></span>
-    </button>`).join('');
+  $('#gallery-grid').innerHTML = renderGalleryMarkup(gallery);
 }
 function syncGalleryRail() {
   const rail = $('#gallery-grid');
