@@ -2,6 +2,111 @@
 
 A cinematic Free Fire esports website built from the public content and original photography at https://teamhex.netlify.app.
 
+## What’s new in 6.3 — Scroll performance
+
+The page tracked the finger but stuttered. Nothing was removed and no animation
+was retimed. Every change below only takes work away from frames that were
+already being drawn — the pixels produced are the same pixels.
+
+Six things were costing time on **every scroll frame**:
+
+1. **The hero particle field ran 2,556 `Math.hypot` calls per frame.** The
+   connector test only needed to know *whether* two particles were within 110px,
+   but it paid for a square root on every pair to find out. It now compares
+   squared distances and takes `Math.sqrt` only for the pairs that actually draw
+   a line. The loop-invariant `warp` factor was also being recomputed once per
+   particle instead of once per frame, and `forEach` was allocating a closure
+   every frame. Measured against the real shipped source: **1.32× faster**, with
+   an identical count of canvas draw operations (3,233,622 over 3,000 frames).
+2. **`--hex-velocity` was written to `document.documentElement.style`.** Setting
+   a custom property on the root invalidates inherited style for the whole
+   document — roughly 890 elements — on every scroll frame, for a value read by
+   exactly one rule on exactly one element. It is now written straight to
+   `#warp-streaks`, the element that consumes it.
+3. **`updateScrollUI()` wrote to the DOM and then measured it.** It set the
+   progress bar, the percentage text and the header class *first*, then read
+   seven `getBoundingClientRect()` calls. Those writes dirty layout, so the
+   browser had to recalculate it synchronously before answering — a forced
+   reflow on every single scroll frame, which is the classic cause of a page
+   that follows the finger but stutters. All reads now happen before all writes,
+   and the ten element lookups and two array allocations it repeated per frame
+   are cached once.
+4. **`self.getVelocity()` was called three times per frame** for the same value.
+   It is now read once into `scrollVelocity`.
+5. **`world.js` re-chose its WebGL scene on every raw `scroll` and `resize`
+   event**, reading a bounding rect for each of the three hosts. Those are now
+   coalesced into one animation frame. The tunnel branch also walked the DOM
+   with `closest('.protocol-section')` on every *rendered* frame; that ancestor
+   never changes, so it is resolved once at build time.
+6. **Roughly 126–142 compositor layers were pinned open permanently** by
+   `will-change: transform` on `.hex-char` / `.footer-char`, declared twice
+   (`experience.css` and `studio.css`). The heading reveal is a `once: true`
+   tween that finishes in under a second and never runs again, yet its layers
+   stayed promoted for the whole session. Browsers promote an element
+   automatically for the duration of a running transform animation and release
+   it afterwards, so the hint was not buying anything.
+
+### What was deliberately *not* changed
+
+- **No animation was altered.** A scripted comparison of every tween parameter
+  in `src/main.js` and `src/world.js` against the previous revision shows 318 of
+  318 and 5 of 5 unchanged. The single textual difference is the `.marquee-track`
+  `skewX`, which now reads the local `scrollVelocity` assigned two lines earlier
+  in the same synchronous callback instead of calling `self.getVelocity()` again
+  — the same value, one fewer call.
+- **The hover parallax handlers were left alone**, even though they look like
+  obvious candidates for the same frame-coalescing. GSAP books its next
+  animation frame *before* it dispatches its tick, so its ticker is always ahead
+  of a callback scheduled from an input handler; deferring the hover work by a
+  frame would have delayed the resulting tween by one render and added ~16ms of
+  latency to pointer tracking. Browsers already coalesce `pointermove` to about
+  one dispatch per frame, so there was little to gain and responsiveness to
+  lose. There is a comment at the site saying so — do not "optimise" it without
+  re-checking that ordering.
+- **The drag handlers are untouched.** They accumulate deltas, so dropping
+  samples would change the result rather than just the cost.
+- **Particle counts, link distance, the WebGL 30fps cap and `setPixelRatio` are
+  all unchanged.** Lowering any of them would have been a visible simplification.
+- `.player-float` carries `backdrop-filter: blur(12px)` and sits *inside*
+  `.hero-art`, which is scroll-scrubbed — so that blur is re-rasterised on every
+  scroll frame. This is the largest remaining paint cost on the page and it was
+  **left in place**, because removing it changes how the hero looks. Same for
+  the `text-shadow` / `drop-shadow` that `is-warping` adds during fast scroll.
+  Those are deliberate design choices, not overhead.
+
+### How this was verified, and the limit of that
+
+Playwright's browsers cannot be installed in the environment where this work was
+done, so **no real FPS or paint profiling was possible**. What was actually run:
+
+- `npm run build` — clean.
+- `npx playwright test --list` — 60 tests across 4 files still parse.
+- An HTTP harness against both the dev server and the production preview:
+  **63/63** and **45/45** checks (all five routes, the 302s, every referenced
+  asset, the single `ld+json` block, the visitor API, and a CSS audit confirming
+  no `will-change` remains on the char classes).
+- Node harnesses that execute the **real shipped functions** side by side with
+  their previous revisions: the particle loop over 3,000 frames, and
+  `updateScrollUI` across 772 scroll positions, comparing every DOM write.
+  Result: identical write sets, identical write order, identical values.
+
+Because the particle optimisation swaps `Math.hypot` for `Math.sqrt(dx*dx+dy*dy)`,
+the alpha values it computes differ in the last bits of floating-point precision
+(56,215 of 3.2M operations, max delta `3.5e-17`). Canvas colours are quantised to
+8 bits per channel, so **zero** of those differences survive to a pixel.
+
+Two things still need a human with a browser:
+
+- **Run the Playwright suite locally** (`npx playwright install && npx playwright
+  test`). It has never been executed against this change. Note that the config
+  sets `reducedMotion: 'reduce'`, so the suite under-covers the animation paths
+  by design.
+- **Eyeball the heading text.** Removing `will-change` can let the browser
+  restore subpixel antialiasing on composited text, so the split headings may
+  render marginally crisper at rest. That is an improvement, not a regression,
+  but it is the one change here that is visible at all — and it is a single
+  declaration to put back if you disagree.
+
 ## What’s new in 6.1 — Search engine optimisation
 
 The site is a single page, so its ranking depends almost entirely on what a

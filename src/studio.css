@@ -290,7 +290,24 @@ dialog { border-radius: 4px; }
 .mobile-menu nav a { font-weight: 700; }
 
 /* Motion polish ----------------------------------------------------------- */
-.hex-char, .footer-char { will-change: transform; }
+/*
+ * `.hex-char` / `.footer-char` used to carry a permanent `will-change: transform`,
+ * declared twice (here and in experience.css). SplitText splits 5 headings into
+ * 118 chars (133 counting the whitespace it also wraps) plus the 8-char footer
+ * wordmark, so that hint held roughly 126-142 compositor layers open for the
+ * life of the page - GPU memory and compositing work paid on every frame.
+ *
+ * The heading reveal is the wasteful part: it is a `once: true` tween that
+ * finishes in under a second and then never runs again, yet its ~130 layers
+ * stayed promoted for the whole session. The footer wordmark is `scrub: 1`, so
+ * it does animate continuously, but it is only 8 elements either way.
+ *
+ * The hint is removed rather than rescheduled because it is not needed: GSAP
+ * animates `transform` on these spans, and browsers promote an element to its
+ * own layer automatically for the duration of a running transform animation,
+ * then release it. No tween property, duration, ease or stagger is touched, so
+ * every animation is frame-for-frame what it was.
+ */
 .player-card, .gallery-item, .feature-video, .join-form-card, .contact-form-wrap { backface-visibility: hidden; }
 .button::before { content: ''; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, #ffffff22 50%, transparent 70%); transform: translateX(-120%); transition: transform .7s var(--ease); pointer-events: none; }
 .button:hover::before { transform: translateX(120%); }

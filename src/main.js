@@ -41,6 +41,24 @@ const marqueeState = { speed: 1 };
 let scrollVelocity = 0, velocityTimer = 0;
 const ticker = time => lenis?.raf(time * 1000);
 
+/*
+ * `--hex-velocity` is read by exactly one rule in the whole stylesheet
+ * (`.warp-streaks` in src/hyper.css). It was being written on
+ * `document.documentElement` every scroll frame, and because custom properties
+ * inherit, that invalidated style on all ~890 nodes per frame. Writing it on
+ * the one element that consumes it scopes the invalidation to that element.
+ *
+ * The computed value is identical: an inline custom property on `.warp-streaks`
+ * resolves to the same number the inherited `:root` value did, so the warp
+ * effect is unchanged. The `:root { --hex-velocity: 0 }` default stays in place
+ * for every other element, exactly as before.
+ */
+const warpStreaks = document.getElementById('warp-streaks');
+const setWarpVelocity = value => {
+  if (warpStreaks) warpStreaks.style.setProperty('--hex-velocity', value);
+  else document.documentElement.style.setProperty('--hex-velocity', value);
+};
+
 /* Real roster, real match films, original team photography. */
 let rosterFilter = 'all';
 function updateSavedCount() {
@@ -537,26 +555,45 @@ function resizeCanvas() {
   context?.setTransform(dpr, 0, 0, dpr, 0, 0);
   particles = Array.from({ length: canvasWidth < 680 ? 34 : 72 }, () => ({ x: Math.random() * canvasWidth, y: Math.random() * canvasHeight, vx: .06 + Math.random() * .22, vy: -.05 - Math.random() * .2, r: .5 + Math.random() * 1.1, a: .15 + Math.random() * .45 }));
 }
+/*
+ * Performance notes — the drawn output of this loop is byte-for-byte identical
+ * to the original; only the cost of producing it changed.
+ *
+ * 1. `warp` depends on scroll velocity, not on the particle, so it is computed
+ *    once per frame instead of once per particle.
+ * 2. The connector test was `Math.hypot(dx, dy) < 110` for all 2,556 pairs.
+ *    `hypot` is deliberately overflow-safe, which makes it far slower than a
+ *    plain `sqrt`. Comparing squared distances first rejects the overwhelming
+ *    majority of pairs with two multiplies and no function call at all, and
+ *    `sqrt` is then paid only for pairs that actually draw a line. Coordinates
+ *    are bounded by the canvas size, so the overflow protection was never
+ *    needed. Same threshold, same alpha, same pixels.
+ * 3. An indexed loop avoids allocating a closure per particle per frame.
+ */
+const LINK_DISTANCE = 110, LINK_DISTANCE_SQ = LINK_DISTANCE * LINK_DISTANCE;
 function drawParticles() {
   particleFrame = 0;
   if (!context || !motionEnabled || !heroVisible || document.hidden) return;
   context.clearRect(0, 0, canvasWidth, canvasHeight);
-  particles.forEach((particle, i) => {
+  const warp = Math.min(Math.abs(scrollVelocity) / 2200, 1);
+  const warped = warp > .12, count = particles.length;
+  for (let i = 0; i < count; i++) {
+    const particle = particles[i];
     particle.x += particle.vx; particle.y += particle.vy;
     if (particle.x > canvasWidth + 5) particle.x = -5;
     if (particle.y < -5) particle.y = canvasHeight + 5;
     context.beginPath(); context.arc(particle.x, particle.y, particle.r, 0, Math.PI * 2);
     context.fillStyle = `rgba(125,211,252,${particle.a})`; context.fill();
-    const warp = Math.min(Math.abs(scrollVelocity) / 2200, 1);
-    if (warp > .12) { context.beginPath(); context.moveTo(particle.x, particle.y); context.lineTo(particle.x - particle.vx * 26 * warp, particle.y - particle.vy * 26 * warp); context.strokeStyle = `rgba(34,211,238,${particle.a * warp * .7})`; context.lineWidth = particle.r * .8; context.stroke(); }
-    for (let j = i + 1; j < particles.length; j++) {
-      const other = particles[j], distance = Math.hypot(particle.x - other.x, particle.y - other.y);
-      if (distance < 110) {
-        context.beginPath(); context.moveTo(particle.x, particle.y); context.lineTo(other.x, other.y);
-        context.strokeStyle = `rgba(53,116,204,${(1 - distance / 110) * .1})`; context.lineWidth = .6; context.stroke();
-      }
+    if (warped) { context.beginPath(); context.moveTo(particle.x, particle.y); context.lineTo(particle.x - particle.vx * 26 * warp, particle.y - particle.vy * 26 * warp); context.strokeStyle = `rgba(34,211,238,${particle.a * warp * .7})`; context.lineWidth = particle.r * .8; context.stroke(); }
+    for (let j = i + 1; j < count; j++) {
+      const other = particles[j];
+      const dx = particle.x - other.x, dy = particle.y - other.y, squared = dx * dx + dy * dy;
+      if (squared >= LINK_DISTANCE_SQ) continue;
+      const distance = Math.sqrt(squared);
+      context.beginPath(); context.moveTo(particle.x, particle.y); context.lineTo(other.x, other.y);
+      context.strokeStyle = `rgba(53,116,204,${(1 - distance / LINK_DISTANCE) * .1})`; context.lineWidth = .6; context.stroke();
     }
-  });
+  }
   particleFrame = requestAnimationFrame(drawParticles);
 }
 function syncParticles() {
@@ -572,19 +609,48 @@ document.addEventListener('visibilitychange', syncParticles);
 
 /* Scroll progression and active section indicators. */
 const sectionIds = ['home', 'squad', 'about', 'protocol', 'highlights', 'join', 'contact'];
+/*
+ * Cached once. These nodes are static markup and nothing rebuilds them at
+ * runtime (the innerHTML writes in this file target the roster grid, playlist,
+ * gallery, dialogs and toasts — never the nav, rail or header). Resolving them
+ * per frame ran ten selectors and allocated two arrays on every scroll frame.
+ */
+const sectionEls = sectionIds.map(id => document.getElementById(id));
+const pageProgressEl = document.getElementById('page-progress');
+const scrollPercentEl = document.getElementById('scroll-percent');
+const siteHeaderEl = document.getElementById('site-header');
+const railLinks = $$('.scroll-rail a');
+const navLinks = $$('.desktop-nav .nav-link');
 let scrollQueued = false;
 function updateScrollUI() {
   scrollQueued = false;
+  /*
+   * Every layout read now happens before every write.
+   *
+   * The seven section measurements used to run *after* the progress bar,
+   * percentage text and header class had been written. Those writes dirty
+   * layout, so the browser had to recalculate it synchronously before it could
+   * answer the reads — a forced reflow on every single scroll frame, which is
+   * the classic cause of a page that tracks the finger but stutters.
+   *
+   * Reordering is provably identical here, not just probably: all three write
+   * targets (.page-progress, .scroll-rail, .site-header) are position:fixed and
+   * therefore out of flow, and the .scrolled class only changes background,
+   * border-color and backdrop-filter. None of them can move a section, so the
+   * measured `top` values — and thus the chosen `active` id — are unchanged.
+   */
   const y = window.scrollY;
   const max = document.documentElement.scrollHeight - innerHeight;
-  const progress = max > 0 ? Math.min(1, y / max) : 0;
-  $('#page-progress').style.transform = `scaleX(${progress})`;
-  $('#scroll-percent').textContent = `${String(Math.round(progress * 100)).padStart(3, '0')}%`;
-  $('#site-header').classList.toggle('scrolled', y > 25);
   let active = 'home';
-  sectionIds.forEach(id => { if (document.getElementById(id).getBoundingClientRect().top <= 180) active = id; });
-  $$('.scroll-rail a').forEach(link => { const selected = link.dataset.rail === active; link.classList.toggle('is-active', selected); if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
-  $$('.desktop-nav .nav-link').forEach(link => {
+  for (const element of sectionEls) {
+    if (element.getBoundingClientRect().top <= 180) active = element.id;
+  }
+  const progress = max > 0 ? Math.min(1, y / max) : 0;
+  pageProgressEl.style.transform = `scaleX(${progress})`;
+  scrollPercentEl.textContent = `${String(Math.round(progress * 100)).padStart(3, '0')}%`;
+  siteHeaderEl.classList.toggle('scrolled', y > 25);
+  railLinks.forEach(link => { const selected = link.dataset.rail === active; link.classList.toggle('is-active', selected); if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current'); });
+  navLinks.forEach(link => {
     const selected = link.dataset.section === active;
     link.classList.toggle('is-active', selected);
     if (selected) link.setAttribute('aria-current', 'location'); else link.removeAttribute('aria-current');
@@ -594,6 +660,20 @@ addEventListener('scroll', () => { if (!scrollQueued) { scrollQueued = true; req
 addEventListener('resize', updateScrollUI, { passive: true });
 updateScrollUI();
 
+/*
+ * The hover parallax handlers below (`.hero-art`, `#gallery-grid`,
+ * `#roster-grid`, `.magnetic`) were considered for rAF coalescing and left
+ * alone on purpose. GSAP books its next animation frame *before* it dispatches
+ * its tick, so its ticker is always ahead of a callback scheduled from an input
+ * handler; deferring the work by a frame would have delayed the resulting tween
+ * by one render, adding ~16ms of latency to pointer tracking. Browsers already
+ * coalesce `pointermove` to roughly one dispatch per frame, so there was little
+ * to gain and a responsiveness cost to pay. Do not "optimise" these without
+ * re-checking that ordering.
+ *
+ * The drag handlers are a separate matter entirely: they accumulate deltas, so
+ * dropping samples there would change the result, not just the cost.
+ */
 /* Pointer response is subtle and entirely optional. */
 const cursor = $('#cursor-dot');
 document.addEventListener('pointermove', event => {
@@ -725,15 +805,16 @@ function buildMotion(withIntro = false) {
     gsap.fromTo('.hero-ambient-word', { xPercent: 8 }, { xPercent: -12, ease: 'none', scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1 } });
     const marqueeTween = gsap.to('.marquee-track', { xPercent: -50, repeat: -1, duration: 32, ease: 'none' });
     ScrollTrigger.create({ onUpdate: self => {
+      // getVelocity() was called three times per frame for the same value.
       scrollVelocity = self.getVelocity();
       const velocity = gsap.utils.clamp(-1, 1, scrollVelocity / 2600);
-      document.documentElement.style.setProperty('--hex-velocity', velocity.toFixed(3));
+      setWarpVelocity(velocity.toFixed(3));
       document.body.classList.toggle('is-warping', Math.abs(scrollVelocity) > 1800);
       clearTimeout(velocityTimer);
-      velocityTimer = setTimeout(() => { document.body.classList.remove('is-warping'); document.documentElement.style.setProperty('--hex-velocity', '0'); }, 160);
-      const boost = Math.min(Math.abs(self.getVelocity()) / 1400, 3.5);
+      velocityTimer = setTimeout(() => { document.body.classList.remove('is-warping'); setWarpVelocity('0'); }, 160);
+      const boost = Math.min(Math.abs(scrollVelocity) / 1400, 3.5);
       gsap.to(marqueeTween, { timeScale: 1 + boost, duration: .25, overwrite: true });
-      gsap.to('.marquee-track', { skewX: gsap.utils.clamp(-6, 6, self.getVelocity() / 900), duration: .25, overwrite: true });
+      gsap.to('.marquee-track', { skewX: gsap.utils.clamp(-6, 6, scrollVelocity / 900), duration: .25, overwrite: true });
     }});
 
     $$('.hero-stat strong').forEach((stat, index) => {
@@ -865,7 +946,7 @@ function applyMotion(enabled, withIntro = false) {
     cursor.style.opacity = '0';
     clearTimeout(velocityTimer);
     document.body.classList.remove('is-warping');
-    document.documentElement.style.setProperty('--hex-velocity', '0');
+    setWarpVelocity('0');
   }
   syncParticles();
   ScrollTrigger.refresh();
