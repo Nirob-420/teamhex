@@ -108,7 +108,9 @@ export function createWorld() {
       ring.position.z = -i * 4; ring.rotation.z = i * .035; rings.add(ring);
     }
     const particles = dust(mobile ? 140 : 300, 22, 0x7aa2ff, .035); particles.position.z = -15; state.root.add(particles);
-    state.data = { rings, particles };
+    // The host's ancestor never changes, so resolve it once instead of walking
+    // the DOM on every rendered frame.
+    state.data = { rings, particles, section: state.host.closest('.protocol-section') };
   });
 
   function resize() {
@@ -143,8 +145,20 @@ export function createWorld() {
   const observer = new IntersectionObserver(() => { chooseScene(); if (active && enabled) start(); }, { rootMargin: '100px' });
   hosts.forEach(host => observer.observe(host));
   const resizeObserver = new ResizeObserver(resize); hosts.forEach(host => resizeObserver.observe(host));
-  addEventListener('scroll', chooseScene, { passive: true });
-  addEventListener('resize', chooseScene, { passive: true });
+  /*
+   * `chooseScene` reads a bounding rect for every host, so it must not run more
+   * often than the frame rate. Coalescing scroll/resize events into one rAF
+   * callback is behaviour-preserving: the function only picks the most-visible
+   * scene, so intermediate results within a single frame were never rendered.
+   */
+  let sceneQueued = false;
+  const queueScene = () => {
+    if (sceneQueued) return;
+    sceneQueued = true;
+    requestAnimationFrame(() => { sceneQueued = false; chooseScene(); });
+  };
+  addEventListener('scroll', queueScene, { passive: true });
+  addEventListener('resize', queueScene, { passive: true });
 
   let drag = null;
   canvas.addEventListener('pointerdown', event => {
@@ -195,7 +209,9 @@ export function createWorld() {
       data.badge.position.y = Math.sin(t * .8) * .07;
       data.orbitA.rotation.z = t * .12; data.orbitB.rotation.z = -t * .09; data.particles.rotation.z = t * .025;
     } else {
-      const section = active.host.closest('.protocol-section');
+      // Resolved once at build time; `data.section` replaces a per-frame
+      // `closest()` walk up the DOM.
+      const section = data.section;
       const scroll = section ? clamp(-section.getBoundingClientRect().top / Math.max(1, section.offsetHeight - innerHeight), 0, 1) : progress;
       data.rings.children.forEach((ring, i) => { ring.position.z = -72 + ((i * 4 + t * 1.25 + scroll * 30) % 72); ring.rotation.z = i * .035 + t * .018 + scroll * .4; });
       root.rotation.z = Math.sin(t * .1) * .035 + scroll * .12; data.particles.rotation.z = -t * .012;
@@ -216,7 +232,7 @@ export function createWorld() {
     setPointer(x, y) { pointer.x = x; pointer.y = y; },
     dispose() {
       disposed = true; cancelAnimationFrame(frame); observer.disconnect(); resizeObserver.disconnect();
-      removeEventListener('scroll', chooseScene); removeEventListener('resize', chooseScene); document.removeEventListener('visibilitychange', visibility);
+      removeEventListener('scroll', queueScene); removeEventListener('resize', queueScene); document.removeEventListener('visibilitychange', visibility);
       scenes.forEach(state => state.scene.traverse(object => {
         object.geometry?.dispose();
         const materials = Array.isArray(object.material) ? object.material : object.material ? [object.material] : [];
