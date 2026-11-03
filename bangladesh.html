@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en" data-motion="on">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#050d0b" />
+    <title>Bangladesh — Land of Rivers, Resilience &amp; Rise | Hyper Deck</title>
+    <meta
+      name="description"
+      content="A cinematic ten-slide journey through Bangladesh: its delta, history, people, culture, economy, nature, food, resilience and the Smart Bangladesh 2041 vision."
+    />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+  </head>
+  <body>
+    <div class="deck-noise" aria-hidden="true"></div>
+    <div class="deck-grid" aria-hidden="true"></div>
+    <div class="deck-warp" aria-hidden="true"></div>
+    <div class="deck-scan" aria-hidden="true"></div>
+    <canvas class="deck-particles" aria-hidden="true"></canvas>
+    <div class="deck-cursor" aria-hidden="true"></div>
+
+    <header class="deck-top">
+      <div class="deck-brand">
+        <span class="deck-brand__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="deck-brand__text">BD<span class="sep">/</span>HYPER DECK</span>
+      </div>
+      <div class="deck-top__meta">
+        <span class="deck-live"><i></i> MOTION: ON</span>
+        <span class="deck-top__divider"></span>
+        <span>10 SLIDES · 16:9</span>
+      </div>
+      <div class="deck-top__actions">
+        <button class="ghost-btn" data-action="motion" aria-pressed="true" title="Toggle motion">Motion <b>ON</b></button>
+        <button class="ghost-btn" data-action="fullscreen" title="Present fullscreen">Present ⤢</button>
+        <a class="ghost-btn ghost-btn--link" href="/" title="Back to TEAM HEX">Exit ✕</a>
+      </div>
+    </header>
+
+    <main class="deck-viewport">
+      <div class="deck-stage" id="stage">
+        <span class="corner corner--tl" aria-hidden="true"></span>
+        <span class="corner corner--tr" aria-hidden="true"></span>
+        <span class="corner corner--bl" aria-hidden="true"></span>
+        <span class="corner corner--br" aria-hidden="true"></span>
+
+        <!-- 01 — COVER ---------------------------------------------------- -->
+        <section class="slide slide--cover is-active" data-title="Bangladesh" data-index="0" aria-hidden="false">
+          <div class="slide__media"><img src="/images/bd-delta.jpg" alt="Aerial view of the river delta at dawn" class="ken" /></div>
+          <div class="slide__veil slide__veil--left"></div>
+          <div class="slide__inner slide__inner--cover">
+            <div class="kicker" data-anim><span class="kicker__dot"></span> A COUNTRY IN MOTION <span class="kicker__rule"></span> 01 / 10</div>
+            <p class="bn-line" data-anim>বাংলাদেশ</p>
+            <h1 class="display display--hero glitch" data-glitch="BANGLADESH" data-anim>BANGLADESH</h1>
+            <p class="cover__sub" data-anim>Land of rivers, <em>resilience</em> &amp; rise.</p>
+            <div class="hairline" data-anim></div>
+            <div class="cover__chips" data-anim>
+              <span class="chip"><b>174M</b> people</span>
+              <span class="chip"><b>700+</b> rivers</span>
+              <span class="chip"><b>1971</b> born free</span>
+              <span class="chip"><b>2041</b> the vision</span>
+            </div>
+            <p class="cover__foot" data-anim>SOUTH ASIA · 23.7°N 90.4°E · BAY OF BENGAL</p>
+          </div>
+          <div class="cover__seal" data-anim aria-hidden="true">
+            <div class="seal__ring"></div>
+            <div class="seal__flag"><span></span></div>
+            <div class="seal__label">গণপ্রজাতন্ত্রী<br />বাংলাদেশ</div>
+          </div>
+          <div class="slide__pageno">01</div>
+        </section>
+
+        <!-- 02 — GEOGRAPHY ------------------------------------------------ -->
+        <section class="slide" data-title="The delta" data-index="1" aria-hidden="true">
+          <div class="slide__inner">
+            <div class="slide__head">
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 01 / GEOGRAPHY</div>
+              <h2 class="display" data-anim>THE <span class="accent">DELTA</span><br />ENGINE</h2>
+              <p class="slide__lede" data-anim>Three of Asia's great rivers meet here and fan into the largest delta on Earth. Water is not a feature of Bangladesh — it is the architecture.</p>
+            </div>
+            <div class="rivers" data-anim>
+              <div class="river"><span class="river__line"></span><b>PADMA</b><small>Ganges</small></div>
+              <div class="river"><span class="river__line"></span><b>JAMUNA</b><small>Brahmaputra</small></div>
+              <div class="river"><span class="river__line"></span><b>MEGHNA</b><small>The outfall</small></div>
+            </div>
+            <div class="geo__stats">
+              <div class="stat-card tilt" data-anim><b><span data-count="147570">0</span></b><small>km² of land</small></div>
+              <div class="stat-card tilt" data-anim><b>~<span data-count="700">0</span></b><small>rivers &amp; tributaries</small></div>
+              <div class="stat-card tilt" data-anim><b><span data-count="580">0</span> km</b><small>Bay of Bengal coast</small></div>
+            </div>
+            <div class="map-panel" data-anim>
+              <div class="panel__label">DELTA SCHEMATIC / NOT TO SCALE</div>
+              <svg viewBox="0 0 400 420" class="bd-map" role="img" aria-label="Stylised map of Bangladesh with its three main rivers">
+                <defs>
+                  <linearGradient id="landGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#0d4c3a" /><stop offset="1" stop-color="#072a22" />
+                  </linearGradient>
+                </defs>
+                <path class="map__land" d="M118 18 L190 8 L210 40 L250 52 L268 92 L285 120 L300 150 L322 172 L318 205 L336 232 L344 268 L330 300 L300 320 L280 345 L255 360 L230 372 L205 350 L185 330 L160 312 L140 286 L120 260 L110 225 L92 200 L78 170 L70 140 L82 105 L95 70 Z" />
+                <path class="map__coast" d="M205 350 L230 372 L255 360 L280 345 L300 320 L330 300 L344 268" />
+                <path class="map__river" d="M150 20 C160 90 140 140 175 190 S200 270 205 360" />
+                <path class="map__river" d="M250 55 C240 120 270 160 240 210 S265 300 250 360" />
+                <path class="map__river" d="M82 105 C130 150 150 180 190 215 S230 285 240 360" />
+                <g class="map__cities">
+                  <circle cx="205" cy="228" r="4" /><text x="216" y="226">DHAKA</text>
+                  <circle cx="292" cy="292" r="3.4" /><text x="300" y="290">CHATTOGRAM</text>
+                  <circle cx="272" cy="88" r="3.4" /><text x="280" y="86">SYLHET</text>
+                  <circle cx="132" cy="292" r="3.4" /><text x="92" y="308">KHULNA</text>
+                  <circle cx="320" cy="356" r="3.4" /><text x="248" y="392">COX'S BAZAR</text>
+                </g>
+              </svg>
+              <div class="panel__foot"><span class="pulse-dot"></span> GANGES–BRAHMAPUTRA–MEGHNA BASIN</div>
+            </div>
+          </div>
+          <div class="slide__pageno">02</div>
+        </section>
+
+        <!-- 03 — HISTORY -------------------------------------------------- -->
+        <section class="slide slide--history" data-title="1971" data-index="2" aria-hidden="true">
+          <div class="slide__media slide__media--right"><img src="/images/bd-monument.jpg" alt="National Martyrs' Memorial at dusk" class="ken" /></div>
+          <div class="slide__veil slide__veil--right"></div>
+          <div class="slide__inner slide__inner--split">
+            <div class="slide__head">
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 02 / ORIGIN STORY</div>
+              <h2 class="display" data-anim>BORN OF<br /><span class="accent-red">LANGUAGE.</span><br />FORGED IN <span class="display__outline">1971</span></h2>
+              <p class="slide__lede" data-anim>A nation first defended its mother tongue, then its right to exist. Four dates define the arc.</p>
+              <div class="history__quote" data-anim>“আমার সোনার বাংলা” <span>— the golden Bengal</span></div>
+            </div>
+            <div class="timeline" data-anim>
+              <div class="timeline__spine"><span class="timeline__fill"></span></div>
+              <div class="tl-item" data-anim><i class="tl-item__node"></i><b>1947</b><h3>Partition</h3><p>East Bengal becomes part of Pakistan — two wings separated by 1,600 km.</p></div>
+              <div class="tl-item" data-anim><i class="tl-item__node"></i><b>1952</b><h3>Language Movement</h3><p>21 February: students give their lives for Bangla. Today it is UNESCO International Mother Language Day.</p></div>
+              <div class="tl-item" data-anim><i class="tl-item__node tl-item__node--red"></i><b>26 MAR 1971</b><h3>Independence proclaimed</h3><p>A nine-month liberation war begins.</p></div>
+              <div class="tl-item" data-anim><i class="tl-item__node tl-item__node--gold"></i><b>16 DEC 1971</b><h3>Victory</h3><p>Bangladesh emerges as an independent republic.</p></div>
+            </div>
+          </div>
+          <div class="slide__pageno">03</div>
+        </section>
+
+        <!-- 04 — PEOPLE --------------------------------------------------- -->
+        <section class="slide slide--people" data-title="People & voice" data-index="3" aria-hidden="true">
+          <div class="bn-watermark" aria-hidden="true">বাংলা</div>
+          <div class="slide__inner">
+            <div class="slide__head">
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 03 / THE PEOPLE</div>
+              <h2 class="display" data-anim>174 MILLION<br /><span class="accent">VOICES</span></h2>
+            </div>
+            <div class="people__grid">
+              <div class="people__big tilt" data-anim>
+                <b><span data-count="174">0</span><small>M</small></b>
+                <span>people · 8th most populous nation</span>
+                <div class="people__bar"><i data-bar="0.94"></i></div>
+                <p>One of the world's densest populations — and one of its youngest, with a median age around 28.</p>
+              </div>
+              <div class="people__cards">
+                <div class="info-card tilt" data-anim><span class="info-card__no">01</span><h3>One language</h3><p>Bangla is spoken by virtually the whole country; it is also one of the world's most-spoken native languages.</p></div>
+                <div class="info-card tilt" data-anim><span class="info-card__no">02</span><h3>A day for the world</h3><p>21 February is UNESCO's International Mother Language Day — a Bangladeshi gift to global culture.</p></div>
+                <div class="info-card tilt" data-anim><span class="info-card__no">03</span><h3>Words as identity</h3><p>Tagore, Nazrul and a living oral tradition of Baul song, poetry and storytelling.</p></div>
+              </div>
+            </div>
+            <div class="people__foot" data-anim><span>ধন্যবাদ</span><span>ADDRESS EVERYONE WITH RESPECT</span><span>অতিথি দেবতা — the guest is divine</span></div>
+          </div>
+          <div class="slide__pageno">04</div>
+        </section>
+
+        <!-- 05 — CULTURE -------------------------------------------------- -->
+        <section class="slide slide--culture" data-title="Culture" data-index="4" aria-hidden="true">
+          <div class="slide__media slide__media--right"><img src="/images/bd-culture.jpg" alt="Pohela Boishakh festival in Dhaka" class="ken" /></div>
+          <div class="slide__veil slide__veil--right"></div>
+          <div class="slide__inner slide__inner--split slide__inner--culture">
+            <div>
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 04 / CULTURE</div>
+              <h2 class="display" data-anim>COLOUR<br />IS A <span class="accent-red">VERB</span></h2>
+              <p class="slide__lede" data-anim>Festivals here are not performances. The whole street becomes the stage.</p>
+              <ul class="culture-list">
+                <li class="tilt" data-anim><b>01</b><h3>Pohela Boishakh</h3><p>Bengali New Year · red &amp; white · masks, processions, fairs</p></li>
+                <li class="tilt" data-anim><b>02</b><h3>Jamdani &amp; Nakshi Kantha</h3><p>Handwoven muslin and embroidered quilts, UNESCO-listed craft</p></li>
+                <li class="tilt" data-anim><b>03</b><h3>Baul &amp; Nazrul Geeti</h3><p>Mystic folk songs carried voice to voice for generations</p></li>
+                <li class="tilt" data-anim><b>04</b><h3>Eid, boats &amp; cricket</h3><p>Family tables, river races and a nation that stops for a match</p></li>
+              </ul>
+            </div>
+            <div class="culture__stamp" data-anim><span>১৪৩৩</span><small>BENGALI CALENDAR · BOISHAKH</small></div>
+          </div>
+          <div class="slide__pageno">05</div>
+        </section>
+
+        <!-- 06 — ECONOMY -------------------------------------------------- -->
+        <section class="slide slide--economy" data-title="Economy" data-index="5" aria-hidden="true">
+          <div class="slide__media slide__media--full"><img src="/images/bd-bridge.jpg" alt="Padma Bridge at dusk" class="ken" /></div>
+          <div class="slide__veil slide__veil--heavy"></div>
+          <div class="slide__inner">
+            <div class="slide__head slide__head--row">
+              <div>
+                <div class="kicker" data-anim><span class="kicker__dot"></span> 05 / ECONOMY</div>
+                <h2 class="display" data-anim>THE <span class="accent-gold">ENGINE</span> ROOM</h2>
+              </div>
+              <p class="slide__lede slide__lede--tight" data-anim>From a "basket case" to one of Asia's fastest-growing economies in a single generation.</p>
+            </div>
+            <div class="kpi-row">
+              <div class="kpi tilt" data-anim><b>$<span data-count="460">0</span>B</b><small>nominal GDP · 2025 est.</small></div>
+              <div class="kpi tilt" data-anim><b><span data-count="80">0</span>%+</b><small>of exports from apparel</small></div>
+              <div class="kpi tilt" data-anim><b>#<span data-count="2">0</span></b><small>global garment exporter</small></div>
+              <div class="kpi tilt" data-anim><b>~<span data-count="5">0</span>M</b><small>garment workers, mostly women</small></div>
+            </div>
+            <div class="chart-card" data-anim>
+              <div class="chart-card__head"><span>EXPORT COMPOSITION · ILLUSTRATIVE</span><span>RMG DOMINANCE</span></div>
+              <div class="bar-row" data-anim><label>Ready-made garments</label><div class="bar"><i data-bar="0.84"></i></div><b>~84%</b></div>
+              <div class="bar-row" data-anim><label>Other manufactures</label><div class="bar"><i data-bar="0.09"></i></div><b>~9%</b></div>
+              <div class="bar-row" data-anim><label>Agriculture &amp; jute</label><div class="bar"><i data-bar="0.05"></i></div><b>~5%</b></div>
+              <div class="bar-row" data-anim><label>Services &amp; ICT</label><div class="bar"><i data-bar="0.02"></i></div><b>growing</b></div>
+              <div class="chart-card__foot" data-anim>PADMA BRIDGE, OPENED 2022 · $20B+ ANNUAL REMITTANCES · DIGITAL BANGLADESH → SMART BANGLADESH</div>
+            </div>
+          </div>
+          <div class="slide__pageno">06</div>
+        </section>
+
+        <!-- 07 — NATURE --------------------------------------------------- -->
+        <section class="slide slide--nature" data-title="Wild & wonderful" data-index="6" aria-hidden="true">
+          <div class="slide__inner slide__inner--nature">
+            <div class="nature__head">
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 06 / NATURE</div>
+              <h2 class="display" data-anim>WILD &amp;<br /><span class="accent">WONDERFUL</span></h2>
+              <p data-anim>Four landscapes, one small country.</p>
+            </div>
+            <div class="mosaic">
+              <figure class="tile tile--a tilt" data-anim><img src="/images/bd-sundarbans.jpg" alt="Bengal tiger in the Sundarbans" class="ken" /><figcaption><b>01</b><h3>The Sundarbans</h3><p>World's largest mangrove forest · UNESCO 1997 · home of the Royal Bengal tiger</p></figcaption></figure>
+              <figure class="tile tile--b tilt" data-anim><img src="/images/bd-coast.jpg" alt="Cox's Bazar beach at golden hour" class="ken" /><figcaption><b>02</b><h3>Cox's Bazar</h3><p>~120 km of unbroken sandy beach on the Bay of Bengal</p></figcaption></figure>
+              <figure class="tile tile--c tilt" data-anim><img src="/images/bd-tea.jpg" alt="Sylhet tea gardens at sunrise" class="ken" /><figcaption><b>03</b><h3>Sylhet tea hills</h3><p>Rolling green estates, mist and the country's famous cha</p></figcaption></figure>
+              <figure class="tile tile--d tilt" data-anim><img src="/images/bd-delta.jpg" alt="Haor wetlands and rivers" class="ken" /><figcaption><b>04</b><h3>Haor wetlands</h3><p>Seasonal inland seas that flood, bloom and feed millions</p></figcaption></figure>
+            </div>
+          </div>
+          <div class="slide__pageno">07</div>
+        </section>
+
+        <!-- 08 — FOOD ----------------------------------------------------- -->
+        <section class="slide slide--food" data-title="Food" data-index="7" aria-hidden="true">
+          <div class="slide__inner slide__inner--split slide__inner--food">
+            <div class="food__photo" data-anim><img src="/images/bd-food.jpg" alt="A spread of Bangladeshi dishes" class="ken" /><span class="food__badge">ATITHI<br />DEVOBHAVA</span></div>
+            <div class="food__copy">
+              <div class="kicker" data-anim><span class="kicker__dot"></span> 07 / THE TABLE</div>
+              <h2 class="display" data-anim>A TABLE FULL<br />OF <span class="accent-red">STORIES</span></h2>
+              <p class="slide__lede" data-anim>Rice and fish are the grammar; mustard, chilli and centuries of trade are the vocabulary.</p>
+              <ul class="dish-list">
+                <li data-anim><b>ILISH</b><span>Hilsa · the national fish, best in monsoon</span></li>
+                <li data-anim><b>KACCHI BIRYANI</b><span>Rice, meat and saffron, Dhaka style</span></li>
+                <li data-anim><b>FUCHKA</b><span>The street-side burst of tamarind &amp; chilli</span></li>
+                <li data-anim><b>PANTA BHAT</b><span>Fermented rice, the Pohela Boishakh classic</span></li>
+                <li data-anim><b>MISHTI &amp; CHA</b><span>Sweet milk confections and endless tea</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="slide__pageno">08</div>
+        </section>
+
+        <!-- 09 — RESILIENCE ----------------------------------------------- -->
+        <section class="slide slide--resilience" data-title="Resilience" data-index="8" aria-hidden="true">
+          <div class="slide__inner">
+            <div class="slide__head slide__head--row">
+              <div>
+                <div class="kicker" data-anim><span class="kicker__dot"></span> 08 / THE TEST</div>
+                <h2 class="display" data-anim>BUILT TO<br /><span class="accent-red">BEND</span>, NOT BREAK</h2>
+              </div>
+              <p class="slide__lede slide__lede--tight" data-anim>A delta nation lives with water. Its answer has been engineering, early warning and extraordinary social solidarity.</p>
+            </div>
+            <div class="resilience__grid">
+              <div class="risk-card" data-anim>
+                <h3>THE PRESSURE</h3>
+                <div class="risk-tags">
+                  <span data-anim>Monsoon flooding</span><span data-anim>Cyclones</span><span data-anim>Sea-level rise</span><span data-anim>River erosion</span><span data-anim>Climate displacement</span><span data-anim>Rohingya humanitarian response</span>
+                </div>
+              </div>
+              <div class="resilience__right">
+                <div class="pulse-panel tilt" data-anim>
+                  <div class="pulse-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+                  <b><span data-count="100">0</span>+</b>
+                  <h3>cyclone shelters &amp; a volunteer warning network</h3>
+                  <p>Deaths from major cyclones have fallen dramatically over three decades — a globally studied adaptation story.</p>
+                </div>
+                <div class="bridge-panel tilt" data-anim>
+                  <img src="/images/bd-bridge.jpg" alt="Padma Bridge" />
+                  <div><small>SELF-FINANCED · OPENED 2022</small><h3>Padma Bridge</h3><p>6.15 km linking the southwest to the capital — a symbol of a country building its own future.</p></div>
+                </div>
+              </div>
+            </div>
+            <div class="resilience__foot" data-anim>ADAPTATION IS NOT A PROJECT HERE. IT IS A WAY OF LIFE.</div>
+          </div>
+          <div class="slide__pageno">09</div>
+        </section>
+
+        <!-- 10 — FUTURE --------------------------------------------------- -->
+        <section class="slide slide--future" data-title="2041" data-index="9" aria-hidden="true">
+          <div class="slide__media slide__media--full"><img src="/images/bd-dhaka.jpg" alt="Dhaka skyline at night" class="ken" /></div>
+          <div class="slide__veil slide__veil--heavy"></div>
+          <div class="slide__inner slide__inner--future">
+            <div class="future__flag" data-anim aria-hidden="true"><span></span></div>
+            <div class="kicker" data-anim><span class="kicker__dot"></span> 09 / WHAT'S NEXT <span class="kicker__rule"></span> 10 / 10</div>
+            <h2 class="display display--hero" data-anim>SMART<br /><span class="accent">BANGLADESH</span> <span class="display__outline">2041</span></h2>
+            <p class="future__sub" data-anim>A young, connected, green and knowledge-led nation — the next chapter is already being written.</p>
+            <div class="pillars">
+              <div class="pillar tilt" data-anim><b>01</b><h3>DIGITAL</h3><p>E-governance, freelancers, startups</p></div>
+              <div class="pillar tilt" data-anim><b>02</b><h3>GREEN</h3><p>Solar, resilient infra, clean growth</p></div>
+              <div class="pillar tilt" data-anim><b>03</b><h3>SKILLED</h3><p>A 174M-strong young workforce</p></div>
+              <div class="pillar tilt" data-anim><b>04</b><h3>CONNECTED</h3><p>Bridges, ports and regional trade</p></div>
+            </div>
+            <div class="future__thanks" data-anim><span class="bn">ধন্যবাদ</span><span>THANK YOU</span><button class="replay-btn" data-action="replay">↺ REPLAY THE JOURNEY</button></div>
+            <p class="future__sources" data-anim>Figures are rounded public estimates · Sources: World Bank, UNESCO, BGMEA, CIA World Factbook, Bangladesh Bureau of Statistics.</p>
+          </div>
+          <div class="slide__pageno">10</div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="deck-hud">
+      <div class="hud__left">
+        <span class="hud__count"><b id="counter">01</b><i>/</i>10</span>
+        <span class="hud__sep"></span>
+        <span class="hud__title" id="slide-title">Bangladesh</span>
+      </div>
+      <div class="hud__progress" id="progress-track"><span id="progress-fill"></span></div>
+      <div class="hud__right">
+        <span class="hud__hint">← → · SPACE · SWIPE</span>
+        <button class="hud-btn" data-action="prev" aria-label="Previous slide">←</button>
+        <button class="hud-btn hud-btn--play" data-action="autoplay" aria-label="Autoplay" aria-pressed="false">▶</button>
+        <button class="hud-btn" data-action="next" aria-label="Next slide">→</button>
+      </div>
+    </footer>
+
+    <nav class="deck-dots" id="dots" aria-label="Slide navigation"></nav>
+
+    <script type="module" src="/src/bangladesh.js"></script>
+  </body>
+</html>

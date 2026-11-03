@@ -51,6 +51,8 @@ export default defineConfig({
       // build/seo-plugin.js, so there is still only one copy of the markup.
       input: Object.fromEntries([
         ['index', resolve(process.cwd(), 'index.html')],
+        // Standalone cinematic deck: its own page, styles and animation entry.
+        ['bangladesh', resolve(process.cwd(), 'bangladesh.html')],
         ...routes.map(route => [route.id, resolve(process.cwd(), route.file)]),
       ]),
       output: {

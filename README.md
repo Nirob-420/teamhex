@@ -444,6 +444,34 @@ The 60 automated tests cover:
 
 Automated checks complement manual accessibility testing. YouTube playback requires internet access and the original videos remaining available.
 
+## Bangladesh — Hyper Deck
+
+A standalone, ten-slide cinematic presentation about Bangladesh lives at
+[`/bangladesh.html`](bangladesh.html). It is a separate entry in the Vite build
+(`bangladesh` in `vite.config.js`) with its own markup, styles and animation
+module, so it does not load the homepage's three.js experience.
+
+- **Slides** — cover, the delta, 1971, people & language, culture, economy,
+  nature, food, resilience and Smart Bangladesh 2041.
+- **Motion** — GSAP entrance timelines, warp-streak transitions, glitch
+  headlines, drawn SVG rivers, count-up statistics, growing bar charts,
+  Ken Burns photography, 3D card tilt, magnetic controls and a particle field.
+- **Presenting** — arrow keys / space / swipe / scroll / dot navigation,
+  autoplay with a progress bar, `F` for fullscreen, `P` for autoplay, `M` for
+  motion. `prefers-reduced-motion` and the Motion toggle disable all animation
+  without hiding any content.
+- **Artwork** — `public/images/bd-*.jpg` are generated backdrops;
+  `public/images/deck/slide-01.jpg` … `slide-10.jpg` are exact 16:9 exports used
+  as full-bleed slides in the companion Google Slides deck. Those exports are
+  intentionally committed: Google Slides fetches them from this repository's
+  raw file URLs.
+- **Preview** — `npx vite --config vite.deck.config.js` serves the deck at `/`
+  for the live preview; `npm run dev` serves the regular site.
+- **Google Slides companion** —
+  [Bangladesh — Land of Rivers, Resilience & Rise](https://docs.google.com/presentation/d/1qASBJdeKF1n6pe0-xyEab4LUas3GeF781ud9BQIb1G4/edit)
+  contains the same ten slides with speaker notes, presenter scripts and
+  animation cues for each slide.
+
 ## Content credit
 
 Team content, photographs, emblem, and match footage belong to their respective TEAM HEX owners and are reused at the site owner’s request.
