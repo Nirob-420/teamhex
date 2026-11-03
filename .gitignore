@@ -17,6 +17,9 @@ dist-ssr/
 !/download/Bangladesh-Hyper-Deck.html
 !/download/README.txt
 
+# Local deck-generation helpers (screenshots, offline single-file build)
+/.deck-tools/
+
 # Playwright
 /test-results/
 /playwright-report/

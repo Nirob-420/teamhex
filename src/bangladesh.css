@@ -113,6 +113,8 @@ button { cursor: pointer; }
   background: var(--ink);
   border: 1px solid #ffffff1c;
   box-shadow: 0 0 0 1px #17c47c12, 0 40px 120px #000000cc, 0 0 90px #0d6b4b18;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
 }
 .corner { position: absolute; z-index: 12; width: 2.2cqw; height: 2.2cqw; border-color: #17c47c99; pointer-events: none; }
 .corner--tl { top: 1.4cqw; left: 1.4cqw; border-top: 1px solid; border-left: 1px solid; }
@@ -149,7 +151,10 @@ button { cursor: pointer; }
 .dot.is-active { background: var(--green); box-shadow: 0 0 10px #17c47c99; width: 34px; }
 
 /* ---- Slide primitives -------------------------------------------------- */
-.slide { position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden; background: var(--ink); }
+.slide {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none; overflow: hidden;
+  background: var(--ink); backface-visibility: hidden; transform-style: preserve-3d;
+}
 .slide.is-active { opacity: 1; pointer-events: auto; z-index: 3; }
 .slide__inner { position: relative; z-index: 4; height: 100%; padding: 5.6cqw 6.4cqw; display: flex; flex-direction: column; }
 .slide__media { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
@@ -414,4 +419,107 @@ html[data-motion='off'] .deck-live i { background: var(--faint); box-shadow: non
 @media (max-width: 560px) {
   .ghost-btn--link { display: none; }
   .deck-dots { display: none; }
+}
+
+/* ==========================================================================
+   HYPER FX — cinematic transition engine
+   Added in the "professional motion" pass. The old single stagger entrance is
+   replaced by nine distinct transitions and per-slide choreography.
+   ========================================================================== */
+
+/* Transition picker ------------------------------------------------------- */
+.fx-picker {
+  position: relative; display: flex; align-items: center; gap: 8px; height: 34px;
+  padding: 0 26px 0 10px; border: 1px solid var(--line); background: #ffffff08;
+  border-radius: 3px; transition: .25s var(--ease);
+}
+.fx-picker:hover { border-color: #17c47c88; background: #17c47c12; }
+.fx-picker > span { font: 600 8px/1 var(--body); letter-spacing: .18em; color: var(--faint); white-space: nowrap; }
+.fx-picker select {
+  appearance: none; -webkit-appearance: none; border: 0; outline: 0; background: transparent;
+  color: var(--white); font: 600 9px/1 var(--body); letter-spacing: .12em; cursor: pointer;
+  max-width: 168px; padding: 0;
+}
+.fx-picker select option { background: #071410; color: var(--white); }
+.fx-picker::after {
+  content: '▾'; position: absolute; right: 9px; top: 50%; transform: translateY(-50%);
+  font-size: 9px; color: var(--green); pointer-events: none;
+}
+.fx-picker select:focus-visible { outline: 2px solid var(--cyan); outline-offset: 4px; }
+.hud__hint b { color: var(--green); font-weight: 700; }
+
+/* FX overlay stage -------------------------------------------------------- */
+.fx-layer { position: absolute; inset: 0; z-index: 20; pointer-events: none; overflow: hidden; }
+.fx-layer > * { position: absolute; will-change: transform, clip-path, opacity; }
+.fx-band {
+  left: 0; width: 100%; background: #04100c; border-bottom: 1px solid #17c47c55;
+  transform-origin: 50% 0%; box-shadow: 0 6px 24px #0009;
+}
+.fx-tile {
+  background: #04100c; box-shadow: inset 0 0 0 1px #17c47c1f; transform-origin: 50% 50%;
+}
+.fx-iris {
+  inset: -2px; background: radial-gradient(circle at 50% 50%, #0b3527 0%, #04100c 66%);
+  box-shadow: inset 0 0 0 2px #17c47c66;
+}
+.fx-slice {
+  top: -45%; height: 190%; width: 30%; transform: skewX(-14deg);
+  background: linear-gradient(90deg, transparent, #17c47c22 32%, #04100cf2 46%, #04100cf2 58%, #22d3ee22 72%, transparent);
+}
+.fx-vignette {
+  inset: 0; opacity: 0; background: radial-gradient(circle at 50% 50%, transparent 38%, #000000bb 100%);
+}
+.fx-glint {
+  left: 0; width: 100%; height: 2px; top: 50%; opacity: 0;
+  background: linear-gradient(90deg, transparent, #bae6fd, #17c47c, transparent);
+  box-shadow: 0 0 24px #22d3ee88;
+}
+
+.fx-flash {
+  position: absolute; z-index: 23; left: 3.4cqw; bottom: 3.2cqw; opacity: 0;
+  pointer-events: none; font: 600 .9cqw/1 var(--body); letter-spacing: .3em;
+  text-transform: uppercase; color: var(--green); text-shadow: 0 0 18px #17c47c88;
+}
+.fx-flash::before {
+  content: ''; display: inline-block; width: 1.8cqw; height: 1px; background: var(--green);
+  margin-right: .9cqw; vertical-align: middle;
+}
+.deck-sweep {
+  position: absolute; z-index: 22; top: 0; bottom: 0; left: 0; width: 16cqw;
+  pointer-events: none; opacity: 0; mix-blend-mode: screen;
+  background: linear-gradient(90deg, transparent, #7dd3fc0d 42%, #bae6fd2e 50%, #7dd3fc0d 58%, transparent);
+}
+html[data-motion='on'] .deck-sweep { animation: deck-sweep 8s ease-in-out infinite; }
+@keyframes deck-sweep {
+  0%, 10% { transform: translateX(-20cqw); opacity: 0; }
+  16% { opacity: .85; }
+  46% { transform: translateX(115cqw); opacity: .45; }
+  52%, 100% { transform: translateX(115cqw); opacity: 0; }
+}
+html[data-motion='on'] .deck-grid { animation: grid-drift 28s ease-in-out infinite alternate; }
+@keyframes grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 64px 42px, -48px 34px; }
+}
+
+/* Kinetic word-split typography ------------------------------------------ */
+.kw { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .1em; margin-bottom: -.1em; perspective: 600px; }
+.kw-in { display: inline-block; transform-origin: 50% 100%; will-change: transform; }
+
+/* Chromatic split while warping ------------------------------------------ */
+body.is-warping .slide.is-active .display { text-shadow: 2px 0 #22d3ee44, -2px 0 #f2385a44; }
+body.is-warping .deck-stage {
+  box-shadow: 0 0 0 1px #22d3ee33, 0 40px 120px #000000cc, 0 0 120px #0ea5e933;
+}
+
+/* Reduced motion kills every ambient loop --------------------------------- */
+html[data-motion='off'] .deck-sweep, html[data-motion='off'] .fx-layer > * { animation: none !important; }
+html[data-motion='off'] .fx-flash { display: none; }
+
+@media (max-width: 1100px) {
+  .fx-picker > span { display: none; }
+  .fx-picker select { max-width: 126px; }
+}
+@media (max-width: 700px) {
+  .fx-picker { display: none; }
 }

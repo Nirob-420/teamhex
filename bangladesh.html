@@ -31,6 +31,21 @@
         <span>10 SLIDES · 16:9</span>
       </div>
       <div class="deck-top__actions">
+        <label class="fx-picker" title="Choose a slide transition style">
+          <span>TRANSITION</span>
+          <select id="fx-select" aria-label="Slide transition style">
+            <option value="auto">AUTO · CINEMATIC MIX</option>
+            <option value="cube">CUBE 3D</option>
+            <option value="shutter">SHUTTER</option>
+            <option value="mosaic">MOSAIC</option>
+            <option value="iris">IRIS</option>
+            <option value="dolly">DOLLY ZOOM</option>
+            <option value="parallax">PARALLAX PUSH</option>
+            <option value="slice">DIAGONAL SLICE</option>
+            <option value="flip">FLIP</option>
+            <option value="warp">WARP STREAK</option>
+          </select>
+        </label>
         <button class="ghost-btn" data-action="motion" aria-pressed="true" title="Toggle motion">Motion <b>ON</b></button>
         <button class="ghost-btn" data-action="fullscreen" title="Present fullscreen">Present ⤢</button>
         <a class="ghost-btn ghost-btn--link" href="/" title="Back to TEAM HEX">Exit ✕</a>
@@ -43,6 +58,9 @@
         <span class="corner corner--tr" aria-hidden="true"></span>
         <span class="corner corner--bl" aria-hidden="true"></span>
         <span class="corner corner--br" aria-hidden="true"></span>
+        <div class="fx-layer" id="fx-layer" aria-hidden="true"></div>
+        <div class="fx-flash" id="fx-flash" aria-hidden="true"></div>
+        <div class="deck-sweep" aria-hidden="true"></div>
 
         <!-- 01 — COVER ---------------------------------------------------- -->
         <section class="slide slide--cover is-active" data-title="Bangladesh" data-index="0" aria-hidden="false">
@@ -318,7 +336,7 @@
       </div>
       <div class="hud__progress" id="progress-track"><span id="progress-fill"></span></div>
       <div class="hud__right">
-        <span class="hud__hint">← → · SPACE · SWIPE</span>
+        <span class="hud__hint">← → · SPACE · SWIPE · <b id="fx-readout">AUTO</b></span>
         <button class="hud-btn" data-action="prev" aria-label="Previous slide">←</button>
         <button class="hud-btn hud-btn--play" data-action="autoplay" aria-label="Autoplay" aria-pressed="false">▶</button>
         <button class="hud-btn" data-action="next" aria-label="Next slide">→</button>

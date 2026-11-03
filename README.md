@@ -453,9 +453,17 @@ module, so it does not load the homepage's three.js experience.
 
 - **Slides** — cover, the delta, 1971, people & language, culture, economy,
   nature, food, resilience and Smart Bangladesh 2041.
-- **Motion** — GSAP entrance timelines, warp-streak transitions, glitch
-  headlines, drawn SVG rivers, count-up statistics, growing bar charts,
-  Ken Burns photography, 3D card tilt, magnetic controls and a particle field.
+- **Motion** — a cinematic transition engine with nine distinct styles
+  (cube 3D, flip, shutter, mosaic, iris, dolly zoom, parallax push, diagonal
+  slice, warp streak). `AUTO` gives every slide a different transition; the
+  **TRANSITION** picker in the top bar forces any one of them. Each slide has
+  bespoke choreography: kinetic word-split headlines, 3D card flips, drawn SVG
+  rivers, clip-path reveals, elastic chips, count-up statistics, growing bar
+  charts, spring flag reveal, glitch headlines, Ken Burns photography, depth
+  vignettes, glint lines, chromatic split, 3D tilt, magnetic controls and a
+  particle field. One master GSAP timeline per navigation overlaps the
+  transition with the reveal; a real-time failsafe prevents any half-finished
+  transition from locking the deck.
 - **Presenting** — arrow keys / space / swipe / scroll / dot navigation,
   autoplay with a progress bar, `F` for fullscreen, `P` for autoplay, `M` for
   motion. `prefers-reduced-motion` and the Motion toggle disable all animation
