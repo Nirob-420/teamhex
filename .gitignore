@@ -8,9 +8,14 @@ dist-ssr/
 # Local visitor-counter state written by the dev/preview server
 .data/
 
-# Downloadable deck bundle — generated from the source deck and published as a
-# GitHub release asset instead of being committed as binaries.
-/download/
+# Downloadable deck bundle — generated from the source deck. The distributable
+# files are tracked so GitHub can serve them as direct download links; scratch
+# build output and duplicated slide images stay out of Git.
+/download/*
+!/download/Bangladesh-Hyper-Deck.zip
+!/download/Bangladesh-Hyper-Deck.pdf
+!/download/Bangladesh-Hyper-Deck.html
+!/download/README.txt
 
 # Playwright
 /test-results/
